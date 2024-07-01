@@ -10,7 +10,7 @@ public static class AddConfigurationHostBuilderExtensions
         Environment.SetEnvironmentVariable("BASEDIR", location);
 
         configuration.SetBasePath(location);
-        configuration.AddJsonFile("appsettings.json", optional: true);
+        configuration.AddJsonFile("appsettings.json");
         configuration.AddJsonFile($"appsettings.{environmentName}.json", optional: true);
         configuration.AddEnvironmentVariables();
 
