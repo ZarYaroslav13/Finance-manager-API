@@ -1,11 +1,17 @@
-﻿namespace Finance_manager.HostBuilder;
+﻿using DataLayer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+namespace Finance_manager.HostBuilder;
 
 public static class AddServicesConfigurationHostBuilderExtensions
 {
-    public static IHostApplicationBuilder AddServices(this IHostApplicationBuilder hostBuilder)
+    public static IHostApplicationBuilder AddServices(this IHostApplicationBuilder builder)
     {
-        var services = hostBuilder.Services;
+        var services = builder.Services;
 
-        return hostBuilder;
+        services.AddDbContext<AppDbContext>();
+
+        return builder;
     }
 }
