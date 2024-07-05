@@ -1,4 +1,3 @@
-using DataLayer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Finance_manager.Controllers

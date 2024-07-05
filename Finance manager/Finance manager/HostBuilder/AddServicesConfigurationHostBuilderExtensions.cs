@@ -1,6 +1,5 @@
 ﻿using DataLayer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using DataLayer.UnitOfWork;
 
 namespace Finance_manager.HostBuilder;
 
@@ -11,6 +10,8 @@ public static class AddServicesConfigurationHostBuilderExtensions
         var services = builder.Services;
 
         services.AddDbContext<AppDbContext>();
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return builder;
     }
