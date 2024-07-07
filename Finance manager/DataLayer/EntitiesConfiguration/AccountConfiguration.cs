@@ -8,6 +8,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
-
+        builder.
+            HasData(FillerBbData.Accounts);
     }
 }

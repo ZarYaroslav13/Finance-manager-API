@@ -8,9 +8,6 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
 {
     public void Configure(EntityTypeBuilder<Transaction> builder)
     {
-        builder
-            .HasOne(t => t.Type.Wallet)
-            .WithMany(w => w.Transactions)
-            .HasForeignKey(t => t.Type.WalletId);
+        builder.HasData(FillerBbData.Transactions);
     }
 }

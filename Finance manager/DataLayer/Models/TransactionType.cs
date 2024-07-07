@@ -2,7 +2,7 @@
 
 public class TransactionType : Base.Entity
 {
-    public string Caption { get; set; }
+    public string Name { get; set; }
 
     public string? Description { get; set; }
 
