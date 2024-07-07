@@ -1,9 +1,4 @@
 ﻿using DataLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayer;
 
@@ -17,47 +12,49 @@ public class FillerBbData
 
     public static List<Transaction> Transactions { get { return _transactions; } }
 
+    private static PasswordCoder _passwordCoder = new();
+
     private static List<Account> _accounts = new()
     {
-        new Account() 
-        { 
-            Id = 1, 
-            FirstName = "John", 
-            LastName = "Doe", 
-            Email = "john.doe@example.com", 
-            Password = "password123", 
+        new Account()
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "john.doe@example.com",
+            Password = _passwordCoder.ComputeSHA256Hash("password123"),
         },
-        new Account() 
-        { 
-            Id = 2, 
-            FirstName = "Jane", 
-            LastName = "Smith", 
-            Email = "jane.smith@example.com", 
-            Password = "password456",
+        new Account()
+        {
+            Id = 2,
+            FirstName = "Jane",
+            LastName = "Smith",
+            Email = "jane.smith@example.com",
+            Password = _passwordCoder.ComputeSHA256Hash("password456"),
         },
-        new Account() 
-        { 
-            Id = 3, 
-            FirstName = "Michael", 
-            LastName = "Johnson", 
-            Email = "michael.johnson@example.com", 
-            Password = "password789",
+        new Account()
+        {
+            Id = 3,
+            FirstName = "Michael",
+            LastName = "Johnson",
+            Email = "michael.johnson@example.com",
+            Password = _passwordCoder.ComputeSHA256Hash("password789"),
         },
-        new Account() 
-        { 
-            Id = 4, 
-            FirstName = "Emily", 
-            LastName = "Davis", 
-            Email = "emily.davis@example.com", 
-            Password = "password101",
+        new Account()
+        {
+            Id = 4,
+            FirstName = "Emily",
+            LastName = "Davis",
+            Email = "emily.davis@example.com",
+            Password = _passwordCoder.ComputeSHA256Hash("password101"),
         },
-        new Account() 
-        { 
-            Id = 5, 
-            FirstName = "Chris", 
-            LastName = "Brown", 
-            Email = "chris.brown@example.com", 
-            Password = "password102",
+        new Account()
+        {
+            Id = 5,
+            FirstName = "Chris",
+            LastName = "Brown",
+            Email = "chris.brown@example.com",
+            Password = _passwordCoder.ComputeSHA256Hash("password102"),
         }
     };
 
