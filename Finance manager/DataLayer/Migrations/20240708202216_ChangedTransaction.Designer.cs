@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240708202216_ChangedTransaction")]
+    partial class ChangedTransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +51,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
 
                     b.HasData(
                         new
@@ -119,7 +122,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("WalletId");
 
-                    b.ToTable("Transactions", (string)null);
+                    b.ToTable("Transactions");
 
                     b.HasData(
                         new
@@ -849,7 +852,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("WalletId");
 
-                    b.ToTable("TransactionsType", (string)null);
+                    b.ToTable("TransactionsType");
 
                     b.HasData(
                         new
@@ -1112,7 +1115,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.ToTable("Wallets", (string)null);
+                    b.ToTable("Wallets");
 
                     b.HasData(
                         new

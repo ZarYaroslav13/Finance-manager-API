@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(AppDbContext context)
     {
-        _context = context;
+        _context = context ?? throw new ArgumentNullException();
     }
 
     public Repository<T> GetRepository<T>() where T : Entity

@@ -2,7 +2,7 @@
 
 public class TransactionType : Base.Entity
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
 
     public string? Description { get; set; }
 
@@ -10,5 +10,7 @@ public class TransactionType : Base.Entity
 
     public int WalletId { get; set; }
 
-    public Wallet Wallet { get; set; }
+    public Wallet Wallet { get; set; } = default!;
+
+    public List<Transaction> Transactions { get; set; }
 }

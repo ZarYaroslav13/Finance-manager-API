@@ -12,18 +12,9 @@ public class AppDbContext : DbContext
     public virtual DbSet<Transaction> Transactions { get; set; } = default!;
     public virtual DbSet<TransactionType> TransactionsType { get; set; } = default!;
 
-    protected readonly IConfiguration _configuration;
-
-    public AppDbContext(IConfiguration configuration)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-        _configuration = configuration;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder options)
-    {
-        base.OnConfiguring(options);
-
-        options.UseSqlServer(_configuration.GetConnectionString("MyDbConnection"));
+        
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
