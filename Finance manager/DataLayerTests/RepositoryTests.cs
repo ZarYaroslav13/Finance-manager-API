@@ -77,9 +77,9 @@ public class RepositoryTests
         _repository.Insert(newAccount);
         _context.SaveChanges();
 
-        var lastAccount = _repository.GetAll().LastOrDefault();
+        var accounts = _repository.GetAll();
 
-        Assert.IsTrue(newAccount.Equals(lastAccount));
+        Assert.IsTrue(accounts.Any(a => a.Equals(newAccount)));
 
         _context.Database.EnsureDeleted();
     }

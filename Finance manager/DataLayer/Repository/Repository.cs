@@ -15,12 +15,11 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
 
     public virtual IEnumerable<T> GetAll(
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "")
+            params string[] includeProperties)
     {
         IQueryable<T> query = _dbSet;
 
-        foreach (var includeProperty in includeProperties.Split
-            (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+        foreach (var includeProperty in includeProperties)
         {
             query = query.Include(includeProperty);
         }
@@ -38,6 +37,11 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
         _dbSet.Add(entity);
     }
 
+    public T GetById(int id)
+    {
+        return _dbSet.Find(id);
+    }
+
     public virtual void Update(T entity)
     {
         _dbSet.Update(entity);
@@ -46,10 +50,5 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
     public void Delete(T entity)
     {
         _dbSet.Remove(entity);
-    }
-
-    public T GetById(int id)
-    {
-        return _dbSet.Find(id);
     }
 }

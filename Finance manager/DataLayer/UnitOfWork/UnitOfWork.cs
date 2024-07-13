@@ -13,10 +13,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context ?? throw new ArgumentNullException();
     }
 
-    public Repository<T> GetRepository<T>() where T : Entity
-    {
-        return new Repository<T>(_context);
-    }
+    public IRepository<T> GetRepository<T>() where T : Entity => new Repository<T>(_context);
 
     public void SaveChanges()
     {
@@ -37,6 +34,4 @@ public class UnitOfWork : IUnitOfWork
         }
         this.disposed = true;
     }
-
-
 }

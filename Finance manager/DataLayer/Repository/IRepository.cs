@@ -6,13 +6,13 @@ public interface IRepository<T> where T : Entity
 {
     IEnumerable<T> GetAll(
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = "");
+            params string[] includeProperties);
 
     void Insert(T entity);
+
+    T GetById(int id);
 
     void Update(T entity);
 
     void Delete(T entity);
-
-    T GetById(int id);
 }
