@@ -32,9 +32,11 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
         return query.AsNoTracking().ToList();
     }
 
-    public virtual void Insert(T entity)
+    public T Insert(T entity)
     {
         _dbSet.Add(entity);
+
+        return entity;
     }
 
     public T GetById(int id)
@@ -42,9 +44,11 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
         return _dbSet.Find(id);
     }
 
-    public virtual void Update(T entity)
+    public T Update(T entity)
     {
         _dbSet.Update(entity);
+
+        return entity;
     }
 
     public void Delete(T entity)

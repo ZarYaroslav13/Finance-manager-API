@@ -3,12 +3,6 @@ using DataLayer.Models;
 using DataLayer.Repository;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayerTests;
 
@@ -21,13 +15,11 @@ public class RepositoryTests
 
     public RepositoryTests()
     {
-        var services = new ServiceCollection();
+        var options = new DbContextOptionsBuilder<AppDbContext>();
 
-        services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDbForRepository"));
+        options.UseInMemoryDatabase("TestDbForRepository");
 
-        _serviceProvider = services.BuildServiceProvider();
-
-        _context = _serviceProvider.GetRequiredService<AppDbContext>();
+        _context = new AppDbContext(options.Options);
 
         _repository = new(_context);
     }
@@ -45,21 +37,21 @@ public class RepositoryTests
         _context.AddRange(FillerBbData.Wallets);
         _context.SaveChanges();
 
-         var accounts = _repository.GetAll( includeProperties: nameof(Account.Wallets), 
-                                            orderBy: qa => qa.OrderBy(a => a.LastName))
-                                   .ToList();
+        var accounts = _repository.GetAll(includeProperties: nameof(Account.Wallets),
+                                           orderBy: qa => qa.OrderBy(a => a.LastName))
+                                  .ToList();
 
         var orderedAccounts = _repository.GetAll().
                                             OrderBy(a => a.LastName).
                                             ToList();
-        
-        Assert.IsNotNull(accounts);
-        Assert.IsNotNull(accounts.FirstOrDefault().Wallets);
 
-        for(var i = 0; i < accounts.Count; i++)
+
+        for (var i = 0; i < accounts.Count; i++)
         {
             Assert.AreEqual(accounts[i].Id, orderedAccounts[i].Id);
         }
+
+        Assert.IsNotNull(accounts.FirstOrDefault().Wallets);
 
         _context.Database.EnsureDeleted();
     }
@@ -67,11 +59,12 @@ public class RepositoryTests
     [TestMethod]
     public void Repository_Insert_Void()
     {
-        var newAccount = new Account() { 
-                                        LastName = "LastName",
-                                        FirstName = "FirstName", 
-                                        Email = "Email", 
-                                        Password = "Password"
+        var newAccount = new Account()
+        {
+            LastName = "LastName",
+            FirstName = "FirstName",
+            Email = "Email",
+            Password = "Password"
         };
 
         _repository.Insert(newAccount);
@@ -85,7 +78,7 @@ public class RepositoryTests
     }
 
     [TestMethod]
-    public void Repository_Update_Void() 
+    public void Repository_Update_Void()
     {
         var account = new Account()
         {

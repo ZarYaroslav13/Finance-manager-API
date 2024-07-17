@@ -12,7 +12,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
         var services = builder.Services;
         var configuration = builder.Configuration as IConfiguration;
 
-        services.AddDbContext<AppDbContext>(option => 
+        services.AddDbContext<AppDbContext>(option =>
             option.
                 UseSqlServer(
                     configuration.

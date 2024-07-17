@@ -1,11 +1,5 @@
 ﻿using DataLayer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayerTests;
 
@@ -17,13 +11,11 @@ public class AppDbContextTests
 
     public AppDbContextTests()
     {
-        var services = new ServiceCollection();
+        var options = new DbContextOptionsBuilder<AppDbContext>();
 
-        services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDbForContext"));
+        options.UseInMemoryDatabase("TestDbForContext");
 
-        _serviceProvider = services.BuildServiceProvider();
-
-        _context = _serviceProvider.GetRequiredService<AppDbContext>();
+        _context = new AppDbContext(options.Options);
     }
 
     [TestMethod]

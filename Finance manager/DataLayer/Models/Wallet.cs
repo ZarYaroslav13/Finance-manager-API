@@ -16,13 +16,13 @@ public class Wallet : Entity
 
     private List<Transaction> GetTransactions()
     {
-        List<Transaction> result = new();
         if (TransactionTypes == null)
-        {
             return null;
-        }
 
-        foreach (var transactionType in TransactionTypes) { 
+        List<Transaction> result = new();
+
+        foreach (var transactionType in TransactionTypes)
+        {
             result.AddRange(transactionType.Transactions);
         }
 

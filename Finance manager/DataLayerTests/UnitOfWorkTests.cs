@@ -2,9 +2,7 @@ using DataLayer;
 using DataLayer.Models;
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
-using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DataLayerTests;
 
@@ -17,13 +15,11 @@ public class UnitOfWorkTests
 
     public UnitOfWorkTests()
     {
-        var services = new ServiceCollection();
+        var options = new DbContextOptionsBuilder<AppDbContext>();
 
-        services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("TestDbForUnitOfWork"));
+        options.UseInMemoryDatabase("TestDbForUnitOfWork");
 
-        _serviceProvider = services.BuildServiceProvider();
-
-        _context = _serviceProvider.GetRequiredService<AppDbContext>();
+        _context = new AppDbContext(options.Options);
 
         _unitOfWork = new UnitOfWork(_context);
     }
@@ -35,7 +31,7 @@ public class UnitOfWorkTests
     }
 
     [TestMethod]
-    public void UnitOfWork_GetRepository_Repository() 
+    public void UnitOfWork_GetRepository_Repository()
     {
         _context.AddRange(FillerBbData.Accounts);
         _context.SaveChanges();
@@ -57,7 +53,7 @@ public class UnitOfWorkTests
         _context.AddRange(expected);
         _unitOfWork.SaveChanges();
 
-        var result = _unitOfWork.GetRepository<Account>().GetAll(includeProperties:"Wallets").ToList();
+        var result = _unitOfWork.GetRepository<Account>().GetAll(includeProperties: "Wallets").ToList();
 
         Assert.IsTrue(Enumerable.SequenceEqual(expected, result));
 
