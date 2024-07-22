@@ -2,7 +2,7 @@
 
 namespace DataLayer.Models;
 
-public class Transaction : Entity
+public class FinanceOperation : Entity
 {
     public uint Amount { get; set; }
 
@@ -10,5 +10,5 @@ public class Transaction : Entity
 
     public int TypeId { get; set; }
 
-    public TransactionType Type { get; set; } = default!;
+    public FinanceOperationType Type { get; set; } = default!;
 }

@@ -1,7 +1,9 @@
 ﻿namespace DomainLayer.Models;
 
-public class Wallet : Base.Entity
+public class Wallet : Base.Model
 {
+    public string Name { get; set; } = String.Empty;
+
     public int Balance { get; set; }
 
     public List<FinanceOperationType> OperationTypes { get; set; } = default!;

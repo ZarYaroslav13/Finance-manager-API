@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataLayer.EntitiesConfiguration;
 
-public class TransactionTypeConfiguration : IEntityTypeConfiguration<TransactionType>
+public class FinanceOperationTypeConfiguration : IEntityTypeConfiguration<FinanceOperationType>
 {
-    public void Configure(EntityTypeBuilder<TransactionType> builder)
+    public void Configure(EntityTypeBuilder<FinanceOperationType> builder)
     {
         builder
             .HasData(FillerBbData.TransactionTypes);
 
         builder
             .HasOne(tt => tt.Wallet)
-            .WithMany(w => w.TransactionTypes)
+            .WithMany(w => w.FinanceOperationTypes)
             .HasForeignKey(tt => tt.WalletId);
     }
 }

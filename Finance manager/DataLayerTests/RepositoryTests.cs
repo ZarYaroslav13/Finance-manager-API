@@ -57,6 +57,24 @@ public class RepositoryTests
     }
 
     [TestMethod]
+    public void Repository_GetAllWithFilter_ListAccounts()
+    {
+        Func<Account, bool> predicate = (ac) => ac.Id > 3;
+
+        _context.AddRange(FillerBbData.Accounts);
+        _context.AddRange(FillerBbData.Wallets);
+        _context.SaveChanges();
+
+        var filteredGettedAccounts = _repository.GetAll(filter: a => a.Id > 3).ToList();
+
+        var filteredAccounts = FillerBbData.Accounts.Where(predicate).ToList();
+
+        Assert.IsTrue(Enumerable.SequenceEqual(filteredGettedAccounts, filteredAccounts));
+
+        _context.Database.EnsureDeleted();
+    }
+
+    [TestMethod]
     public void Repository_Insert_Void()
     {
         var newAccount = new Account()

@@ -1,6 +1,6 @@
 ﻿namespace DomainLayer.Models;
 
-public class Account : Base.Entity
+public class Account : Base.Model
 {
     public string LastName { get; set; } = String.Empty;
 
@@ -10,5 +10,5 @@ public class Account : Base.Entity
 
     public string Password { get; set; } = String.Empty;
 
-    public List<Wallet> Wallets { get; set; } = default!;
+    public List<Wallet> Wallets { get; set; } = new();
 }

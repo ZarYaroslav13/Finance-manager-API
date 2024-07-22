@@ -5,7 +5,7 @@ using DataLayer.UnitOfWork;
 namespace DomainLayer.Services;
 
 public class CRUDService<T_Domain, T_DB> : ICRUDService<T_Domain, T_DB>
-    where T_Domain : Models.Base.Entity
+    where T_Domain : Models.Base.Model
     where T_DB : DataLayer.Models.Base.Entity
 {
     protected readonly IMapper _mapper;

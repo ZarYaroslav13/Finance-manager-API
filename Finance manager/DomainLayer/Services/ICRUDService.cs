@@ -1,7 +1,7 @@
 ﻿namespace DomainLayer.Services;
 
 public interface ICRUDService<T_Domain, T_DB>
-    where T_Domain : Models.Base.Entity
+    where T_Domain : Models.Base.Model
     where T_DB : DataLayer.Models.Base.Entity
 {
     List<T_Domain> GetAll();

@@ -1,6 +1,6 @@
 ﻿namespace DomainLayer.Models;
 
-public abstract class FinanceOperation : Base.Entity
+public abstract class FinanceOperation : Base.Model
 {
     public int Amount { get; set; }
 

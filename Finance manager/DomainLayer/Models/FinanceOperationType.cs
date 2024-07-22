@@ -1,6 +1,6 @@
 ﻿namespace DomainLayer.Models;
 
-public class FinanceOperationType : Base.Entity
+public class FinanceOperationType : Base.Model
 {
     public string Caption { get; set; } = String.Empty;
 

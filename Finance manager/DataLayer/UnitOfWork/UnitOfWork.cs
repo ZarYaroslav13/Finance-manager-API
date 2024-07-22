@@ -6,7 +6,6 @@ namespace DataLayer.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;
-    private bool disposed;
 
     public UnitOfWork(AppDbContext context)
     {
@@ -19,19 +18,4 @@ public class UnitOfWork : IUnitOfWork
     {
         _context.SaveChanges();
     }
-
-    //public void Dispose()
-    //{
-    //    Dispose(true);
-    //    GC.SuppressFinalize(this);
-    //}
-
-    //protected virtual void Dispose(bool disposing)
-    //{
-    //    if (!this.disposed && disposing)
-    //    {
-    //        _context.Dispose();
-    //    }
-    //    this.disposed = true;
-    //}
 }

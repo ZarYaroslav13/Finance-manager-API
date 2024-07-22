@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataLayer.EntitiesConfiguration;
 
-public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
+public class FinanceOperationConfiguration : IEntityTypeConfiguration<FinanceOperation>
 {
-    public void Configure(EntityTypeBuilder<Transaction> builder)
+    public void Configure(EntityTypeBuilder<FinanceOperation> builder)
     {
         builder.HasData(FillerBbData.Transactions);
 

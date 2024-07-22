@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240719161102_RenamedFinanceOperationAndFinanceOperationTypeTables")]
+    partial class RenamedFinanceOperationAndFinanceOperationTypeTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1103,10 +1106,6 @@ namespace DataLayer.Migrations
                     b.Property<int>("Balance")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
@@ -1118,50 +1117,43 @@ namespace DataLayer.Migrations
                         {
                             Id = 1,
                             AccountId = 1,
-                            Balance = 1000,
-                            Name = "Primary Wallet"
+                            Balance = 1000
                         },
                         new
                         {
                             Id = 2,
                             AccountId = 1,
-                            Balance = 1500,
-                            Name = "Savings Wallet"
+                            Balance = 1500
                         },
                         new
                         {
                             Id = 3,
                             AccountId = 2,
-                            Balance = 2000,
-                            Name = "Investment Wallet"
+                            Balance = 2000
                         },
                         new
                         {
                             Id = 4,
                             AccountId = 5,
-                            Balance = 2500,
-                            Name = "Vacation Fund"
+                            Balance = 2500
                         },
                         new
                         {
                             Id = 5,
                             AccountId = 3,
-                            Balance = 3000,
-                            Name = "Emergency Fund"
+                            Balance = 3000
                         },
                         new
                         {
                             Id = 6,
                             AccountId = 4,
-                            Balance = 3500,
-                            Name = "Retirement Fund"
+                            Balance = 3500
                         },
                         new
                         {
                             Id = 7,
                             AccountId = 5,
-                            Balance = 4000,
-                            Name = "Education Fund"
+                            Balance = 4000
                         });
                 });
 

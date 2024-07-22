@@ -23,8 +23,8 @@ public class AppDbContextTests
     {
         Assert.IsNotNull(_context.Accounts);
         Assert.IsNotNull(_context.Wallets);
-        Assert.IsNotNull(_context.TransactionsType);
-        Assert.IsNotNull(_context.Transactions);
+        Assert.IsNotNull(_context.FinanceOperationTypes);
+        Assert.IsNotNull(_context.FinanceOperations);
     }
 
     [TestMethod]
@@ -32,24 +32,24 @@ public class AppDbContextTests
     {
         _context.Accounts.AddRange(FillerBbData.Accounts);
         _context.Wallets.AddRange(FillerBbData.Wallets);
-        _context.TransactionsType.AddRange(FillerBbData.TransactionTypes);
-        _context.Transactions.AddRange(FillerBbData.Transactions);
+        _context.FinanceOperationTypes.AddRange(FillerBbData.TransactionTypes);
+        _context.FinanceOperations.AddRange(FillerBbData.Transactions);
         _context.SaveChanges();
 
         var accounts = _context.Accounts.
                             AsQueryable().
                             Include(a => a.Wallets).
-                            ThenInclude(w => w.TransactionTypes).
+                            ThenInclude(w => w.FinanceOperationTypes).
                             ThenInclude(tt => tt.Transactions).
                             AsNoTracking().
                             ToList();
         var account = accounts.FirstOrDefault();
         var wallet = account.Wallets.FirstOrDefault();
-        var t = wallet.Transactions;
+        var t = wallet.GetFinanceOperations();
 
         Assert.IsNotNull(wallet);
-        Assert.IsNotNull(wallet.Transactions);
-        Assert.IsNotNull(wallet.TransactionTypes);
+        Assert.IsNotNull(wallet.GetFinanceOperations());
+        Assert.IsNotNull(wallet.FinanceOperationTypes);
     }
 
 }

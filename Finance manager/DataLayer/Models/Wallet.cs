@@ -4,24 +4,24 @@ namespace DataLayer.Models;
 
 public class Wallet : Entity
 {
+    public string Name {get; set;} = string.Empty;
+
     public int Balance { get; set; }
 
-    public List<TransactionType>? TransactionTypes { get; set; }
-
-    public List<Transaction>? Transactions => GetTransactions();
+    public List<FinanceOperationType>? FinanceOperationTypes { get; set; }
 
     public int AccountId { get; set; }
 
     public Account Account { get; set; } = default!;
 
-    private List<Transaction> GetTransactions()
+    public List<FinanceOperation> GetFinanceOperations()
     {
-        if (TransactionTypes == null)
+        if (FinanceOperationTypes == null)
             return null;
 
-        List<Transaction> result = new();
+        List<FinanceOperation> result = new();
 
-        foreach (var transactionType in TransactionTypes)
+        foreach (var transactionType in FinanceOperationTypes)
         {
             result.AddRange(transactionType.Transactions);
         }

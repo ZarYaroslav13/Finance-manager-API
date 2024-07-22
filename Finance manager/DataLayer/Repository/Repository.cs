@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataLayer.Repository;
 
@@ -14,14 +15,21 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
     }
 
     public virtual IEnumerable<T> GetAll(
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            params string[] includeProperties)
+            Func<IQueryable<T>, 
+                IOrderedQueryable<T>> orderBy = null,
+                Expression<Func<T, bool>> filter = null,
+                params string[] includeProperties)
     {
         IQueryable<T> query = _dbSet;
 
         foreach (var includeProperty in includeProperties)
         {
             query = query.Include(includeProperty);
+        }
+
+        if(filter != null)
+        {
+            query = query.Where(filter);
         }
 
         if (orderBy != null)

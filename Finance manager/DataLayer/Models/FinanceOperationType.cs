@@ -1,6 +1,6 @@
 ﻿namespace DataLayer.Models;
 
-public class TransactionType : Base.Entity
+public class FinanceOperationType : Base.Entity
 {
     public string Name { get; set; } = "";
 
@@ -12,5 +12,5 @@ public class TransactionType : Base.Entity
 
     public Wallet Wallet { get; set; } = default!;
 
-    public List<Transaction> Transactions { get; set; }
+    public List<FinanceOperation> Transactions { get; set; }
 }
