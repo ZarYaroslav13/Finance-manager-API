@@ -6,11 +6,21 @@ public abstract class FinanceOperation : Base.Model
 
     public DateTime Date { get; set; }
 
-    public FinanceOperationType Type { get; set; } = default!;
+    public FinanceOperationType Type { get; private set; } = new();
+
+    public FinanceOperation(FinanceOperationType type)
+    {
+        ChangeFinanceOperationType(type);
+    }
+
+    public void ChangeFinanceOperationType(FinanceOperationType type)
+    {
+        Type = type ?? throw new ArgumentNullException(nameof(type));
+    }
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(FinanceOperation))
+        if (obj == null || obj.GetType().BaseType != typeof(FinanceOperation))
             return false;
 
         var financeOperation = (FinanceOperation)obj;

@@ -16,16 +16,18 @@ public class FinanceReport : Model
     {
         get
         {
-            return Operations;
+            return _operations;
         }
         set
         {
-            Operations = value;
+            _operations = value;
 
             CalculateTotalIncome();
             CalculateTotalExpense();
         }
     }
+
+    private List<FinanceOperation> _operations { get; set; } = new();
 
     public FinanceReport(int walletId, string walletName, Period period)
     {
@@ -38,7 +40,7 @@ public class FinanceReport : Model
 
     private int CalculateTotalIncome()
     {
-        TotalIncome = Operations
+        TotalIncome = _operations
             .OfType<Income>()
             .Select(i => i.Amount)
             .Sum();
@@ -48,7 +50,7 @@ public class FinanceReport : Model
 
     private int CalculateTotalExpense()
     {
-        TotalExpense = Operations
+        TotalExpense = _operations
             .OfType<Expense>()
             .Select(e => e.Amount)
             .Sum();
