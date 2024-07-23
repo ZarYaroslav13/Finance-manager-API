@@ -1,5 +1,4 @@
 ﻿using DataLayer.Models.Base;
-using Microsoft.Identity.Client;
 
 namespace DataLayer.Models;
 

@@ -69,7 +69,7 @@ public class RepositoryTests
 
         var filteredAccounts = FillerBbData.Accounts.Where(predicate).ToList();
 
-        foreach(var account in filteredAccounts)
+        foreach (var account in filteredAccounts)
         {
             account.Wallets = null;
         }

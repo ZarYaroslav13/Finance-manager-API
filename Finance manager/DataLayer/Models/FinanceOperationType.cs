@@ -1,6 +1,4 @@
-﻿using Microsoft.Identity.Client;
-
-namespace DataLayer.Models;
+﻿namespace DataLayer.Models;
 
 public class FinanceOperationType : Base.Entity
 {

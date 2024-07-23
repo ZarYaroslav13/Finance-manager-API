@@ -22,10 +22,11 @@ public class Wallet : Base.Model
         Wallet wallet = (Wallet)obj;
 
         return Id == wallet.Id
-            && Balance == wallet.Balance
-            && AccountId == wallet.AccountId
-            && Enumerable.SequenceEqual(FinanceOperationTypes, wallet.FinanceOperationTypes)
-            && Enumerable.SequenceEqual(Incomes, wallet.Incomes)
-            && Enumerable.SequenceEqual(Expenses, wallet.Expenses);
+                && Name == wallet.Name
+                && Balance == wallet.Balance
+                && AccountId == wallet.AccountId
+                && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
+                && AreEqualLists(Incomes, wallet.Incomes)
+                && AreEqualLists(Expenses, wallet.Expenses);
     }
 }

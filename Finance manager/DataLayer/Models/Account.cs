@@ -1,6 +1,4 @@
-﻿using DataLayer.Models.Base;
-
-namespace DataLayer.Models;
+﻿namespace DataLayer.Models;
 
 public class Account : Base.Entity
 {

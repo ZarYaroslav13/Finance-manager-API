@@ -1,10 +1,5 @@
 ﻿using DataLayer;
 using DataLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataLayerTests.TestData;
 
@@ -20,23 +15,23 @@ public class FinanceOperationTypeDataProvider
         },
         new object[]
         {
-            new FinanceOperationType(){ 
-                Id = 1, 
-                Description = "Description", 
-                EntryType = EntryType.Exponse, 
+            new FinanceOperationType(){
+                Id = 1,
+                Description = "Description",
+                EntryType = EntryType.Exponse,
                 FinanceOperations = FillerBbData.FinanceOperations
                     .Where(fo => fo.TypeId == 1)
-                    .ToList(), 
-                Name = "Name", 
+                    .ToList(),
+                Name = "Name",
                 WalletId = 2},
-            new FinanceOperationType(){ 
-                Id = 1, 
-                Description = "Description", 
-                EntryType = EntryType.Exponse, 
+            new FinanceOperationType(){
+                Id = 1,
+                Description = "Description",
+                EntryType = EntryType.Exponse,
                 FinanceOperations = FillerBbData.FinanceOperations
                     .Where(fo => fo.TypeId == 1)
-                    .ToList(), 
-                Name = "Name", 
+                    .ToList(),
+                Name = "Name",
                 WalletId = 2},
             true
         },

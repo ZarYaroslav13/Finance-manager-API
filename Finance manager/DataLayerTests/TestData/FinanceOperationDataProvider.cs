@@ -1,10 +1,5 @@
-﻿using DataLayer.Models;
-using DataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataLayer;
+using DataLayer.Models;
 
 namespace DataLayerTests.TestData;
 
@@ -14,12 +9,12 @@ public class FinanceOperationDataProvider
     {
         new object[]
         {
-            new FinanceOperation(){ 
-                Id = 1, 
-                Amount = 1000, 
-                Date =  DateTime.MinValue, 
-                TypeId = 3, 
-                Type = randomFinanceOperationType 
+            new FinanceOperation(){
+                Id = 1,
+                Amount = 1000,
+                Date =  DateTime.MinValue,
+                TypeId = 3,
+                Type = randomFinanceOperationType
             },
             new FinanceOperation(){
                 Id = 1,

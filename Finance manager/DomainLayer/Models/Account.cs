@@ -19,11 +19,11 @@ public class Account : Base.Model
 
         Account account = (Account)obj;
 
-        return Id == account.Id &&
-                FirstName == account.FirstName &&
-                LastName == account.LastName &&
-                Email == account.Email &&
-                Password == account.Password
-                && Enumerable.SequenceEqual(Wallets, account.Wallets);
+        return Id == account.Id
+               && FirstName == account.FirstName
+               && LastName == account.LastName
+               && Email == account.Email
+               && Password == account.Password
+               && AreEqualLists(Wallets, account.Wallets);
     }
 }

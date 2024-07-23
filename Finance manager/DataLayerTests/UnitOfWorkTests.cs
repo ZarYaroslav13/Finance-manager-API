@@ -48,7 +48,7 @@ public class UnitOfWorkTests
     [TestMethod]
     public void UnitOfWork_SaveChanges_Void()
     {
-        var expected = FillerBbData.Accounts.GetRange(0,2);
+        var expected = FillerBbData.Accounts.GetRange(0, 2);
 
         expected.ForEach(a => a.Wallets = null);
 
