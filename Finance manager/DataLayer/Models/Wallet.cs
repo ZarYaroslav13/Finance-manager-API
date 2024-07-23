@@ -47,4 +47,10 @@ public class Wallet : Entity
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
                 && AreEqualLists(GetFinanceOperations(), wallet.GetFinanceOperations());
     }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Name, Balance, FinanceOperationTypes, AccountId, Account);
+    }
 }
+

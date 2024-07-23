@@ -38,8 +38,6 @@ public class DomainDbMappingProfileTests
 
         var mappedDbAccount = _mapper.Map<DataLayer.Models.Account>(domainAccount);
 
-        Assert.That.Compare(mappedDbAccount, domainAccount);
-
         Assert.AreEqual(dbAccount, mappedDbAccount);
     }
 
@@ -59,8 +57,6 @@ public class DomainDbMappingProfileTests
 
         var mappedDbWallet = _mapper.Map<DataLayer.Models.Wallet>(domainWallet);
 
-        Assert.That.Compare(mappedDbWallet, domainWallet);
-
         Assert.AreEqual(dbWallet, mappedDbWallet);
     }
 
@@ -75,11 +71,7 @@ public class DomainDbMappingProfileTests
 
         var mappedDbFinanceOperationType = _mapper.Map<DataLayer.Models.FinanceOperationType>(domainFinanceOperationType);
 
-        Assert.That.Compare(mappedDbFinanceOperationType, domainFinanceOperationType);
-
-        Assert.IsTrue(dbFinanceOperationType.Equals(mappedDbFinanceOperationType));
-
-        //Assert.AreEqual(dbFinanceOperationType, mappedDbFinanceOperationType);
+        Assert.AreEqual(dbFinanceOperationType, mappedDbFinanceOperationType);
     }
 
     [TestMethod]
@@ -87,8 +79,6 @@ public class DomainDbMappingProfileTests
     {
         var dbFinanceOperation = FillerBbData.FinanceOperations.FirstOrDefault();
         var typeOfOperation = FillerBbData.FinanceOperationTypes.FirstOrDefault(t => t.Id == dbFinanceOperation.TypeId);
-
-        Assert.ThrowsException<ArgumentNullException>(() => _mapper.Map<FinanceOperation>(dbFinanceOperation));
 
         dbFinanceOperation.Type = typeOfOperation;
 
@@ -98,9 +88,15 @@ public class DomainDbMappingProfileTests
 
         var mappedDbFinanceOperation = _mapper.Map<DataLayer.Models.FinanceOperation>(domainFinanceOperation);
 
-        Assert.That.Compare(mappedDbFinanceOperation, domainFinanceOperation);
-
         Assert.AreEqual(dbFinanceOperation, mappedDbFinanceOperation);
     }
 
+    [TestMethod]
+    public void DomainDbMappingProfileTests_Map_Exception()
+    {
+        var dbFinanceOperation = FillerBbData.FinanceOperations.FirstOrDefault();
+        var typeOfOperation = FillerBbData.FinanceOperationTypes.FirstOrDefault(t => t.Id == dbFinanceOperation.TypeId);
+
+        Assert.ThrowsException<ArgumentNullException>(() => _mapper.Map<FinanceOperation>(dbFinanceOperation));
+    }
 }

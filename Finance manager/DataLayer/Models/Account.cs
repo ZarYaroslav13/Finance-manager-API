@@ -28,4 +28,9 @@ public class Account : Base.Entity
                 && Password == account.Password
                 && AreEqualLists(Wallets, account.Wallets);
     }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, LastName, FirstName, Email, Password, Wallets);
+    }
 }

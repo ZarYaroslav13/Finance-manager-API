@@ -1,4 +1,5 @@
 ﻿using DataLayer.Models.Base;
+using Microsoft.Identity.Client;
 
 namespace DataLayer.Models;
 
@@ -24,5 +25,10 @@ public class FinanceOperation : Entity
                 && Date == financeOperation.Date
                 && TypeId == financeOperation.TypeId
                 && Type == financeOperation.Type;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Amount, Date, TypeId, Type);
     }
 }

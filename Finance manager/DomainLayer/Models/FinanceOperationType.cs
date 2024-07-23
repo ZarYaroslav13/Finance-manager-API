@@ -28,4 +28,9 @@ public class FinanceOperationType : Base.Model
             && WalletId == financeOperationType.WalletId
             && WalletName == financeOperationType.WalletName;
     }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Name, Description, EntryType, WalletId, WalletName);
+    }
 }

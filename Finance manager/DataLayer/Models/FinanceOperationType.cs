@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Models;
+﻿using Microsoft.Identity.Client;
+
+namespace DataLayer.Models;
 
 public class FinanceOperationType : Base.Entity
 {
@@ -27,5 +29,10 @@ public class FinanceOperationType : Base.Entity
                 && EntryType == financeOperationType.EntryType
                 && WalletId == financeOperationType.WalletId
                 && AreEqualLists(FinanceOperations, financeOperationType.FinanceOperations);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Name, Description, EntryType, WalletId, Wallet, FinanceOperations);
     }
 }
