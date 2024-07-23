@@ -8,7 +8,7 @@ public class Wallet : Entity
 
     public int Balance { get; set; }
 
-    public List<FinanceOperationType>? FinanceOperationTypes { get; set; }
+    public List<FinanceOperationType>? FinanceOperationTypes { get; set; } = new();
 
     public int AccountId { get; set; }
 

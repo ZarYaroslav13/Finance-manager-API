@@ -15,7 +15,9 @@ public class DomainDbMappingProfile : Profile
             .ForMember(dest => dest.Expenses, opt => opt.MapFrom(src => src.GetFinanceOperations()
                 .Where(fo => fo.Type.EntryType == DataLayer.Models.EntryType.Exponse)));
 
-        CreateMap<DataLayer.Models.FinanceOperationType, FinanceOperationType>().ReverseMap();
+        CreateMap<DataLayer.Models.FinanceOperationType, FinanceOperationType>()
+            .ForMember(dest => dest.WalletName, opt => opt.MapFrom(src => src.Wallet.Name))
+            .ReverseMap();
 
         /////????????????????????//////
         CreateMap<DataLayer.Models.FinanceOperation, FinanceOperation>();

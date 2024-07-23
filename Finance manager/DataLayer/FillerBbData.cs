@@ -9,7 +9,7 @@ public class FillerBbData
 
     public static List<Wallet> Wallets { get { return _wallets; } }
 
-    public static List<FinanceOperationType> TransactionTypes { get { return _transactionTypes; } }
+    public static List<FinanceOperationType> FinanceOperationTypes { get { return _transactionTypes; } }
 
     public static List<FinanceOperation> Transactions { get { return _transactions; } }
 

@@ -6,7 +6,7 @@ public class Wallet : Base.Model
 
     public int Balance { get; set; }
 
-    public List<FinanceOperationType> OperationTypes { get; set; } = default!;
+    public List<FinanceOperationType> OperationTypes { get; set; } = new();
 
     public List<Income> Incomes { get; set; } = default!;
 

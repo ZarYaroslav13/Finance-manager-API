@@ -11,4 +11,6 @@ public class FinanceOperationType : Base.Model
     public EntryType EntryType { get; set; }
 
     public int WalletId { get; set; }
+
+    public string WalletName { get; set; } = String.Empty;
 }
