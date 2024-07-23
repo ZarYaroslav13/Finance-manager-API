@@ -31,4 +31,20 @@ public class Wallet : Entity
 
         return result;
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Wallet))
+            return false;
+
+        var wallet = (Wallet)obj;
+
+        return Id == wallet.Id
+                && Name == wallet.Name
+                && Balance == wallet.Balance
+                && AccountId == wallet.AccountId
+                && Account == wallet.Account
+                && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
+                && AreEqualLists(GetFinanceOperations(), wallet.GetFinanceOperations());
+    }
 }

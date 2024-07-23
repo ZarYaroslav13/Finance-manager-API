@@ -23,6 +23,7 @@ public class Account : Base.Model
                 FirstName == account.FirstName &&
                 LastName == account.LastName &&
                 Email == account.Email &&
-                Password == account.Password;
+                Password == account.Password
+                && Enumerable.SequenceEqual(Wallets, account.Wallets);
     }
 }

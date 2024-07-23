@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Models;
+﻿using DataLayer.Models.Base;
+
+namespace DataLayer.Models;
 
 public class Account : Base.Entity
 {
@@ -17,12 +19,13 @@ public class Account : Base.Entity
         if (obj == null || obj.GetType() != typeof(Account))
             return false;
 
-        Account account = (Account)obj;
+        var account = (Account)obj;
 
-        return Id == account.Id &&
-                FirstName == account.FirstName &&
-                LastName == account.LastName &&
-                Email == account.Email &&
-                Password == account.Password;
+        return Id == account.Id
+                && FirstName == account.FirstName
+                && LastName == account.LastName
+                && Email == account.Email
+                && Password == account.Password
+                && AreEqualLists(Wallets, account.Wallets);
     }
 }

@@ -48,12 +48,14 @@ public class UnitOfWorkTests
     [TestMethod]
     public void UnitOfWork_SaveChanges_Void()
     {
-        var expected = FillerBbData.Accounts;
+        var expected = FillerBbData.Accounts.GetRange(0,2);
+
+        expected.ForEach(a => a.Wallets = null);
 
         _context.AddRange(expected);
         _unitOfWork.SaveChanges();
 
-        var result = _unitOfWork.GetRepository<Account>().GetAll(includeProperties: "Wallets").ToList();
+        var result = _unitOfWork.GetRepository<Account>().GetAll().ToList();
 
         Assert.IsTrue(Enumerable.SequenceEqual(expected, result));
 

@@ -20,7 +20,7 @@ public class DomainDbMappingProfileTests
     }
 
     [TestMethod]
-    public void DomainDbMappingProfileTests_MapDbAccount_DomainAccount()
+    public void DomainDbMappingProfileTests_Map_AccountModels()
     {
         var dbAccount = new DataLayer.Models.Account()
         {
@@ -31,13 +31,20 @@ public class DomainDbMappingProfileTests
             Password = "password",
             Wallets = FillerBbData.Wallets.Where(w => w.AccountId == 2).ToList()
         };
+
         Account domainAccount = _mapper.Map<Account>(dbAccount);
 
         Assert.That.Compare(dbAccount, domainAccount);
+
+        var mappedDbAccount = _mapper.Map<DataLayer.Models.Account>(domainAccount);
+
+        Assert.That.Compare(mappedDbAccount, domainAccount);
+
+        Assert.AreEqual(dbAccount, mappedDbAccount);
     }
 
     [TestMethod]
-    public void DomainDbMappingProfileTests_MapDbWallet_DomainWallet()
+    public void DomainDbMappingProfileTests_Map_WalletModels()
     {
         var dbWallet = FillerBbData.Wallets.FirstOrDefault();
 
@@ -49,20 +56,34 @@ public class DomainDbMappingProfileTests
         Wallet domainWallet = _mapper.Map<Wallet>(dbWallet);
 
         Assert.That.Compare(dbWallet, domainWallet);
+
+        var mappedDbWallet = _mapper.Map<DataLayer.Models.Wallet>(domainWallet);
+
+        Assert.That.Compare(mappedDbWallet, domainWallet);
+
+        Assert.AreEqual(dbWallet, mappedDbWallet);
     }
 
     [TestMethod]
-    public void DomainDbMappingProfileTests_MapDbFinanceOperationType_DomainFinanceOperationType()
+    public void DomainDbMappingProfileTests_Map_FinanceOperationTypeModels()
     {
         var dbFinanceOperationType = FillerBbData.FinanceOperationTypes.FirstOrDefault();
 
-        FinanceOperationType domainFinanceOperationType = _mapper.Map<FinanceOperationType>(dbFinanceOperationType);
+        var domainFinanceOperationType = _mapper.Map<FinanceOperationType>(dbFinanceOperationType);
 
         Assert.That.Compare(dbFinanceOperationType, domainFinanceOperationType);
+
+        var mappedDbFinanceOperationType = _mapper.Map<DataLayer.Models.FinanceOperationType>(domainFinanceOperationType);
+
+        Assert.That.Compare(mappedDbFinanceOperationType, domainFinanceOperationType);
+
+        Assert.IsTrue(dbFinanceOperationType.Equals(mappedDbFinanceOperationType));
+
+        //Assert.AreEqual(dbFinanceOperationType, mappedDbFinanceOperationType);
     }
 
     [TestMethod]
-    public void DomainDbMappingProfileTests_MapDbFinanceOperation_DomainFinanceOperation()
+    public void DomainDbMappingProfileTests_Map_FinanceOperationModels()
     {
         var dbFinanceOperation = FillerBbData.FinanceOperations.FirstOrDefault();
         var typeOfOperation = FillerBbData.FinanceOperationTypes.FirstOrDefault(t => t.Id == dbFinanceOperation.TypeId);
@@ -71,10 +92,15 @@ public class DomainDbMappingProfileTests
 
         dbFinanceOperation.Type = typeOfOperation;
 
-        FinanceOperation domainFinanceOperationType = _mapper.Map<FinanceOperation>(dbFinanceOperation);
+        var domainFinanceOperation = _mapper.Map<FinanceOperation>(dbFinanceOperation);
 
-        Assert.That.Compare(dbFinanceOperation, domainFinanceOperationType);
+        Assert.That.Compare(dbFinanceOperation, domainFinanceOperation);
+
+        var mappedDbFinanceOperation = _mapper.Map<DataLayer.Models.FinanceOperation>(domainFinanceOperation);
+
+        Assert.That.Compare(mappedDbFinanceOperation, domainFinanceOperation);
+
+        Assert.AreEqual(dbFinanceOperation, mappedDbFinanceOperation);
     }
-
 
 }

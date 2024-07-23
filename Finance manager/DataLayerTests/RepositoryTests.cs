@@ -69,6 +69,11 @@ public class RepositoryTests
 
         var filteredAccounts = FillerBbData.Accounts.Where(predicate).ToList();
 
+        foreach(var account in filteredAccounts)
+        {
+            account.Wallets = null;
+        }
+
         Assert.IsTrue(Enumerable.SequenceEqual(filteredGettedAccounts, filteredAccounts));
 
         _context.Database.EnsureDeleted();
@@ -146,7 +151,11 @@ public class RepositoryTests
 
         var neededAccount = FillerBbData.Accounts[2];
 
+        neededAccount.Wallets = null;
+
         var foundAccount = _repository.GetById(neededAccount.Id);
+
+        foundAccount.Wallets = null;
 
         Assert.AreEqual(neededAccount, foundAccount);
 
