@@ -11,4 +11,6 @@ public class Wallet : Base.Model
     public List<Income> Incomes { get; set; } = default!;
 
     public List<Expense> Expenses { get; set; } = default!;
+
+    public int AccountId { get; set; }
 }

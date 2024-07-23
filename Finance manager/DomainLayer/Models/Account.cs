@@ -11,4 +11,18 @@ public class Account : Base.Model
     public string Password { get; set; } = String.Empty;
 
     public List<Wallet> Wallets { get; set; } = new();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(Account))
+            return false;
+
+        Account account = (Account)obj;
+
+        return Id == account.Id &&
+                FirstName == account.FirstName &&
+                LastName == account.LastName &&
+                Email == account.Email &&
+                Password == account.Password;
+    }
 }

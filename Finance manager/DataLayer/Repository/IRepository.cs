@@ -6,7 +6,7 @@ namespace DataLayer.Repository;
 public interface IRepository<T> where T : Entity
 {
     IEnumerable<T> GetAll(
-            Func<IQueryable<T>, 
+            Func<IQueryable<T>,
                 IOrderedQueryable<T>> orderBy = null,
                 Expression<Func<T, bool>> filter = null,
                 params string[] includeProperties);

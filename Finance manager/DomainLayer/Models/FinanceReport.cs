@@ -10,7 +10,7 @@ public class FinanceReport : Model
 
     public int TotalExpense { get; private set; }
 
-    public List<FinanceOperation> Operations 
+    public List<FinanceOperation> Operations
     {
         get
         {
@@ -22,7 +22,7 @@ public class FinanceReport : Model
 
             CalculateTotalIncome();
             CalculateTotalExpense();
-        } 
+        }
     }
 
     public Period Period { get; set; }

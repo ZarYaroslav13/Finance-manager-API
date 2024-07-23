@@ -15,7 +15,7 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
     }
 
     public virtual IEnumerable<T> GetAll(
-            Func<IQueryable<T>, 
+            Func<IQueryable<T>,
                 IOrderedQueryable<T>> orderBy = null,
                 Expression<Func<T, bool>> filter = null,
                 params string[] includeProperties)
@@ -27,7 +27,7 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
             query = query.Include(includeProperty);
         }
 
-        if(filter != null)
+        if (filter != null)
         {
             query = query.Where(filter);
         }

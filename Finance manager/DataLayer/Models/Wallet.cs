@@ -4,7 +4,7 @@ namespace DataLayer.Models;
 
 public class Wallet : Entity
 {
-    public string Name {get; set;} = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
     public int Balance { get; set; }
 

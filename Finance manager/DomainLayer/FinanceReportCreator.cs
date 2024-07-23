@@ -2,11 +2,6 @@
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayer;
 
@@ -31,7 +26,7 @@ public class FinanceReportCreator
         ArgumentNullException.ThrowIfNull(nameof(startDate));
         ArgumentNullException.ThrowIfNull(nameof(endDate));
 
-        Period period = new() { StartDate = startDate, EndDate = endDate};
+        Period period = new() { StartDate = startDate, EndDate = endDate };
 
         var report = new FinanceReport() { Wallet = wallet, Period = period };
 
