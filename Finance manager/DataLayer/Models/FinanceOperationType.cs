@@ -10,7 +10,7 @@ public class FinanceOperationType : Base.Entity
 
     public int WalletId { get; set; }
 
-    public Wallet Wallet { get; set; } = default!;
+    public Wallet Wallet { get; set; } = new();
 
     public List<FinanceOperation> Transactions { get; set; }
 }

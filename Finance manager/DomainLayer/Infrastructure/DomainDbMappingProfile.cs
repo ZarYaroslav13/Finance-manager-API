@@ -19,10 +19,25 @@ public class DomainDbMappingProfile : Profile
             .ForMember(dest => dest.WalletName, opt => opt.MapFrom(src => src.Wallet.Name))
             .ReverseMap();
 
-        /////????????????????????//////
-        CreateMap<DataLayer.Models.FinanceOperation, FinanceOperation>();
-        /////????????????????????//////
-        
+        CreateMap<DataLayer.Models.FinanceOperation, FinanceOperation>()
+            .ConvertUsing((dbFinanceOperation, domainFinanceOperation, context) =>
+            {
+                ArgumentNullException.ThrowIfNull(dbFinanceOperation.Type);
+
+                switch (dbFinanceOperation.Type.EntryType)
+                {
+                    case DataLayer.Models.EntryType.Income:
+                        return context.Mapper.Map<Income>(dbFinanceOperation);
+                    case DataLayer.Models.EntryType.Exponse:
+                        return context.Mapper.Map<Expense>(dbFinanceOperation);
+                    default:
+                        throw new ArgumentException(nameof(dbFinanceOperation.Type));
+                }
+            });
+
+        CreateMap<DataLayer.Models.FinanceOperation, Income>();
+        CreateMap<DataLayer.Models.FinanceOperation, Expense>();
+
         CreateMap<Wallet, DataLayer.Models.Wallet>();
 
         CreateMap<FinanceOperation, DataLayer.Models.FinanceOperation>()

@@ -8,7 +8,7 @@ public class FinanceOperationConfiguration : IEntityTypeConfiguration<FinanceOpe
 {
     public void Configure(EntityTypeBuilder<FinanceOperation> builder)
     {
-        builder.HasData(FillerBbData.Transactions);
+        builder.HasData(FillerBbData.FinanceOperations);
 
         builder.HasOne(t => t.Type).
             WithMany(t => t.Transactions).

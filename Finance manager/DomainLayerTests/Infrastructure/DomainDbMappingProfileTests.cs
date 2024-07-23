@@ -33,6 +33,41 @@ public class DomainDbMappingProfileTests
         };
         Account domainAccount = _mapper.Map<Account>(dbAccount);
 
-        Assert.IsTrue(DataLayerDomainModelComparer.AreEqual(dbAccount, domainAccount));
+        Assert.That.Compare(dbAccount, domainAccount);
+    }
+
+    [TestMethod]
+    public void DomainDbMappingProfileTests_MapDbWallet_DomainWallet()
+    {
+        var dbWallet = FillerBbData.Wallets.FirstOrDefault();
+
+        Wallet domainWallet = _mapper.Map<Wallet>(dbWallet);
+
+        Assert.That.Compare(dbWallet, domainWallet);
+    }
+
+    [TestMethod]
+    public void DomainDbMappingProfileTests_MapDbFinanceOperationType_DomainFinanceOperationType()
+    {
+        var dbFinanceOperationType = FillerBbData.FinanceOperationTypes.FirstOrDefault();
+
+        FinanceOperationType domainFinanceOperationType = _mapper.Map<FinanceOperationType>(dbFinanceOperationType);
+
+        Assert.That.Compare(dbFinanceOperationType, domainFinanceOperationType);
+    }
+
+    [TestMethod]
+    public void DomainDbMappingProfileTests_MapDbFinanceOperation_DomainFinanceOperation()
+    {
+        var dbFinanceOperation = FillerBbData.FinanceOperations.FirstOrDefault();
+        var typeOfOperation = FillerBbData.FinanceOperationTypes.FirstOrDefault(t => t.Id == dbFinanceOperation.TypeId);
+
+        Assert.ThrowsException<ArgumentNullException>(() => _mapper.Map<FinanceOperation>(dbFinanceOperation));
+
+        dbFinanceOperation.Type = typeOfOperation;
+
+        FinanceOperation domainFinanceOperationType = _mapper.Map<FinanceOperation>(dbFinanceOperation);
+
+        Assert.That.Compare(dbFinanceOperation, domainFinanceOperationType);
     }
 }

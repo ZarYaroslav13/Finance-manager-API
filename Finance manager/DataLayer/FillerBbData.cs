@@ -11,7 +11,7 @@ public class FillerBbData
 
     public static List<FinanceOperationType> FinanceOperationTypes { get { return _transactionTypes; } }
 
-    public static List<FinanceOperation> Transactions { get { return _transactions; } }
+    public static List<FinanceOperation> FinanceOperations { get { return _transactions; } }
 
     private static PasswordCoder _passwordCoder = new();
 

@@ -33,7 +33,7 @@ public class AppDbContextTests
         _context.Accounts.AddRange(FillerBbData.Accounts);
         _context.Wallets.AddRange(FillerBbData.Wallets);
         _context.FinanceOperationTypes.AddRange(FillerBbData.FinanceOperationTypes);
-        _context.FinanceOperations.AddRange(FillerBbData.Transactions);
+        _context.FinanceOperations.AddRange(FillerBbData.FinanceOperations);
         _context.SaveChanges();
 
         var accounts = _context.Accounts.

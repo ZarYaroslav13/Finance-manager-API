@@ -7,38 +7,38 @@ using System.Threading.Tasks;
 
 namespace DomainLayerTests.TestHelpers;
 
-public static class DataLayerDomainModelComparer
+public static class AssertDataLayerDomainModelsCompareExtension
 {
-    public static bool AreEqual(DataLayer.Models.Account dbAccount, Account domainAccount)
+    public static void Compare(this Assert assert, DataLayer.Models.Account dbAccount, Account domainAccount)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbAccount));
         ArgumentNullException.ThrowIfNull(nameof(domainAccount));
 
-        return Compare(dbAccount, domainAccount);
+        Assert.IsTrue(Compare(dbAccount, domainAccount));
     }
 
-    public static bool AreEqual(DataLayer.Models.Wallet dbWallet, Wallet domainWallet)
+    public static void Compare(this Assert assert, DataLayer.Models.Wallet dbWallet, Wallet domainWallet)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbWallet));
         ArgumentNullException.ThrowIfNull(nameof(domainWallet));
 
-        return Compare(dbWallet, domainWallet);
+        Assert.IsTrue(Compare(dbWallet, domainWallet));
     }
 
-    public static bool AreEqual(DataLayer.Models.FinanceOperationType dbFinanceOperationType, FinanceOperationType domainFinanceOperationType)
+    public static void Compare(this Assert assert, DataLayer.Models.FinanceOperationType dbFinanceOperationType, FinanceOperationType domainFinanceOperationType)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbFinanceOperationType));
         ArgumentNullException.ThrowIfNull(nameof(domainFinanceOperationType));
 
-        return Compare(dbFinanceOperationType, domainFinanceOperationType);
+        Assert.IsTrue(Compare(dbFinanceOperationType, domainFinanceOperationType));
     }
 
-    public static bool AreEqual(DataLayer.Models.FinanceOperation dbFinanceOperation, FinanceOperation domainFinanceOperation)
+    public static void Compare(this Assert assert, DataLayer.Models.FinanceOperation dbFinanceOperation, FinanceOperation domainFinanceOperation)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbFinanceOperation));
         ArgumentNullException.ThrowIfNull(nameof(domainFinanceOperation));
 
-        return Compare(dbFinanceOperation, domainFinanceOperation);
+        Assert.IsTrue(Compare(dbFinanceOperation, domainFinanceOperation));
     }
 
     private static bool Compare(DataLayer.Models.Account dbAccount, Account domainAccount)
@@ -133,7 +133,7 @@ public static class DataLayerDomainModelComparer
 
     private static bool CompareFinanceWalletOperationTypes(DataLayer.Models.Wallet dbWallet, Wallet domainWallet)
     {
-        if(dbWallet.GetFinanceOperations().Count == (domainWallet.Incomes.Count + domainWallet.Expenses.Count))
+        if (dbWallet.GetFinanceOperations().Count != (domainWallet.Incomes.Count + domainWallet.Expenses.Count))
             return false;
 
         List<DataLayer.Models.FinanceOperation> dbFinanceOperations = dbWallet
