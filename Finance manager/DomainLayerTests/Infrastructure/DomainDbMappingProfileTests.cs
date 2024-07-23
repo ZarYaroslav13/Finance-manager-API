@@ -14,7 +14,7 @@ public class DomainDbMappingProfileTests
     public DomainDbMappingProfileTests()
     {
         _mapper = new MapperConfiguration(
-                cfg => 
+                cfg =>
                     cfg.AddProfile<DomainDbMappingProfile>())
             .CreateMapper();
     }
@@ -22,7 +22,7 @@ public class DomainDbMappingProfileTests
     [TestMethod]
     public void DomainDbMappingProfileTests_MapDbAccount_DomainAccount()
     {
-        var dbAccount = new DataLayer.Models.Account() 
+        var dbAccount = new DataLayer.Models.Account()
         {
             Id = 2,
             LastName = "LastName",
@@ -40,6 +40,11 @@ public class DomainDbMappingProfileTests
     public void DomainDbMappingProfileTests_MapDbWallet_DomainWallet()
     {
         var dbWallet = FillerBbData.Wallets.FirstOrDefault();
+
+        dbWallet.FinanceOperationTypes = FillerBbData
+            .FinanceOperationTypes
+            .Where(fot => fot.WalletId == dbWallet.Id)
+            .ToList();
 
         Wallet domainWallet = _mapper.Map<Wallet>(dbWallet);
 
@@ -70,4 +75,6 @@ public class DomainDbMappingProfileTests
 
         Assert.That.Compare(dbFinanceOperation, domainFinanceOperationType);
     }
+
+
 }

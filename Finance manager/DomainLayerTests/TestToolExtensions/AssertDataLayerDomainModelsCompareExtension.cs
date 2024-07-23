@@ -1,9 +1,4 @@
 ﻿using DomainLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayerTests.TestHelpers;
 
@@ -74,7 +69,8 @@ public static class AssertDataLayerDomainModelsCompareExtension
         && (dbFinanceOperationType.EntryType == domainFinanceOperationType.EntryType)
         && (dbFinanceOperationType.Description == domainFinanceOperationType.Description)
         && (dbFinanceOperationType.WalletId == domainFinanceOperationType.WalletId)
-        && (dbFinanceOperationType.Wallet.Name == domainFinanceOperationType.WalletName))
+        && ((dbFinanceOperationType.Wallet != null && dbFinanceOperationType.Wallet.Name == domainFinanceOperationType.WalletName)
+            || (dbFinanceOperationType.Wallet == null && domainFinanceOperationType.WalletName == string.Empty)))
             return true;
 
         return false;
@@ -95,7 +91,7 @@ public static class AssertDataLayerDomainModelsCompareExtension
 
     private static bool Compare(DataLayer.Models.FinanceOperation dbFinanceOperation, Income income)
     {
-        return Compare(dbFinanceOperation, (FinanceOperation)income) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Income; 
+        return Compare(dbFinanceOperation, (FinanceOperation)income) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Income;
     }
 
     private static bool Compare(DataLayer.Models.FinanceOperation dbFinanceOperation, Expense Expense)
@@ -119,12 +115,12 @@ public static class AssertDataLayerDomainModelsCompareExtension
 
     private static bool CompareWalletOperationTypes(DataLayer.Models.Wallet dbWallet, Wallet domainWallet)
     {
-        if(dbWallet.FinanceOperationTypes.Count != domainWallet.OperationTypes.Count)
+        if (dbWallet.FinanceOperationTypes.Count != domainWallet.FinanceOperationTypes.Count)
             return false;
 
-        for (int i = 0; i < domainWallet.OperationTypes.Count; i++)
+        for (int i = 0; i < domainWallet.FinanceOperationTypes.Count; i++)
         {
-            if (!Compare(dbWallet.FinanceOperationTypes[i], domainWallet.OperationTypes[i]))
+            if (!Compare(dbWallet.FinanceOperationTypes[i], domainWallet.FinanceOperationTypes[i]))
                 return false;
         }
 

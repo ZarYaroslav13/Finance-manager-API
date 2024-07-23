@@ -16,14 +16,17 @@ public class Wallet : Entity
 
     public List<FinanceOperation> GetFinanceOperations()
     {
-        if (FinanceOperationTypes == null)
-            return null;
-
         List<FinanceOperation> result = new();
 
-        foreach (var transactionType in FinanceOperationTypes)
+        if (FinanceOperationTypes != null)
         {
-            result.AddRange(transactionType.Transactions);
+            foreach (var transactionType in FinanceOperationTypes)
+            {
+                if (transactionType.FinanceOperations == null)
+                    continue;
+
+                result.AddRange(transactionType.FinanceOperations);
+            }
         }
 
         return result;

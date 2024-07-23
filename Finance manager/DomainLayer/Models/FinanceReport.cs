@@ -4,7 +4,9 @@ namespace DomainLayer.Models;
 
 public class FinanceReport : Model
 {
-    public Wallet Wallet { get; set; } = default!;
+    public int WalletId { get; }
+
+    public string WalletName { get; } = String.Empty;
 
     public int TotalIncome { get; private set; }
 
@@ -23,6 +25,13 @@ public class FinanceReport : Model
             CalculateTotalIncome();
             CalculateTotalExpense();
         }
+    }
+
+    public FinanceReport(int walletId, string walletName, Period period)
+    {
+        WalletName = walletName ?? throw new ArgumentNullException(nameof(walletName));
+        WalletId = walletId;
+        Period = period;
     }
 
     public Period Period { get; set; }

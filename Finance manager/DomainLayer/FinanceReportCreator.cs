@@ -28,7 +28,7 @@ public class FinanceReportCreator
 
         Period period = new() { StartDate = startDate, EndDate = endDate };
 
-        var report = new FinanceReport() { Wallet = wallet, Period = period };
+        var report = new FinanceReport(wallet.Id, wallet.Name, period);
 
         report.Operations = _repository
              .GetAll(filter: t => startDate <= t.Date && t.Date <= endDate)

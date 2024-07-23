@@ -16,8 +16,7 @@ public class DomainDbMappingProfile : Profile
                 .Where(fo => fo.Type.EntryType == DataLayer.Models.EntryType.Exponse)));
 
         CreateMap<DataLayer.Models.FinanceOperationType, FinanceOperationType>()
-            .ForMember(dest => dest.WalletName, opt => opt.MapFrom(src => src.Wallet.Name))
-            .ReverseMap();
+            .ForMember(dest => dest.WalletName, opt => opt.MapFrom(src => (src.Wallet != null) ? src.Wallet.Name : string.Empty));
 
         CreateMap<DataLayer.Models.FinanceOperation, FinanceOperation>()
             .ConvertUsing((dbFinanceOperation, domainFinanceOperation, context) =>
@@ -39,6 +38,8 @@ public class DomainDbMappingProfile : Profile
         CreateMap<DataLayer.Models.FinanceOperation, Expense>();
 
         CreateMap<Wallet, DataLayer.Models.Wallet>();
+
+        CreateMap<FinanceOperationType, DataLayer.Models.FinanceOperationType>();
 
         CreateMap<FinanceOperation, DataLayer.Models.FinanceOperation>()
             .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.Type.Id))

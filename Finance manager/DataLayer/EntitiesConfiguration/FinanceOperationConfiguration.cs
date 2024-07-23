@@ -11,7 +11,7 @@ public class FinanceOperationConfiguration : IEntityTypeConfiguration<FinanceOpe
         builder.HasData(FillerBbData.FinanceOperations);
 
         builder.HasOne(t => t.Type).
-            WithMany(t => t.Transactions).
+            WithMany(t => t.FinanceOperations).
             HasForeignKey(t => t.TypeId);
     }
 }

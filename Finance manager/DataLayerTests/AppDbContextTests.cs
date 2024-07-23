@@ -40,7 +40,7 @@ public class AppDbContextTests
                             AsQueryable().
                             Include(a => a.Wallets).
                             ThenInclude(w => w.FinanceOperationTypes).
-                            ThenInclude(tt => tt.Transactions).
+                            ThenInclude(tt => tt.FinanceOperations).
                             AsNoTracking().
                             ToList();
         var account = accounts.FirstOrDefault();
