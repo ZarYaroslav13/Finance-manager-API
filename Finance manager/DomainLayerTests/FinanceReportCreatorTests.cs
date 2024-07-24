@@ -103,10 +103,12 @@ namespace DomainLayerTests
             financeOperations.AddRange(wallet.Incomes.Where(fo => day.Date == fo.Date.Date));
             financeOperations.AddRange(wallet.Expenses.Where(fo => day.Date == fo.Date.Date));
 
-            var expected = new FinanceReport(wallet.Id, wallet.Name, new Period() { StartDate = day , EndDate = day }) 
-            { Operations = financeOperations
+            var expected = new FinanceReport(wallet.Id, wallet.Name, new Period() { StartDate = day, EndDate = day })
+            {
+                Operations = financeOperations
                 .OrderBy(fo => fo.Id)
-                .ToList() };
+                .ToList()
+            };
 
             var result = _creator.CreateFinanceReport(wallet, day);
 
