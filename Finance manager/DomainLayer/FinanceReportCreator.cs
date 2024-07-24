@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
 using DomainLayer.Services;
-using System.Linq.Expressions;
 
 namespace DomainLayer;
 
@@ -21,25 +19,28 @@ public class FinanceReportCreator
         _service = new CRUDService<FinanceOperation, DataLayer.Models.FinanceOperation>(_unitOfWork, _mapper);
     }
 
-    public FinanceReport CreateReport(Wallet wallet, DateTime startDate, DateTime endDate)
+    public FinanceReport CreateFinanceReport(Wallet wallet, DateTime startDate, DateTime endDate)
     {
-        ArgumentNullException.ThrowIfNull(nameof(wallet));
-        ArgumentNullException.ThrowIfNull(nameof(startDate));
-        ArgumentNullException.ThrowIfNull(nameof(endDate));
+        ArgumentNullException.ThrowIfNull(wallet);
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(startDate, endDate);
 
         Period period = new() { StartDate = startDate, EndDate = endDate };
 
         var report = new FinanceReport(wallet.Id, wallet.Name, period);
 
         report.Operations = _service
-             .GetAll(filter: t => startDate <= t.Date && t.Date <= endDate)
+             .GetAll(
+                includeProperties: new string[] { nameof(DataLayer.Models.FinanceOperation.Type), nameof(DataLayer.Models.FinanceOperation.Type) + '.' + nameof(DataLayer.Models.FinanceOperation.Type.Wallet) },
+                filter: t => startDate.Date <= t.Date.Date
+                    && t.Date.Date <= endDate.Date
+                    && t.Type.WalletId == report.WalletId)
              .ToList();
 
         return report;
     }
 
-    public FinanceReport CreateReport(Wallet wallet, DateTime day)
+    public FinanceReport CreateFinanceReport(Wallet wallet, DateTime day)
     {
-        return CreateReport(wallet, day, day);
+        return CreateFinanceReport(wallet, day, day);
     }
 }

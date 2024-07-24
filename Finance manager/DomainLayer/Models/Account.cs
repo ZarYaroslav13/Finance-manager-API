@@ -26,4 +26,9 @@ public class Account : Base.Model
                && Password == account.Password
                && AreEqualLists(Wallets, account.Wallets);
     }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, FirstName, LastName, Email, Password, Wallets);
+    }
 }

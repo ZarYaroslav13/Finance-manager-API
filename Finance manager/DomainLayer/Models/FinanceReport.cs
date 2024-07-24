@@ -5,13 +5,9 @@ namespace DomainLayer.Models;
 public class FinanceReport : Model
 {
     public int WalletId { get; }
-
     public string WalletName { get; } = String.Empty;
-
     public int TotalIncome { get; private set; }
-
     public int TotalExpense { get; private set; }
-
     public List<FinanceOperation> Operations
     {
         get
@@ -26,6 +22,7 @@ public class FinanceReport : Model
             CalculateTotalExpense();
         }
     }
+    public Period Period { get; set; }
 
     private List<FinanceOperation> _operations { get; set; } = new();
 
@@ -35,8 +32,6 @@ public class FinanceReport : Model
         WalletId = walletId;
         Period = period;
     }
-
-    public Period Period { get; set; }
 
     private int CalculateTotalIncome()
     {
@@ -56,5 +51,25 @@ public class FinanceReport : Model
             .Sum();
 
         return TotalExpense;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || obj.GetType() != typeof(FinanceReport))
+            return false;
+
+        var financeReport = (FinanceReport)obj;
+
+        return Id == financeReport.Id
+            && WalletId == financeReport.WalletId
+            && WalletName == financeReport.WalletName
+            && TotalIncome == financeReport.TotalIncome
+            && TotalExpense == financeReport.TotalExpense
+            && AreEqualLists(Operations, financeReport.Operations);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, WalletId, WalletName, TotalIncome, TotalExpense, Operations);
     }
 }

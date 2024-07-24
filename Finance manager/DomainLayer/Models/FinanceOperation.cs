@@ -30,4 +30,9 @@ public abstract class FinanceOperation : Base.Model
             && Date == financeOperation.Date
             && Type == financeOperation.Type;
     }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, Amount, Date, Type);
+    }
 }

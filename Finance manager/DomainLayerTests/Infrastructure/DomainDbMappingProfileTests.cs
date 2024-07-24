@@ -96,7 +96,6 @@ public class DomainDbMappingProfileTests
     public void DomainDbMappingProfileTests_Map_Exception()
     {
         var dbFinanceOperation = FillerBbData.FinanceOperations.FirstOrDefault();
-        var typeOfOperation = FillerBbData.FinanceOperationTypes.FirstOrDefault(t => t.Id == dbFinanceOperation.TypeId);
 
         Assert.ThrowsException<ArgumentNullException>(() => _mapper.Map<FinanceOperation>(dbFinanceOperation));
     }

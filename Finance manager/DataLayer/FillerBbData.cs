@@ -457,6 +457,10 @@ public class FillerBbData
         new FinanceOperation() { Id = 97, Amount = 40, Date = new DateTime(2024, 4, 7), TypeId = 7 },
         new FinanceOperation() { Id = 98, Amount = 100, Date = new DateTime(2024, 4, 8), TypeId = 8 },
         new FinanceOperation() { Id = 99, Amount = 2000, Date = new DateTime(2024, 4, 9), TypeId = 9 },
-        new FinanceOperation() { Id = 100, Amount = 300, Date = new DateTime(2024, 4, 10), TypeId = 10 }
+        new FinanceOperation() { Id = 100, Amount = 300, Date = new DateTime(2024, 4, 10), TypeId = 10 },
+        new FinanceOperation() { Id = 101, Amount = 100, Date = new DateTime(2024, 4, 11, second: 24, minute: 11, hour: 03), TypeId = 1 },
+        new FinanceOperation() { Id = 102, Amount = 2000, Date = new DateTime(2024, 4, 11, second: 53, minute: 02, hour: 11), TypeId = 1 },
+        new FinanceOperation() { Id = 103, Amount = 300, Date = new DateTime(2024, 4, 11, second: 37, minute: 27, hour: 7), TypeId = 1 }
+
     };
 }
