@@ -1,7 +1,7 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 
-namespace DataLayerTests.TestData;
+namespace DataLayerTests.Data;
 
 public class FinanceOperationTypeDataProvider
 {

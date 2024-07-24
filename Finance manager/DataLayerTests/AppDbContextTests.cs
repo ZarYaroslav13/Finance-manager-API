@@ -7,7 +7,6 @@ namespace DataLayerTests;
 public class AppDbContextTests
 {
     private readonly AppDbContext _context;
-    private readonly IServiceProvider _serviceProvider;
 
     public AppDbContextTests()
     {
@@ -16,6 +15,13 @@ public class AppDbContextTests
         options.UseInMemoryDatabase("TestDbForContext");
 
         _context = new AppDbContext(options.Options);
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        _context.Database.EnsureDeleted();
+        _context.Dispose();
     }
 
     [TestMethod]

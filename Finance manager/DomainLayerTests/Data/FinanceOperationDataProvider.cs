@@ -1,189 +1,187 @@
-﻿using DataLayer;
-using DataLayer.Models;
+﻿using DomainLayer.Models;
 
-namespace DataLayerTests.TestData;
+namespace DomainLayerTests.Data;
 
 public class FinanceOperationDataProvider
 {
+    private static FinanceOperationType _randomIncomeType =
+                new FinanceOperationType()
+                {
+                    Id = 3,
+                    Description = "Description",
+                    EntryType = DataLayer.Models.EntryType.Income,
+                    Name = "Name",
+                    WalletId = 1,
+                    WalletName = "WalletName"
+                };
+
+    private static FinanceOperationType _randomExpenseType =
+                new FinanceOperationType()
+                {
+                    Id = 4,
+                    Description = "Description",
+                    EntryType = DataLayer.Models.EntryType.Exponse,
+                    Name = "Name",
+                    WalletId = 1,
+                    WalletName = "WalletName"
+                };
+
     public static IEnumerable<object[]> EqualsData { get; } = new List<object[]>
     {
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
             },
             true
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3
             },
             true
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             true
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             true
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             true
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 2,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             false
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 2000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             false
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MaxValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             false
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
-            new FinanceOperation(){
+            new Expense(_randomExpenseType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-                TypeId = 4,
-                Type = FillerBbData.FinanceOperationTypes.FirstOrDefault(fo => fo.Id == 4)
             },
             false
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             null,
             false
         },
         new object[]
         {
-            new FinanceOperation(){
+            new Income(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
-                TypeId = 3,
-                Type = randomFinanceOperationType
+
             },
             new Wallet(),
             false
         }
     };
 
-    private static FinanceOperationType randomFinanceOperationType = FillerBbData.FinanceOperationTypes.FirstOrDefault(fo => fo.Id == 3);
+
 }

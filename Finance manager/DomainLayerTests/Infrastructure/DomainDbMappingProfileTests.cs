@@ -9,9 +9,10 @@ namespace DomainLayerTests.Infrastructure;
 [TestClass]
 public class DomainDbMappingProfileTests
 {
-    private readonly IMapper _mapper;
+    private IMapper _mapper;
 
-    public DomainDbMappingProfileTests()
+    [TestInitialize]
+    public void Setup()
     {
         _mapper = new MapperConfiguration(
                 cfg =>
@@ -84,9 +85,9 @@ public class DomainDbMappingProfileTests
 
         var domainFinanceOperation = _mapper.Map<FinanceOperation>(dbFinanceOperation);
 
-        Assert.That.Compare(dbFinanceOperation, domainFinanceOperation);
-
         var mappedDbFinanceOperation = _mapper.Map<DataLayer.Models.FinanceOperation>(domainFinanceOperation);
+
+        Assert.That.Compare(dbFinanceOperation, domainFinanceOperation);
 
         Assert.AreEqual(dbFinanceOperation, mappedDbFinanceOperation);
     }

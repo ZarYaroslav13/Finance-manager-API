@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
+using System.Linq.Expressions;
 
 namespace DomainLayer.Services;
 
@@ -20,9 +21,18 @@ public class CRUDService<T_Domain, T_DB> : ICRUDService<T_Domain, T_DB>
         _repository = _unitOfWork.GetRepository<T_DB>();
     }
 
-    public virtual List<T_Domain> GetAll()
+    public List<T_Domain> GetAll(
+        Func<IQueryable<T_DB>,
+            IOrderedQueryable<T_DB>> orderBy = null,
+        Expression<Func<T_DB, bool>> filter = null,
+        params string[] includeProperties)
     {
-        return _repository.GetAll().Select(_mapper.Map<T_Domain>).ToList();
+        return _repository
+            .GetAll(filter: filter,
+                    orderBy: orderBy,
+                    includeProperties: includeProperties)
+            .Select(_mapper.Map<T_Domain>)
+            .ToList();
     }
 
     public virtual T_Domain Find(int id)
@@ -33,19 +43,38 @@ public class CRUDService<T_Domain, T_DB> : ICRUDService<T_Domain, T_DB>
     public virtual T_Domain Add(T_Domain entity)
     {
         _repository.Insert(_mapper.Map<T_DB>(entity));
+        _unitOfWork.SaveChanges();
 
         return entity;
     }
 
     public virtual T_Domain Update(T_Domain entity)
     {
-        _repository.Update(_mapper.Map<T_DB>(entity));
+        var dbEntity = _repository.GetById(entity.Id);
+        var mappedEntity = _mapper.Map<T_DB>(entity);
+
+        foreach (var property in dbEntity.GetType().GetProperties())
+        {
+            property.SetValue(dbEntity, property.GetValue(mappedEntity));
+        }
+
+        _repository.Update(dbEntity);
+        _unitOfWork.SaveChanges();
 
         return entity;
     }
 
     public virtual void Delete(T_Domain entity)
     {
-        _repository.Delete(_mapper.Map<T_DB>(entity));
+        var dbEntity = _repository.GetById(entity.Id);
+        var mappedEntity = _mapper.Map<T_DB>(entity);
+
+        foreach (var property in dbEntity.GetType().GetProperties())
+        {
+            property.SetValue(dbEntity, property.GetValue(mappedEntity));
+        }
+
+        _repository.Delete(dbEntity);
+        _unitOfWork.SaveChanges();
     }
 }

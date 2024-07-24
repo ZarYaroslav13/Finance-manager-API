@@ -1,5 +1,5 @@
 ﻿using DataLayer.Models;
-using DataLayerTests.TestData;
+using DataLayerTests.Data;
 
 namespace DataLayerTests.Models;
 

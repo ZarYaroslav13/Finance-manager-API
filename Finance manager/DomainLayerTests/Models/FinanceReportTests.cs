@@ -29,7 +29,7 @@ public class FinanceReportTests
     {
         const int walletId = 1;
         const string walletName = "Name";
-        Period period = new Period() { StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue};
+        Period period = new Period() { StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue };
 
         var result = new FinanceReport(walletId, walletName, period);
 

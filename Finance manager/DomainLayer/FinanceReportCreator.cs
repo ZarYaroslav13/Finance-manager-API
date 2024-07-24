@@ -2,6 +2,8 @@
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
+using DomainLayer.Services;
+using System.Linq.Expressions;
 
 namespace DomainLayer;
 
@@ -9,15 +11,14 @@ public class FinanceReportCreator
 {
     protected readonly IMapper _mapper;
     protected readonly IUnitOfWork _unitOfWork;
-    protected readonly IRepository<DataLayer.Models.FinanceOperation> _repository;
+    protected readonly ICRUDService<FinanceOperation, DataLayer.Models.FinanceOperation> _service;
 
     public FinanceReportCreator(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-        _repository = _unitOfWork
-             .GetRepository<DataLayer.Models.FinanceOperation>();
+        _service = new CRUDService<FinanceOperation, DataLayer.Models.FinanceOperation>(_unitOfWork, _mapper);
     }
 
     public FinanceReport CreateReport(Wallet wallet, DateTime startDate, DateTime endDate)
@@ -30,9 +31,8 @@ public class FinanceReportCreator
 
         var report = new FinanceReport(wallet.Id, wallet.Name, period);
 
-        report.Operations = _repository
+        report.Operations = _service
              .GetAll(filter: t => startDate <= t.Date && t.Date <= endDate)
-             .Select(_mapper.Map<FinanceOperation>)
              .ToList();
 
         return report;

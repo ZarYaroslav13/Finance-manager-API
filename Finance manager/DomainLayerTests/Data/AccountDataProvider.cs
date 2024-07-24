@@ -1,6 +1,6 @@
-﻿using DataLayer.Models;
+﻿using DomainLayer.Models;
 
-namespace DataLayerTests.TestData;
+namespace DomainLayerTests.Data;
 
 public class AccountDataProvider
 {
@@ -8,8 +8,8 @@ public class AccountDataProvider
     {
         new object[]
         {
-            new Account(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password"},
-            new Account(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password"},
+            new Account(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password", Wallets = new()},
+            new Account(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password", Wallets = new()},
             true
         },
         new object[]

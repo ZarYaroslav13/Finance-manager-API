@@ -10,7 +10,6 @@ namespace DataLayerTests;
 public class UnitOfWorkTests
 {
     private readonly AppDbContext _context;
-    private readonly IServiceProvider _serviceProvider;
     private IUnitOfWork _unitOfWork;
 
     public UnitOfWorkTests()
@@ -22,6 +21,13 @@ public class UnitOfWorkTests
         _context = new AppDbContext(options.Options);
 
         _unitOfWork = new UnitOfWork(_context);
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        _context.Database.EnsureDeleted();
+        _context.Dispose();
     }
 
     [TestMethod]
@@ -41,8 +47,6 @@ public class UnitOfWorkTests
         var expected = new Repository<Account>(_context).GetAll().ToList();
 
         Assert.IsTrue(Enumerable.SequenceEqual(expected, result));
-
-        _context.Database.EnsureDeleted();
     }
 
     [TestMethod]
@@ -58,7 +62,5 @@ public class UnitOfWorkTests
         var result = _unitOfWork.GetRepository<Account>().GetAll().ToList();
 
         Assert.IsTrue(Enumerable.SequenceEqual(expected, result));
-
-        _context.Database.EnsureDeleted();
     }
 }

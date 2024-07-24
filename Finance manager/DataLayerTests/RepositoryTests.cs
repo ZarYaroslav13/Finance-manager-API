@@ -10,7 +10,6 @@ namespace DataLayerTests;
 public class RepositoryTests
 {
     private readonly AppDbContext _context;
-    private readonly IServiceProvider _serviceProvider;
     private readonly Repository<Account> _repository;
 
     public RepositoryTests()
@@ -22,6 +21,13 @@ public class RepositoryTests
         _context = new AppDbContext(options.Options);
 
         _repository = new(_context);
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        _context.Database.EnsureDeleted();
+        _context.Dispose();
     }
 
     [TestMethod]
@@ -52,8 +58,6 @@ public class RepositoryTests
         }
 
         Assert.IsNotNull(accounts.FirstOrDefault().Wallets);
-
-        _context.Database.EnsureDeleted();
     }
 
     [TestMethod]
@@ -75,8 +79,6 @@ public class RepositoryTests
         }
 
         Assert.IsTrue(Enumerable.SequenceEqual(filteredGettedAccounts, filteredAccounts));
-
-        _context.Database.EnsureDeleted();
     }
 
     [TestMethod]
@@ -96,8 +98,6 @@ public class RepositoryTests
         var accounts = _repository.GetAll();
 
         Assert.IsTrue(accounts.Any(a => a.Equals(newAccount)));
-
-        _context.Database.EnsureDeleted();
     }
 
     [TestMethod]
@@ -121,8 +121,6 @@ public class RepositoryTests
         var modifitedAccount = _repository.GetAll().LastOrDefault();
 
         Assert.AreEqual(account, modifitedAccount);
-
-        _context.Database.EnsureDeleted();
     }
 
     [TestMethod]
@@ -139,8 +137,6 @@ public class RepositoryTests
         var accounts = _repository.GetAll();
 
         Assert.IsFalse(accounts.Contains(removedAccount));
-
-        _context.Database.EnsureDeleted();
     }
 
     [TestMethod]
@@ -158,7 +154,5 @@ public class RepositoryTests
         foundAccount.Wallets = null;
 
         Assert.AreEqual(neededAccount, foundAccount);
-
-        _context.Database.EnsureDeleted();
     }
 }
