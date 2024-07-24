@@ -2,6 +2,7 @@
 using DataLayer;
 using DomainLayer.Infrastructure;
 using DomainLayer.Models;
+using DomainLayerTests.Data;
 
 namespace DomainLayerTests.Models;
 
@@ -10,12 +11,13 @@ public class FinanceReportTests
 {
     IMapper _mapper;
 
-    public FinanceReportTests()
+    [TestInitialize]
+    public void Setup()
     {
         _mapper = new MapperConfiguration(
-                cfg =>
-                    cfg.AddProfile<DomainDbMappingProfile>())
-            .CreateMapper();
+               cfg =>
+                   cfg.AddProfile<DomainDbMappingProfile>())
+           .CreateMapper();
     }
 
     [TestMethod]
@@ -71,5 +73,14 @@ public class FinanceReportTests
         Assert.AreEqual(totalIncome, report.TotalIncome);
         Assert.AreEqual(totalExpense, report.TotalExpense);
         Assert.IsTrue(Enumerable.SequenceEqual(report.Operations, financeOperations));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceReportTestsDataProvider.EqualsData), typeof(FinanceReportTestsDataProvider))]
+    public void FinanceReport_AreEquals_Bool(FinanceReport fr1, object fr2, bool expected)
+    {
+        bool result = fr1.Equals(fr2);
+
+        Assert.AreEqual(expected, result);
     }
 }

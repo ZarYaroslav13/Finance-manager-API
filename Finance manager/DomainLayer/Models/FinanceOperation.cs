@@ -20,7 +20,7 @@ public abstract class FinanceOperation : Base.Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType().BaseType != typeof(FinanceOperation))
+        if (obj == null || GetType() != obj.GetType())
             return false;
 
         var financeOperation = (FinanceOperation)obj;

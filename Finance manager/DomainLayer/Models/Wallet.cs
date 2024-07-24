@@ -16,7 +16,7 @@ public class Wallet : Base.Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(Wallet))
+        if (obj == null || GetType() != obj.GetType())
             return false;
 
         Wallet wallet = (Wallet)obj;

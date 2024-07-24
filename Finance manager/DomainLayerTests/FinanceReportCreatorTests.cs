@@ -84,6 +84,8 @@ namespace DomainLayerTests
 
             var result = _creator.CreateFinanceReport(wallet, period.StartDate, period.EndDate);
 
+            result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
+
             Assert.AreEqual(expected, result);
         }
 

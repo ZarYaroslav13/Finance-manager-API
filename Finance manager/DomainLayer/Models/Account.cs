@@ -14,7 +14,7 @@ public class Account : Base.Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(Account))
+        if (obj == null || GetType() != obj.GetType())
             return false;
 
         Account account = (Account)obj;

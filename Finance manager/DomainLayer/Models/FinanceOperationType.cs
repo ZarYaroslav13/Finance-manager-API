@@ -16,7 +16,7 @@ public class FinanceOperationType : Base.Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(FinanceOperationType))
+        if (obj == null || GetType() != obj.GetType())
             return false;
 
         var financeOperationType = (FinanceOperationType)obj;

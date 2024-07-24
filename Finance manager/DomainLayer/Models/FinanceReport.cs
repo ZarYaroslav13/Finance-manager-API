@@ -55,7 +55,7 @@ public class FinanceReport : Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(FinanceReport))
+        if (obj == null || GetType() != obj.GetType())
             return false;
 
         var financeReport = (FinanceReport)obj;
@@ -65,6 +65,7 @@ public class FinanceReport : Model
             && WalletName == financeReport.WalletName
             && TotalIncome == financeReport.TotalIncome
             && TotalExpense == financeReport.TotalExpense
+            && Period == financeReport.Period
             && AreEqualLists(Operations, financeReport.Operations);
     }
 
