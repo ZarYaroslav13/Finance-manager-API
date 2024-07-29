@@ -61,7 +61,7 @@ namespace DomainLayerTests
         [TestMethod]
         public void FinanceReportCreator_CreateFinanceReport_ArgumentOutOfRangeException()
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _creator.CreateFinanceReport(A.Dummy<Wallet>(), DateTime.MaxValue, DateTime.MinValue));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _creator.CreateFinanceReport(A.Dummy<WalletModel>(), DateTime.MaxValue, DateTime.MinValue));
         }
 
         [TestMethod]
@@ -72,15 +72,15 @@ namespace DomainLayerTests
             _context.AddRange(FillerBbData.Wallets);
             _context.SaveChanges();
 
-            var wallet = _mapper.Map<Wallet>(_unitOfWork.GetRepository<DataLayer.Models.Wallet>().GetById(1));
+            var wallet = _mapper.Map<WalletModel>(_unitOfWork.GetRepository<DataLayer.Models.Wallet>().GetById(1));
 
             var period = new Period() { StartDate = new DateTime(2024, 1, 7), EndDate = new DateTime(2024, 3, 28) };
 
-            var financeOperations = new List<FinanceOperation>();
+            var financeOperations = new List<FinanceOperationModel>();
             financeOperations.AddRange(wallet.Incomes.Where(fo => period.StartDate.Date <= fo.Date && fo.Date.Date <= period.EndDate));
             financeOperations.AddRange(wallet.Expenses.Where(fo => period.StartDate <= fo.Date.Date && fo.Date.Date <= period.EndDate));
 
-            var expected = new FinanceReport(wallet.Id, wallet.Name, period) { Operations = financeOperations.OrderBy(fo => fo.Id).ToList() };
+            var expected = new FinanceReportModel(wallet.Id, wallet.Name, period) { Operations = financeOperations.OrderBy(fo => fo.Id).ToList() };
 
             var result = _creator.CreateFinanceReport(wallet, period.StartDate, period.EndDate);
 
@@ -97,15 +97,15 @@ namespace DomainLayerTests
             _context.AddRange(FillerBbData.Wallets);
             _context.SaveChanges();
 
-            var wallet = _mapper.Map<Wallet>(_unitOfWork.GetRepository<DataLayer.Models.Wallet>().GetById(1));
+            var wallet = _mapper.Map<WalletModel>(_unitOfWork.GetRepository<DataLayer.Models.Wallet>().GetById(1));
 
             var day = new DateTime(2024, 4, 11);
 
-            var financeOperations = new List<FinanceOperation>();
+            var financeOperations = new List<FinanceOperationModel>();
             financeOperations.AddRange(wallet.Incomes.Where(fo => day.Date == fo.Date.Date));
             financeOperations.AddRange(wallet.Expenses.Where(fo => day.Date == fo.Date.Date));
 
-            var expected = new FinanceReport(wallet.Id, wallet.Name, new Period() { StartDate = day, EndDate = day })
+            var expected = new FinanceReportModel(wallet.Id, wallet.Name, new Period() { StartDate = day, EndDate = day })
             {
                 Operations = financeOperations
                 .OrderBy(fo => fo.Id)

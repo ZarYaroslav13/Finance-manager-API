@@ -8,7 +8,7 @@ namespace DomainLayerTests.Models
     {
         [TestMethod]
         [DynamicData(nameof(FinanceOperationTypeDataProvider.EqualsData), typeof(FinanceOperationTypeDataProvider))]
-        public void FinanceOperationType_Equals_Bool(FinanceOperationType fot1, object fot2, bool expected)
+        public void FinanceOperationType_Equals_Bool(FinanceOperationTypeModel fot1, object fot2, bool expected)
         {
             bool result = fot1.Equals(fot2);
 

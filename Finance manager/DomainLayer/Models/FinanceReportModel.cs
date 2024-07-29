@@ -2,13 +2,13 @@
 
 namespace DomainLayer.Models;
 
-public class FinanceReport : Model
+public class FinanceReportModel : Model
 {
     public int WalletId { get; }
     public string WalletName { get; } = String.Empty;
     public int TotalIncome { get; private set; }
     public int TotalExpense { get; private set; }
-    public List<FinanceOperation> Operations
+    public List<FinanceOperationModel> Operations
     {
         get
         {
@@ -24,9 +24,9 @@ public class FinanceReport : Model
     }
     public Period Period { get; set; }
 
-    private List<FinanceOperation> _operations { get; set; } = new();
+    private List<FinanceOperationModel> _operations { get; set; } = new();
 
-    public FinanceReport(int walletId, string walletName, Period period)
+    public FinanceReportModel(int walletId, string walletName, Period period)
     {
         WalletName = walletName ?? throw new ArgumentNullException(nameof(walletName));
         WalletId = walletId;
@@ -36,7 +36,7 @@ public class FinanceReport : Model
     private int CalculateTotalIncome()
     {
         TotalIncome = _operations
-            .OfType<Income>()
+            .OfType<IncomeModel>()
             .Select(i => i.Amount)
             .Sum();
 
@@ -46,7 +46,7 @@ public class FinanceReport : Model
     private int CalculateTotalExpense()
     {
         TotalExpense = _operations
-            .OfType<Expense>()
+            .OfType<ExpenseModel>()
             .Select(e => e.Amount)
             .Sum();
 
@@ -58,7 +58,7 @@ public class FinanceReport : Model
         if (obj == null || GetType() != obj.GetType())
             return false;
 
-        var financeReport = (FinanceReport)obj;
+        var financeReport = (FinanceReportModel)obj;
 
         return Id == financeReport.Id
             && WalletId == financeReport.WalletId

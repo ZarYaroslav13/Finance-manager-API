@@ -23,7 +23,7 @@ public class FinanceReportTests
     [TestMethod]
     public void FinanceReport_Constructor_Exception()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new FinanceReport(1, null, new Period()));
+        Assert.ThrowsException<ArgumentNullException>(() => new FinanceReportModel(1, null, new Period()));
     }
 
     [TestMethod]
@@ -33,7 +33,7 @@ public class FinanceReportTests
         const string walletName = "Name";
         Period period = new Period() { StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue };
 
-        var result = new FinanceReport(walletId, walletName, period);
+        var result = new FinanceReportModel(walletId, walletName, period);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(walletId, result.WalletId);
@@ -60,13 +60,13 @@ public class FinanceReportTests
         bdFinanceOperations.ForEach(fo => fo.Type = bdFinanceOperationType);
 
         var financeOperations = bdFinanceOperations
-            .Select(_mapper.Map<FinanceOperation>)
+            .Select(_mapper.Map<FinanceOperationModel>)
             .ToList();
 
-        int totalIncome = financeOperations.OfType<Income>().Select(i => i.Amount).Sum();
-        int totalExpense = financeOperations.OfType<Expense>().Select(i => i.Amount).Sum();
+        int totalIncome = financeOperations.OfType<IncomeModel>().Select(i => i.Amount).Sum();
+        int totalExpense = financeOperations.OfType<ExpenseModel>().Select(i => i.Amount).Sum();
 
-        var report = new FinanceReport(walletId, walletName, period);
+        var report = new FinanceReportModel(walletId, walletName, period);
 
         report.Operations = financeOperations;
 
@@ -77,7 +77,7 @@ public class FinanceReportTests
 
     [TestMethod]
     [DynamicData(nameof(FinanceReportTestsDataProvider.EqualsData), typeof(FinanceReportTestsDataProvider))]
-    public void FinanceReport_AreEquals_Bool(FinanceReport fr1, object fr2, bool expected)
+    public void FinanceReport_AreEquals_Bool(FinanceReportModel fr1, object fr2, bool expected)
     {
         bool result = fr1.Equals(fr2);
 

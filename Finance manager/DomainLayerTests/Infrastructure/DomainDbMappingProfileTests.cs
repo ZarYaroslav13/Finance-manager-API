@@ -33,7 +33,7 @@ public class DomainDbMappingProfileTests
             Wallets = FillerBbData.Wallets.Where(w => w.AccountId == 2).ToList()
         };
 
-        Account domainAccount = _mapper.Map<Account>(dbAccount);
+        AccountModel domainAccount = _mapper.Map<AccountModel>(dbAccount);
 
         Assert.That.Compare(dbAccount, domainAccount);
 
@@ -52,7 +52,7 @@ public class DomainDbMappingProfileTests
             .Where(fot => fot.WalletId == dbWallet.Id)
             .ToList();
 
-        Wallet domainWallet = _mapper.Map<Wallet>(dbWallet);
+        WalletModel domainWallet = _mapper.Map<WalletModel>(dbWallet);
 
         Assert.That.Compare(dbWallet, domainWallet);
 
@@ -66,7 +66,7 @@ public class DomainDbMappingProfileTests
     {
         var dbFinanceOperationType = FillerBbData.FinanceOperationTypes.FirstOrDefault();
 
-        var domainFinanceOperationType = _mapper.Map<FinanceOperationType>(dbFinanceOperationType);
+        var domainFinanceOperationType = _mapper.Map<FinanceOperationTypeModel>(dbFinanceOperationType);
 
         Assert.That.Compare(dbFinanceOperationType, domainFinanceOperationType);
 
@@ -83,7 +83,7 @@ public class DomainDbMappingProfileTests
 
         dbFinanceOperation.Type = typeOfOperation;
 
-        var domainFinanceOperation = _mapper.Map<FinanceOperation>(dbFinanceOperation);
+        var domainFinanceOperation = _mapper.Map<FinanceOperationModel>(dbFinanceOperation);
 
         var mappedDbFinanceOperation = _mapper.Map<DataLayer.Models.FinanceOperation>(domainFinanceOperation);
 
@@ -97,6 +97,6 @@ public class DomainDbMappingProfileTests
     {
         var dbFinanceOperation = FillerBbData.FinanceOperations.FirstOrDefault();
 
-        Assert.ThrowsException<ArgumentNullException>(() => _mapper.Map<FinanceOperation>(dbFinanceOperation));
+        Assert.ThrowsException<ArgumentNullException>(() => _mapper.Map<FinanceOperationModel>(dbFinanceOperation));
     }
 }

@@ -4,8 +4,8 @@ namespace DomainLayerTests.Data;
 
 public class FinanceOperationDataProvider
 {
-    private static FinanceOperationType _randomIncomeType =
-                new FinanceOperationType()
+    private static FinanceOperationTypeModel _randomIncomeType =
+                new FinanceOperationTypeModel()
                 {
                     Id = 3,
                     Description = "Description",
@@ -15,8 +15,8 @@ public class FinanceOperationDataProvider
                     WalletName = "WalletName"
                 };
 
-    private static FinanceOperationType _randomExpenseType =
-                new FinanceOperationType()
+    private static FinanceOperationTypeModel _randomExpenseType =
+                new FinanceOperationTypeModel()
                 {
                     Id = 4,
                     Description = "Description",
@@ -30,26 +30,12 @@ public class FinanceOperationDataProvider
     {
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
             },
-            new Income(_randomIncomeType){
-                Id = 1,
-                Amount = 1000,
-                Date =  DateTime.MinValue,
-            },
-            true
-        },
-        new object[]
-        {
-            new Income(_randomIncomeType){
-                Id = 1,
-                Amount = 1000,
-                Date =  DateTime.MinValue,
-            },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
@@ -58,12 +44,26 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
+                Id = 1,
+                Amount = 1000,
+                Date =  DateTime.MinValue,
+            },
+            new IncomeModel(_randomIncomeType){
+                Id = 1,
+                Amount = 1000,
+                Date =  DateTime.MinValue,
+            },
+            true
+        },
+        new object[]
+        {
+            new IncomeModel(_randomIncomeType){
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
             },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
@@ -72,12 +72,12 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Date =  DateTime.MinValue,
 
             },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Date =  DateTime.MinValue,
 
@@ -86,12 +86,12 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
 
             },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
 
@@ -100,13 +100,13 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
             },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 2,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
@@ -116,13 +116,13 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
             },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 2000,
                 Date =  DateTime.MinValue,
@@ -132,13 +132,13 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
             },
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MaxValue,
@@ -148,13 +148,13 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
             },
-            new Expense(_randomExpenseType){
+            new ExpenseModel(_randomExpenseType){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
@@ -163,7 +163,7 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
 
@@ -173,12 +173,12 @@ public class FinanceOperationDataProvider
         },
         new object[]
         {
-            new Income(_randomIncomeType){
+            new IncomeModel(_randomIncomeType){
                 Id = 1,
                 Amount = 1000,
 
             },
-            new Wallet(),
+            new WalletModel(),
             false
         }
     };

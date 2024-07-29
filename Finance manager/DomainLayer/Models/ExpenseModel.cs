@@ -1,8 +1,8 @@
 ﻿namespace DomainLayer.Models;
 
-public class Expense : FinanceOperation
+public class ExpenseModel : FinanceOperationModel
 {
-    public Expense(FinanceOperationType type) : base(type)
+    public ExpenseModel(FinanceOperationTypeModel type) : base(type)
     {
         if (type.EntryType != DataLayer.Models.EntryType.Exponse)
             throw new ArgumentException(nameof(type));

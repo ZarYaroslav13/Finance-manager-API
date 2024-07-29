@@ -2,7 +2,7 @@
 
 namespace DomainLayer.Models;
 
-public class FinanceOperationType : Base.Model
+public class FinanceOperationTypeModel : Base.Model
 {
     public string Name { get; set; } = String.Empty;
 
@@ -19,7 +19,7 @@ public class FinanceOperationType : Base.Model
         if (obj == null || GetType() != obj.GetType())
             return false;
 
-        var financeOperationType = (FinanceOperationType)obj;
+        var financeOperationType = (FinanceOperationTypeModel)obj;
 
         return Id == financeOperationType.Id
             && Name == financeOperationType.Name

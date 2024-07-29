@@ -8,7 +8,7 @@ public class FinanceOperationTests
 {
     [TestMethod]
     [DynamicData(nameof(FinanceOperationDataProvider.EqualsData), typeof(FinanceOperationDataProvider))]
-    public void FinanceOperation_Equals_Bool(FinanceOperation fot1, object fot2, bool expected)
+    public void FinanceOperation_Equals_Bool(FinanceOperationModel fot1, object fot2, bool expected)
     {
         bool result = fot1.Equals(fot2);
 

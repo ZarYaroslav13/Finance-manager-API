@@ -1,19 +1,19 @@
 ﻿namespace DomainLayer.Models;
 
-public abstract class FinanceOperation : Base.Model
+public abstract class FinanceOperationModel : Base.Model
 {
     public int Amount { get; set; }
 
     public DateTime Date { get; set; }
 
-    public FinanceOperationType Type { get; private set; } = new();
+    public FinanceOperationTypeModel Type { get; private set; } = new();
 
-    public FinanceOperation(FinanceOperationType type)
+    public FinanceOperationModel(FinanceOperationTypeModel type)
     {
         ChangeFinanceOperationType(type);
     }
 
-    public void ChangeFinanceOperationType(FinanceOperationType type)
+    public void ChangeFinanceOperationType(FinanceOperationTypeModel type)
     {
         Type = type ?? throw new ArgumentNullException(nameof(type));
     }
@@ -23,7 +23,7 @@ public abstract class FinanceOperation : Base.Model
         if (obj == null || GetType() != obj.GetType())
             return false;
 
-        var financeOperation = (FinanceOperation)obj;
+        var financeOperation = (FinanceOperationModel)obj;
 
         return Id == financeOperation.Id
             && Amount == financeOperation.Amount

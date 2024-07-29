@@ -1,6 +1,6 @@
 ﻿namespace DomainLayer.Models;
 
-public class Account : Base.Model
+public class AccountModel : Base.Model
 {
     public string LastName { get; set; } = String.Empty;
 
@@ -10,14 +10,14 @@ public class Account : Base.Model
 
     public string Password { get; set; } = String.Empty;
 
-    public List<Wallet> Wallets { get; set; } = new();
+    public List<WalletModel> Wallets { get; set; } = new();
 
     public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())
             return false;
 
-        Account account = (Account)obj;
+        AccountModel account = (AccountModel)obj;
 
         return Id == account.Id
                && FirstName == account.FirstName

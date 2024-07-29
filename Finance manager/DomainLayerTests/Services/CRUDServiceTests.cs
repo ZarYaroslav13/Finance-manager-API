@@ -20,7 +20,7 @@ public class CRUDServiceTests
     private IUnitOfWork _unitOfWork;
     private Repository<DataLayer.Models.Account> _repository;
 
-    private ICRUDService<Account, DataLayer.Models.Account> _service;
+    private ICRUDService<AccountModel, DataLayer.Models.Account> _service;
 
     [TestInitialize]
     public void Setup()
@@ -40,7 +40,7 @@ public class CRUDServiceTests
 
         _repository = new(_context);
 
-        _service = new CRUDService<Account, DataLayer.Models.Account>(_unitOfWork, _mapper);
+        _service = new CRUDService<AccountModel, DataLayer.Models.Account>(_unitOfWork, _mapper);
     }
 
     [TestCleanup]
@@ -54,7 +54,7 @@ public class CRUDServiceTests
     [DynamicData(nameof(CRUDServiceTestsDataProvider.ConstructorExceptions), typeof(CRUDServiceTestsDataProvider))]
     public void CRUDServiceTests_Constructor_Exception(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new CRUDService<Account, DataLayer.Models.Account>(unitOfWork, mapper));
+        Assert.ThrowsException<ArgumentNullException>(() => new CRUDService<AccountModel, DataLayer.Models.Account>(unitOfWork, mapper));
     }
 
     [TestMethod]
@@ -66,14 +66,14 @@ public class CRUDServiceTests
         Expression<Func<DataLayer.Models.Account, bool>> expression = a => a.Id > 3;
 
         var expected = FillerBbData.Accounts.GetRange(0, 4)
-                    .Select(_mapper.Map<Account>)
+                    .Select(_mapper.Map<AccountModel>)
                     .ToList();
 
         Assert.IsTrue(Enumerable.SequenceEqual(expected, _service.GetAll()));
 
         expected = FillerBbData.Accounts.GetRange(0, 4)
                     .Where(expression.Compile())
-                    .Select(_mapper.Map<Account>)
+                    .Select(_mapper.Map<AccountModel>)
                     .ToList();
 
         Assert.IsTrue(Enumerable
@@ -85,7 +85,7 @@ public class CRUDServiceTests
     public void CRUDServiceTests_Add_Account()
     {
         var expected = _mapper
-            .Map<Account>(
+            .Map<AccountModel>(
                 FillerBbData
                     .Accounts
                     .FirstOrDefault());
@@ -103,7 +103,7 @@ public class CRUDServiceTests
     public void CRUDServiceTests_Update_Account()
     {
         var account = _mapper
-            .Map<Account>(
+            .Map<AccountModel>(
                 FillerBbData
                     .Accounts
                     .FirstOrDefault());
@@ -131,10 +131,10 @@ public class CRUDServiceTests
 
         var expected = FillerBbData.Accounts
                     .Where(a => a.Id != idDeletedAccount)
-                    .Select(_mapper.Map<Account>)
+                    .Select(_mapper.Map<AccountModel>)
                     .ToList();
 
-        var deletedAccount = _mapper.Map<Account>(_repository.GetById(idDeletedAccount));
+        var deletedAccount = _mapper.Map<AccountModel>(_repository.GetById(idDeletedAccount));
 
         _service.Delete(deletedAccount);
 
@@ -154,7 +154,7 @@ public class CRUDServiceTests
         const int idNeededAccount = 3;
 
         var expected = _mapper
-            .Map<Account>(
+            .Map<AccountModel>(
                 FillerBbData.Accounts
                     .FirstOrDefault(a => a.Id == idNeededAccount));
 
