@@ -1,5 +1,5 @@
 ﻿using DataLayer.Models;
-using DataLayerTests.Data;
+using DataLayerTests.Data.Models;
 
 namespace DataLayerTests.Models;
 
@@ -7,11 +7,16 @@ namespace DataLayerTests.Models;
 public class FinanceOperationTypeTest
 {
     [TestMethod]
-    [DynamicData(nameof(FinanceOperationTypeDataProvider.EqualsData), typeof(FinanceOperationTypeDataProvider))]
-    public void FinanceOperationType_Equals_Bool(FinanceOperationType fot1, object fot2, bool expected)
+    [DynamicData(nameof(FinanceOperationTypeDataProvider.MethodEqualsResultTrueData), typeof(FinanceOperationTypeDataProvider))]
+    public void Equals_FinanceOperationTypeAreEqual_True(FinanceOperationType fot1, object fot2)
     {
-        bool result = fot1.Equals(fot2);
+        Assert.AreEqual(fot1, fot2);
+    }
 
-        Assert.AreEqual(expected, result);
+    [TestMethod]
+    [DynamicData(nameof(FinanceOperationTypeDataProvider.MethodEqualsResultFalseData), typeof(FinanceOperationTypeDataProvider))]
+    public void Equals_FinanceOperationTypeAreEqual_False(FinanceOperationType fot1, object fot2)
+    {
+        Assert.AreNotEqual(fot1, fot2);
     }
 }

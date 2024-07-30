@@ -2,6 +2,7 @@ using DataLayer;
 using DataLayer.Models;
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
+using DataLayerTests.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayerTests;
@@ -31,29 +32,28 @@ public class UnitOfWorkTests
     }
 
     [TestMethod]
-    public void UnitOfWork_Constructor_Exception()
+    public void Constructor_DbContextIsNull_ThrowsException()
     {
         Assert.ThrowsException<ArgumentNullException>(() => new UnitOfWork(null));
     }
 
     [TestMethod]
-    public void UnitOfWork_GetRepository_Repository()
+    public void GetRepository_ReturnedEntitiesFromRepositoryAreExpected_Repository()
     {
-        _context.AddRange(FillerBbData.Accounts);
+        _context.AddRange(EntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
+        var expected = EntitiesTestDataProvider.Accounts;
+        expected.ForEach(a => a.Wallets = null);
 
         var result = _unitOfWork.GetRepository<Account>().GetAll().ToList();
 
-        var expected = new Repository<Account>(_context).GetAll().ToList();
-
-        Assert.IsTrue(Enumerable.SequenceEqual(expected, result));
+        CollectionAssert.AreEqual(expected, result);
     }
 
     [TestMethod]
-    public void UnitOfWork_SaveChanges_Void()
+    public void SaveChanges_NeededChangesAreSuccessfullySaved_Void()
     {
-        var expected = FillerBbData.Accounts.GetRange(0, 2);
-
+        var expected = EntitiesTestDataProvider.Accounts.GetRange(0, 2);
         expected.ForEach(a => a.Wallets = null);
 
         _context.AddRange(expected);
@@ -61,6 +61,6 @@ public class UnitOfWorkTests
 
         var result = _unitOfWork.GetRepository<Account>().GetAll().ToList();
 
-        Assert.IsTrue(Enumerable.SequenceEqual(expected, result));
+        CollectionAssert.AreEqual(expected, result);
     }
 }

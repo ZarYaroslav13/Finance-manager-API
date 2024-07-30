@@ -1,11 +1,11 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 
-namespace DataLayerTests.Data;
+namespace DataLayerTests.Data.Models;
 
 public class FinanceOperationDataProvider
 {
-    public static IEnumerable<object[]> EqualsData { get; } = new List<object[]>
+    public static IEnumerable<object[]> MethodEqualsResultTrueData { get; } = new List<object[]>
     {
         new object[]
         {
@@ -22,8 +22,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MinValue,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            true
+            }
         },
         new object[]
         {
@@ -38,8 +37,7 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
                 Date =  DateTime.MinValue,
                 TypeId = 3
-            },
-            true
+            }
         },
         new object[]
         {
@@ -54,8 +52,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MinValue,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            true
+            }
         },
         new object[]
         {
@@ -70,8 +67,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MinValue,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            true
+            }
         },
         new object[]
         {
@@ -86,9 +82,12 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            true
-        },
+            }
+        }
+    };
+
+    public static IEnumerable<object[]> MethodEqualsResultFalseData { get; } = new List<object[]>
+    {
         new object[]
         {
             new FinanceOperation(){
@@ -104,8 +103,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MinValue,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            false
+            }
         },
         new object[]
         {
@@ -122,8 +120,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MinValue,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            false
+            }
         },
         new object[]
         {
@@ -140,8 +137,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MaxValue,
                 TypeId = 3,
                 Type = randomFinanceOperationType
-            },
-            false
+            }
         },
         new object[]
         {
@@ -158,8 +154,7 @@ public class FinanceOperationDataProvider
                 Date =  DateTime.MinValue,
                 TypeId = 4,
                 Type = FillerBbData.FinanceOperationTypes.FirstOrDefault(fo => fo.Id == 4)
-            },
-            false
+            }
         },
         new object[]
         {
@@ -169,8 +164,7 @@ public class FinanceOperationDataProvider
                 TypeId = 3,
                 Type = randomFinanceOperationType
             },
-            null,
-            false
+            null
         },
         new object[]
         {
@@ -180,10 +174,9 @@ public class FinanceOperationDataProvider
                 TypeId = 3,
                 Type = randomFinanceOperationType
             },
-            new Wallet(),
-            false
+            new Wallet()
         }
     };
 
-    private static FinanceOperationType randomFinanceOperationType = FillerBbData.FinanceOperationTypes.FirstOrDefault(fo => fo.Id == 3);
+    private static FinanceOperationType randomFinanceOperationType = EntitiesTestDataProvider.FinanceOperationTypes.FirstOrDefault(fo => fo.Id == 3);
 }

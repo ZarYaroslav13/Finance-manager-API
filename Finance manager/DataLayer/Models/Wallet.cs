@@ -43,7 +43,6 @@ public class Wallet : Entity
                 && Name == wallet.Name
                 && Balance == wallet.Balance
                 && AccountId == wallet.AccountId
-                && Account == wallet.Account
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
                 && AreEqualLists(GetFinanceOperations(), wallet.GetFinanceOperations());
     }

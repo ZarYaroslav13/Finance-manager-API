@@ -1,5 +1,5 @@
 ﻿using DataLayer.Models;
-using DataLayerTests.Data;
+using DataLayerTests.Data.Models;
 
 namespace DataLayerTests.Models;
 
@@ -7,11 +7,16 @@ namespace DataLayerTests.Models;
 public class AccountTests
 {
     [TestMethod]
-    [DynamicData(nameof(AccountDataProvider.EqualsData), typeof(AccountDataProvider))]
-    public void Account_Equals_Bool(Account ac1, object ac2, bool expected)
+    [DynamicData(nameof(AccountDataProvider.MethodEqualsResultTrueData), typeof(AccountDataProvider))]
+    public void Equals_AccountsAreEqual_True(Account ac1, object ac2)
     {
-        bool result = ac1.Equals(ac2);
+        Assert.AreEqual(ac1, ac2);
+    }
 
-        Assert.AreEqual(expected, result);
+    [TestMethod]
+    [DynamicData(nameof(AccountDataProvider.MethodEqualsResultFalseData), typeof(AccountDataProvider))]
+    public void Equals_AccountsAreEqual_False(Account ac1, object ac2)
+    {
+        Assert.AreNotEqual(ac1, ac2);
     }
 }

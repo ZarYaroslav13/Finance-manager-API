@@ -1,4 +1,5 @@
 ﻿using DataLayer;
+using DataLayerTests.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayerTests;
@@ -25,7 +26,7 @@ public class AppDbContextTests
     }
 
     [TestMethod]
-    public void AppDbContext_AreNeededTables_DbSet()
+    public void TableInitialization_DbSetsNotNull_DbSet()
     {
         Assert.IsNotNull(_context.Accounts);
         Assert.IsNotNull(_context.Wallets);
@@ -34,12 +35,12 @@ public class AppDbContextTests
     }
 
     [TestMethod]
-    public void AppDbContext_UsedEntityConfiguration_Entities()
+    public void UsedEntityConfiguration_RelatedEntitiesNotNull_RelatedEntities()
     {
-        _context.Accounts.AddRange(FillerBbData.Accounts);
-        _context.Wallets.AddRange(FillerBbData.Wallets);
-        _context.FinanceOperationTypes.AddRange(FillerBbData.FinanceOperationTypes);
-        _context.FinanceOperations.AddRange(FillerBbData.FinanceOperations);
+        _context.Accounts.AddRange(EntitiesTestDataProvider.Accounts);
+        _context.Wallets.AddRange(EntitiesTestDataProvider.Wallets);
+        _context.FinanceOperationTypes.AddRange(EntitiesTestDataProvider.FinanceOperationTypes);
+        _context.FinanceOperations.AddRange(EntitiesTestDataProvider.FinanceOperations);
         _context.SaveChanges();
 
         var accounts = _context.Accounts.

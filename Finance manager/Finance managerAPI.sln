@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finance manager API", "Finance manager\Finance manager API.csproj", "{40E26055-CBDC-4A5D-8D50-C79EC4C045A8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{84F32E5D-A987-482F-A437-ADD74FF8FB1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayerTests", "DataLayerTests\DataLayerTests.csproj", "{07ACD54E-B0A1-4A70-A10D-30F4D17CD0BC}"
@@ -13,16 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLayer", "DomainLayer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLayerTests", "DomainLayerTests\DomainLayerTests.csproj", "{C3C497CC-6611-462D-8C60-E74B05DF11C7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finance manager API", "Finance manager API\Finance manager API.csproj", "{1B5A9732-EDFA-4B01-9966-181DF8213B3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{40E26055-CBDC-4A5D-8D50-C79EC4C045A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40E26055-CBDC-4A5D-8D50-C79EC4C045A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40E26055-CBDC-4A5D-8D50-C79EC4C045A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40E26055-CBDC-4A5D-8D50-C79EC4C045A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84F32E5D-A987-482F-A437-ADD74FF8FB1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84F32E5D-A987-482F-A437-ADD74FF8FB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84F32E5D-A987-482F-A437-ADD74FF8FB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{C3C497CC-6611-462D-8C60-E74B05DF11C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3C497CC-6611-462D-8C60-E74B05DF11C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3C497CC-6611-462D-8C60-E74B05DF11C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B5A9732-EDFA-4B01-9966-181DF8213B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B5A9732-EDFA-4B01-9966-181DF8213B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B5A9732-EDFA-4B01-9966-181DF8213B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B5A9732-EDFA-4B01-9966-181DF8213B3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

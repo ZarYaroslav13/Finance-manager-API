@@ -1,8 +1,10 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 using DataLayer.Repository;
+using DataLayerTests.Data;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataLayerTests;
 
@@ -31,58 +33,46 @@ public class RepositoryTests
     }
 
     [TestMethod]
-    public void Repository_Constructor_Exception()
+    public void Constructor_DbContextIsNull_ThrowsException()
     {
         Assert.ThrowsException<ArgumentNullException>(() => new Repository<Account>(null));
     }
 
     [TestMethod]
-    public void Repository_GetAll_ListAccounts()
+    [DynamicData(nameof(RepositoryDataProvider.OrderedAccountListForGetAll), typeof(RepositoryDataProvider))]
+    public void GetAll_AccountsWithWalletListIsOrderedByLastName_OrderedAccountListWithWallets(List<Account> expectedOrderedAccountsList)
     {
-        _context.AddRange(FillerBbData.Accounts);
-        _context.AddRange(FillerBbData.Wallets);
+        _context.AddRange(EntitiesTestDataProvider.Accounts);
+        _context.AddRange(EntitiesTestDataProvider.Wallets);
         _context.SaveChanges();
 
-        var accounts = _repository.GetAll(includeProperties: nameof(Account.Wallets),
+        var resultOrderedAccountsList = _repository.GetAll(includeProperties: nameof(Account.Wallets),
                                            orderBy: qa => qa.OrderBy(a => a.LastName))
                                   .ToList();
 
-        var orderedAccounts = _repository.GetAll().
-                                            OrderBy(a => a.LastName).
-                                            ToList();
-
-
-        for (var i = 0; i < accounts.Count; i++)
-        {
-            Assert.AreEqual(accounts[i].Id, orderedAccounts[i].Id);
-        }
-
-        Assert.IsNotNull(accounts.FirstOrDefault().Wallets);
+        CollectionAssert.AreEqual(expectedOrderedAccountsList, resultOrderedAccountsList);
     }
 
     [TestMethod]
-    public void Repository_GetAllWithFilter_ListAccounts()
+    [DynamicData(nameof(RepositoryDataProvider.AccountsWithIdMoreThen3ListForGetAll), typeof(RepositoryDataProvider))]
+    public void GetAll_AccountListIsFilteredById_FilteredAccountList(List<Account> expectedFilteredAccountList)
     {
-        Func<Account, bool> predicate = (ac) => ac.Id > 3;
+        Expression<Func<Account, bool>> predicate = (ac) => ac.Id > 3;
 
-        _context.AddRange(FillerBbData.Accounts);
-        _context.AddRange(FillerBbData.Wallets);
+        _context.AddRange(EntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
 
-        var filteredGettedAccounts = _repository.GetAll(filter: a => a.Id > 3).ToList();
+        var resultFilteredAccountList = _repository.GetAll(filter: predicate).ToList();
 
-        var filteredAccounts = FillerBbData.Accounts.Where(predicate).ToList();
-
-        foreach (var account in filteredAccounts)
-        {
-            account.Wallets = null;
-        }
-
-        Assert.IsTrue(Enumerable.SequenceEqual(filteredGettedAccounts, filteredAccounts));
+        CollectionAssert.AreEqual(
+            expectedFilteredAccountList
+                .OrderBy(a => a.Id).ToList(), 
+            resultFilteredAccountList
+                .OrderBy(a => a.Id).ToList());
     }
 
     [TestMethod]
-    public void Repository_Insert_Void()
+    public void Insert_AddedNewAccountToDatabase_NewAccount()
     {
         var newAccount = new Account()
         {
@@ -101,7 +91,7 @@ public class RepositoryTests
     }
 
     [TestMethod]
-    public void Repository_Update_Void()
+    public void Update_AccountAftetUpdatingIsChanged_UpdatedAccount()
     {
         var account = new Account()
         {
@@ -118,18 +108,18 @@ public class RepositoryTests
         _repository.Update(account);
         _context.SaveChanges();
 
-        var modifitedAccount = _repository.GetAll().LastOrDefault();
+        var updatedAccount = _repository.GetAll().LastOrDefault();
 
-        Assert.AreEqual(account, modifitedAccount);
+        Assert.AreEqual(account, updatedAccount);
     }
 
     [TestMethod]
-    public void Repository_Delete_Void()
+    public void Delete_AccountDontExistsInDatabase_Void()
     {
-        _context.AddRange(FillerBbData.Accounts);
+        _context.AddRange(EntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
 
-        var removedAccount = FillerBbData.Accounts[3];
+        var removedAccount = EntitiesTestDataProvider.Accounts[3];
 
         _repository.Delete(removedAccount);
         _context.SaveChanges();
@@ -140,19 +130,16 @@ public class RepositoryTests
     }
 
     [TestMethod]
-    public void Repository_GetById_Account()
+    [DynamicData(nameof(RepositoryDataProvider.AccountWithIdEqual2ForGetById), typeof(RepositoryDataProvider))]
+    public void GetById_GettedAccountWithNeededId_Account(Account expectedAccount)
     {
-        _context.AddRange(FillerBbData.Accounts);
+        _context.AddRange(EntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
 
-        var neededAccount = FillerBbData.Accounts[2];
-
-        neededAccount.Wallets = null;
-
-        var foundAccount = _repository.GetById(neededAccount.Id);
+        var foundAccount = _repository.GetById(expectedAccount.Id);
 
         foundAccount.Wallets = null;
 
-        Assert.AreEqual(neededAccount, foundAccount);
+        Assert.AreEqual(expectedAccount, foundAccount);
     }
 }

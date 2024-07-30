@@ -1,17 +1,16 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 
-namespace DataLayerTests.Data;
+namespace DataLayerTests.Data.Models;
 
 public class FinanceOperationTypeDataProvider
 {
-    public static IEnumerable<object[]> EqualsData { get; } = new List<object[]>
+    public static IEnumerable<object[]> MethodEqualsResultTrueData { get; } = new List<object[]>
     {
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2},
-            true
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2}
         },
         new object[]
         {
@@ -19,7 +18,7 @@ public class FinanceOperationTypeDataProvider
                 Id = 1,
                 Description = "Description",
                 EntryType = EntryType.Exponse,
-                FinanceOperations = FillerBbData.FinanceOperations
+                FinanceOperations = EntitiesTestDataProvider.FinanceOperations
                     .Where(fo => fo.TypeId == 1)
                     .ToList(),
                 Name = "Name",
@@ -28,66 +27,60 @@ public class FinanceOperationTypeDataProvider
                 Id = 1,
                 Description = "Description",
                 EntryType = EntryType.Exponse,
-                FinanceOperations = FillerBbData.FinanceOperations
+                FinanceOperations = EntitiesTestDataProvider.FinanceOperations
                     .Where(fo => fo.TypeId == 1)
                     .ToList(),
                 Name = "Name",
-                WalletId = 2},
-            true
+                WalletId = 2}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name"},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name"},
-            true
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name"}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            true
+            new FinanceOperationType(){ Id = 1, EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, WalletId = 2,},
-            true
-        },
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, WalletId = 2,}
+        }
+    };
+
+    public static IEnumerable<object[]> MethodEqualsResultFalseData { get; } = new List<object[]>
+    {
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description1", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            false
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name1", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            false
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Income, Name = "Name", WalletId = 2,},
-            false
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Income, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 3,},
-            false
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 3,}
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            null,
-            false
+            null
         },
         new object[]
         {
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, FinanceOperations = null, Name = "Name", WalletId = 2},
-            new Wallet(),
-            false
+            new Wallet()
         }
     };
 }
