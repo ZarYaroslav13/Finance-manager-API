@@ -1,6 +1,5 @@
 using DataLayer;
 using DataLayer.Models;
-using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DataLayerTests.Data;
 using Microsoft.EntityFrameworkCore;

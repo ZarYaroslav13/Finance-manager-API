@@ -2,7 +2,7 @@ using AutoMapper;
 using DataLayer;
 using DataLayer.UnitOfWork;
 using DomainLayer;
-using DomainLayer.Infrastructure;
+using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;
 using FakeItEasy;
@@ -19,13 +19,17 @@ namespace DomainLayerTests
 
         private FinanceReportCreator _creator;
 
-        [TestInitialize]
-        public void Setup()
+        public FinanceReportCreatorTests()
         {
             _mapper = new MapperConfiguration(
-                cfg =>
-                    cfg.AddProfile<DomainDbMappingProfile>())
-            .CreateMapper();
+               cfg =>
+               cfg.AddProfiles(new List<Profile>()
+               {
+                   new WalletProfile(),
+                   new FinanceOperationProfile(),
+                   new FinanceOperationTypeProfile()
+               }))
+           .CreateMapper();
 
             var options = new DbContextOptionsBuilder<AppDbContext>();
 
@@ -47,25 +51,26 @@ namespace DomainLayerTests
 
         [TestMethod]
         [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.ConstructorException), typeof(FinanceReportCreatorTestsDataProvider))]
-        public void FinanceReportCreator_Constructor_Exception(IUnitOfWork unitOfWork, IMapper mapper)
+        public void Constructor_ContructorArgumentValuesAreNull_ThrowsException(IUnitOfWork unitOfWork, IMapper mapper)
         {
             Assert.ThrowsException<ArgumentNullException>(() => new FinanceReportCreator(unitOfWork, mapper));
         }
 
         [TestMethod]
-        public void FinanceReportCreator_CreateFinanceReport_Exception()
+        public void CreateFinanceReport_ArgumentValuesAreNull_ThrowsException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => _creator.CreateFinanceReport(null, new DateTime(), new DateTime()));
         }
 
         [TestMethod]
-        public void FinanceReportCreator_CreateFinanceReport_ArgumentOutOfRangeException()
+        public void CreateFinanceReport_StartDateIsLaterthenEndDate_ArgumentOutOfRangeException()
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => _creator.CreateFinanceReport(A.Dummy<WalletModel>(), DateTime.MaxValue, DateTime.MinValue));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() 
+                    => _creator.CreateFinanceReport(A.Dummy<WalletModel>(), DateTime.MaxValue, DateTime.MinValue));
         }
 
         [TestMethod]
-        public void FinanceReportCreator_CreateFinanceReport_FinanceReport()
+        public void CreateFinanceReport_GeneratedReportISAsExpected_FinanceReport()
         {
             _context.AddRange(FillerBbData.FinanceOperationTypes);
             _context.AddRange(FillerBbData.FinanceOperations);
@@ -83,7 +88,6 @@ namespace DomainLayerTests
             var expected = new FinanceReportModel(wallet.Id, wallet.Name, period) { Operations = financeOperations.OrderBy(fo => fo.Id).ToList() };
 
             var result = _creator.CreateFinanceReport(wallet, period.StartDate, period.EndDate);
-
             result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
 
             Assert.AreEqual(expected, result);

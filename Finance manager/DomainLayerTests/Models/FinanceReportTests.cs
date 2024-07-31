@@ -1,33 +1,23 @@
 ﻿using AutoMapper;
-using DataLayer;
-using DomainLayer.Infrastructure;
+using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;
+using DomainLayerTests.Data.Models;
+using FakeItEasy;
 
 namespace DomainLayerTests.Models;
 
 [TestClass]
 public class FinanceReportTests
 {
-    IMapper _mapper;
-
-    [TestInitialize]
-    public void Setup()
+    [TestMethod]
+    public void Constructor_ArgumentsAreNull_ThorwsException()
     {
-        _mapper = new MapperConfiguration(
-               cfg =>
-                   cfg.AddProfile<DomainDbMappingProfile>())
-           .CreateMapper();
+        Assert.ThrowsException<ArgumentNullException>(() => new FinanceReportModel(A.Dummy<int>(), null, A.Dummy<Period>()));
     }
 
     [TestMethod]
-    public void FinanceReport_Constructor_Exception()
-    {
-        Assert.ThrowsException<ArgumentNullException>(() => new FinanceReportModel(1, null, new Period()));
-    }
-
-    [TestMethod]
-    public void FinanceReport_Constructor_FinanceReport()
+    public void Constructor_ArgumentsArePassedCorrectly_FinanceReport()
     {
         const int walletId = 1;
         const string walletName = "Name";
@@ -42,29 +32,15 @@ public class FinanceReportTests
     }
 
     [TestMethod]
-    public void FinanceReport_Operations_FinanceOperationsList()
+    [DynamicData(nameof(FinanceReportTestsDataProvider.FinanceOperationsAndTheirIncomeExpense), typeof(FinanceReportTestsDataProvider))]
+    public void AssignOperations_AssignFinaceOperationsIsCorrectly_FinanceOperationsList(
+        List<FinanceOperationModel> financeOperations,
+        int totalIncome,
+        int totalExpense)
     {
         const int walletId = 1;
         const string walletName = "Name";
         Period period = new Period() { StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue };
-
-        var bdFinanceOperationType = FillerBbData
-            .FinanceOperationTypes
-            .FirstOrDefault();
-
-        var bdFinanceOperations = FillerBbData
-            .FinanceOperations
-            .Where(fo => fo.TypeId == bdFinanceOperationType.Id)
-            .ToList();
-
-        bdFinanceOperations.ForEach(fo => fo.Type = bdFinanceOperationType);
-
-        var financeOperations = bdFinanceOperations
-            .Select(_mapper.Map<FinanceOperationModel>)
-            .ToList();
-
-        int totalIncome = financeOperations.OfType<IncomeModel>().Select(i => i.Amount).Sum();
-        int totalExpense = financeOperations.OfType<ExpenseModel>().Select(i => i.Amount).Sum();
 
         var report = new FinanceReportModel(walletId, walletName, period);
 
@@ -72,15 +48,20 @@ public class FinanceReportTests
 
         Assert.AreEqual(totalIncome, report.TotalIncome);
         Assert.AreEqual(totalExpense, report.TotalExpense);
-        Assert.IsTrue(Enumerable.SequenceEqual(report.Operations, financeOperations));
+        CollectionAssert.AreEqual(financeOperations, report.Operations);
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceReportTestsDataProvider.EqualsData), typeof(FinanceReportTestsDataProvider))]
-    public void FinanceReport_AreEquals_Bool(FinanceReportModel fr1, object fr2, bool expected)
+    [DynamicData(nameof(FinanceReportTestsDataProvider.MethodEqualsResultTrueData), typeof(FinanceReportTestsDataProvider))]
+    public void Equals_FinanceReportsAreEqual_True(FinanceReportModel fr1, object fr2)
     {
-        bool result = fr1.Equals(fr2);
+        Assert.AreEqual(fr1, fr1);
+    }
 
-        Assert.AreEqual(expected, result);
+    [TestMethod]
+    [DynamicData(nameof(FinanceReportTestsDataProvider.MethodEqualsResultFalseData), typeof(FinanceReportTestsDataProvider))]
+    public void Equals_FinanceReportsAreEqual_False(FinanceReportModel fr1, object fr2)
+    {
+        Assert.AreNotEqual(fr1, fr2);
     }
 }

@@ -1,9 +1,15 @@
 ﻿using DataLayer.Models;
 using DataLayer.Security;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DataLayerTests.Data;
+namespace DomainLayerTests.Data;
 
-public static class EntitiesTestDataProvider
+public class DbEntitiesTestDataProvider
+
 {
     public static List<Account> Accounts { get { return _accounts; } }
 

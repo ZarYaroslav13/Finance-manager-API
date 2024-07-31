@@ -1,6 +1,6 @@
 ﻿using DomainLayer.Models;
 
-namespace DomainLayerTests.Data;
+namespace DomainLayerTests.Data.Models;
 
 public class FinanceOperationDataProvider
 {
@@ -26,7 +26,7 @@ public class FinanceOperationDataProvider
                     WalletName = "WalletName"
                 };
 
-    public static IEnumerable<object[]> EqualsData { get; } = new List<object[]>
+    public static IEnumerable<object[]> MethodEqualsResultTrueData { get; } = new List<object[]>
     {
         new object[]
         {
@@ -39,8 +39,7 @@ public class FinanceOperationDataProvider
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-            },
-            true
+            }
         },
         new object[]
         {
@@ -53,8 +52,7 @@ public class FinanceOperationDataProvider
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-            },
-            true
+            }
         },
         new object[]
         {
@@ -67,8 +65,7 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
-            },
-            true
+            }
         },
         new object[]
         {
@@ -81,8 +78,7 @@ public class FinanceOperationDataProvider
                 Id = 1,
                 Date =  DateTime.MinValue,
 
-            },
-            true
+            }
         },
         new object[]
         {
@@ -96,8 +92,11 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
 
             },
-            true
-        },
+        }
+    };
+
+    public static IEnumerable<object[]> MethodEqualsResultFalseData { get; } = new List<object[]>
+    {
         new object[]
         {
             new IncomeModel(_randomIncomeType){
@@ -111,8 +110,7 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
                 Date =  DateTime.MinValue,
 
-            },
-            false
+            }
         },
         new object[]
         {
@@ -127,8 +125,7 @@ public class FinanceOperationDataProvider
                 Amount = 2000,
                 Date =  DateTime.MinValue,
 
-            },
-            false
+            }
         },
         new object[]
         {
@@ -143,8 +140,7 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
                 Date =  DateTime.MaxValue,
 
-            },
-            false
+            }
         },
         new object[]
         {
@@ -158,8 +154,7 @@ public class FinanceOperationDataProvider
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-            },
-            false
+            }
         },
         new object[]
         {
@@ -168,8 +163,7 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
 
             },
-            null,
-            false
+            null
         },
         new object[]
         {
@@ -178,10 +172,7 @@ public class FinanceOperationDataProvider
                 Amount = 1000,
 
             },
-            new WalletModel(),
-            false
+            new WalletModel()
         }
     };
-
-
 }

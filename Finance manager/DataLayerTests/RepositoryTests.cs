@@ -66,7 +66,7 @@ public class RepositoryTests
 
         CollectionAssert.AreEqual(
             expectedFilteredAccountList
-                .OrderBy(a => a.Id).ToList(), 
+                .OrderBy(a => a.Id).ToList(),
             resultFilteredAccountList
                 .OrderBy(a => a.Id).ToList());
     }

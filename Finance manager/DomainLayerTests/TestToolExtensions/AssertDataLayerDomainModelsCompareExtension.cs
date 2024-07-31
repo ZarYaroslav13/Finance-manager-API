@@ -1,68 +1,69 @@
-﻿using DomainLayer.Models;
+﻿using DataLayer.Models;
+using DomainLayer.Models;
 
 namespace DomainLayerTests.TestHelpers;
 
 public static class AssertDataLayerDomainModelsCompareExtension
 {
-    public static void Compare(this Assert assert, DataLayer.Models.Account dbAccount, AccountModel domainAccount)
+    public static void AreEqual(this Assert assert, Account dbAccount, AccountModel domainAccount)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbAccount));
         ArgumentNullException.ThrowIfNull(nameof(domainAccount));
 
-        Assert.IsTrue(Compare(dbAccount, domainAccount));
+        Assert.IsTrue(AreEqual(dbAccount, domainAccount));
     }
 
-    public static void Compare(this Assert assert, DataLayer.Models.Wallet dbWallet, WalletModel domainWallet)
+    public static void AreEqual(this Assert assert, Wallet dbWallet, WalletModel domainWallet)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbWallet));
         ArgumentNullException.ThrowIfNull(nameof(domainWallet));
 
-        Assert.IsTrue(Compare(dbWallet, domainWallet));
+        Assert.IsTrue(AreEqual(dbWallet, domainWallet));
     }
 
-    public static void Compare(this Assert assert, DataLayer.Models.FinanceOperationType dbFinanceOperationType, FinanceOperationTypeModel domainFinanceOperationType)
+    public static void AreEqual(this Assert assert, FinanceOperationType dbFinanceOperationType, FinanceOperationTypeModel domainFinanceOperationType)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbFinanceOperationType));
         ArgumentNullException.ThrowIfNull(nameof(domainFinanceOperationType));
 
-        Assert.IsTrue(Compare(dbFinanceOperationType, domainFinanceOperationType));
+        Assert.IsTrue(AreEqual(dbFinanceOperationType, domainFinanceOperationType));
     }
 
-    public static void Compare(this Assert assert, DataLayer.Models.FinanceOperation dbFinanceOperation, FinanceOperationModel domainFinanceOperation)
+    public static void AreEqual(this Assert assert, FinanceOperation dbFinanceOperation, FinanceOperationModel domainFinanceOperation)
     {
         ArgumentNullException.ThrowIfNull(nameof(dbFinanceOperation));
         ArgumentNullException.ThrowIfNull(nameof(domainFinanceOperation));
 
-        Assert.IsTrue(Compare(dbFinanceOperation, domainFinanceOperation));
+        Assert.IsTrue(AreEqual(dbFinanceOperation, domainFinanceOperation));
     }
 
-    private static bool Compare(DataLayer.Models.Account dbAccount, AccountModel domainAccount)
+    private static bool AreEqual(Account dbAccount, AccountModel domainAccount)
     {
         if ((dbAccount.Id == domainAccount.Id)
        && (dbAccount.LastName == domainAccount.LastName)
        && (dbAccount.FirstName == domainAccount.FirstName)
        && (dbAccount.Email == domainAccount.Email)
        && (dbAccount.Password == domainAccount.Password)
-       && CompareAccountWallets(dbAccount, domainAccount))
+       && AreEqualAccountWallets(dbAccount, domainAccount))
             return true;
 
         return false;
     }
 
-    private static bool Compare(DataLayer.Models.Wallet dbWallet, WalletModel domainWallet)
+    private static bool AreEqual(Wallet dbWallet, WalletModel domainWallet)
     {
         if ((dbWallet.Id == domainWallet.Id)
         && (dbWallet.Balance == domainWallet.Balance)
         && (dbWallet.AccountId == domainWallet.AccountId)
         && (dbWallet.Name == domainWallet.Name)
-        && CompareWalletOperationTypes(dbWallet, domainWallet)
-        && CompareFinanceWalletOperationTypes(dbWallet, domainWallet))
+        && AreEqualWalletOperationTypes(dbWallet, domainWallet)
+        && AreEqualFinanceWalletOperationTypes(dbWallet, domainWallet))
             return true;
 
         return false;
     }
 
-    private static bool Compare(DataLayer.Models.FinanceOperationType dbFinanceOperationType, FinanceOperationTypeModel domainFinanceOperationType)
+    private static bool AreEqual(FinanceOperationType dbFinanceOperationType, FinanceOperationTypeModel domainFinanceOperationType)
     {
         if ((dbFinanceOperationType.Id == domainFinanceOperationType.Id)
         && (dbFinanceOperationType.Name == domainFinanceOperationType.Name)
@@ -76,7 +77,7 @@ public static class AssertDataLayerDomainModelsCompareExtension
         return false;
     }
 
-    private static bool Compare(DataLayer.Models.FinanceOperation dbFinanceOperation, FinanceOperationModel domainFinanceOperation)
+    private static bool AreEqual(FinanceOperation dbFinanceOperation, FinanceOperationModel domainFinanceOperation)
     {
         if ((dbFinanceOperation.Id == domainFinanceOperation.Id)
         && (dbFinanceOperation.TypeId == domainFinanceOperation.Type.Id)
@@ -89,45 +90,45 @@ public static class AssertDataLayerDomainModelsCompareExtension
         return false;
     }
 
-    private static bool Compare(DataLayer.Models.FinanceOperation dbFinanceOperation, IncomeModel income)
+    private static bool AreEqual(FinanceOperation dbFinanceOperation, IncomeModel income)
     {
-        return Compare(dbFinanceOperation, (FinanceOperationModel)income) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Income;
+        return AreEqual(dbFinanceOperation, (FinanceOperationModel)income) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Income;
     }
 
-    private static bool Compare(DataLayer.Models.FinanceOperation dbFinanceOperation, ExpenseModel Expense)
+    private static bool AreEqual(FinanceOperation dbFinanceOperation, ExpenseModel Expense)
     {
-        return Compare(dbFinanceOperation, (FinanceOperationModel)Expense) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Exponse;
+        return AreEqual(dbFinanceOperation, (FinanceOperationModel)Expense) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Exponse;
     }
 
-    private static bool CompareAccountWallets(DataLayer.Models.Account dbAccount, AccountModel domainAccount)
+    private static bool AreEqualAccountWallets(Account dbAccount, AccountModel domainAccount)
     {
         if (dbAccount.Wallets.Count != domainAccount.Wallets.Count)
             return false;
 
         for (int i = 0; i < domainAccount.Wallets.Count; i++)
         {
-            if (!Compare(dbAccount.Wallets[i], domainAccount.Wallets[i]))
+            if (!AreEqual(dbAccount.Wallets[i], domainAccount.Wallets[i]))
                 return false;
         }
 
         return true;
     }
 
-    private static bool CompareWalletOperationTypes(DataLayer.Models.Wallet dbWallet, WalletModel domainWallet)
+    private static bool AreEqualWalletOperationTypes(Wallet dbWallet, WalletModel domainWallet)
     {
         if (dbWallet.FinanceOperationTypes.Count != domainWallet.FinanceOperationTypes.Count)
             return false;
 
         for (int i = 0; i < domainWallet.FinanceOperationTypes.Count; i++)
         {
-            if (!Compare(dbWallet.FinanceOperationTypes[i], domainWallet.FinanceOperationTypes[i]))
+            if (!AreEqual(dbWallet.FinanceOperationTypes[i], domainWallet.FinanceOperationTypes[i]))
                 return false;
         }
 
         return true;
     }
 
-    private static bool CompareFinanceWalletOperationTypes(DataLayer.Models.Wallet dbWallet, WalletModel domainWallet)
+    private static bool AreEqualFinanceWalletOperationTypes(Wallet dbWallet, WalletModel domainWallet)
     {
         if (dbWallet.GetFinanceOperations().Count != (domainWallet.Incomes.Count + domainWallet.Expenses.Count))
             return false;
@@ -139,13 +140,13 @@ public static class AssertDataLayerDomainModelsCompareExtension
 
         for (int i = 0; i < domainWallet.Incomes.Count; i++)
         {
-            if (!Compare(dbFinanceOperations[i], domainWallet.Incomes[i]))
+            if (!AreEqual(dbFinanceOperations[i], domainWallet.Incomes[i]))
                 return false;
         }
 
         for (int i = domainWallet.Incomes.Count, j = 0; i < dbFinanceOperations.Count; i++, j++)
         {
-            if (!Compare(dbFinanceOperations[i], domainWallet.Expenses[j]))
+            if (!AreEqual(dbFinanceOperations[i], domainWallet.Expenses[j]))
                 return false;
         }
 

@@ -1,5 +1,5 @@
 ﻿using DomainLayer.Models;
-using DomainLayerTests.Data;
+using DomainLayerTests.Data.Models;
 
 namespace DomainLayerTests.Models;
 
@@ -7,11 +7,16 @@ namespace DomainLayerTests.Models;
 public class WalletTests
 {
     [TestMethod]
-    [DynamicData(nameof(WalletDataProvider.EqualsData), typeof(WalletDataProvider))]
-    public void Wallet_Equals_Bool(WalletModel w1, object w2, bool expected)
+    [DynamicData(nameof(WalletDataProvider.MethodEqualsResultTrueData), typeof(WalletDataProvider))]
+    public void Equals_WalletModelsAreEqual_True(WalletModel w1, object w2)
     {
-        bool result = w1.Equals(w2);
+        Assert.AreEqual(w1, w2);
+    }
 
-        Assert.AreEqual(expected, result);
+    [TestMethod]
+    [DynamicData(nameof(WalletDataProvider.MethodEqualsResultFalseData), typeof(WalletDataProvider))]
+    public void Equals_WalletModelsAreEqual_False(WalletModel w1, object w2)
+    {
+        Assert.AreNotEqual(w1, w2);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DomainLayer.Models;
-using DomainLayerTests.Data;
+using DomainLayerTests.Data.Models;
 
 namespace DomainLayerTests.Models;
 
@@ -7,11 +7,16 @@ namespace DomainLayerTests.Models;
 public class AccountTests
 {
     [TestMethod]
-    [DynamicData(nameof(AccountDataProvider.EqualsData), typeof(AccountDataProvider))]
-    public void Account_Equals_Bool(AccountModel ac1, object ac2, bool expected)
+    [DynamicData(nameof(AccountDataProvider.MethodEqualsResultTrueData), typeof(AccountDataProvider))]
+    public void Equals_AccountModelsAreEqual_True(AccountModel ac1, object ac2)
     {
-        bool result = ac1.Equals(ac2);
+        Assert.AreEqual(ac1, ac2);
+    }
 
-        Assert.AreEqual(expected, result);
+    [TestMethod]
+    [DynamicData(nameof(AccountDataProvider.MethodEqualsResultFalseData), typeof(AccountDataProvider))]
+    public void Equals_AccountModelsAreEqual_False(AccountModel ac1, object ac2)
+    {
+        Assert.AreNotEqual(ac1, ac2);
     }
 }

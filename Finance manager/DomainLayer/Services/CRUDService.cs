@@ -66,14 +66,10 @@ public class CRUDService<T_Domain, T_DB> : ICRUDService<T_Domain, T_DB>
 
     public virtual void Delete(T_Domain entity)
     {
+        Update(entity);
+
         var dbEntity = _repository.GetById(entity.Id);
-        var mappedEntity = _mapper.Map<T_DB>(entity);
-
-        foreach (var property in dbEntity.GetType().GetProperties())
-        {
-            property.SetValue(dbEntity, property.GetValue(mappedEntity));
-        }
-
+        
         _repository.Delete(dbEntity);
         _unitOfWork.SaveChanges();
     }

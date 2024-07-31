@@ -1,5 +1,5 @@
 ﻿using DomainLayer.Models;
-using DomainLayerTests.Data;
+using DomainLayerTests.Data.Models;
 
 namespace DomainLayerTests.Models;
 
@@ -7,22 +7,16 @@ namespace DomainLayerTests.Models;
 public class PeriodTests
 {
     [TestMethod]
-    [DynamicData(nameof(PeriodDataProvider.EqualsData), typeof(PeriodDataProvider))]
-    public void Period_Equals_Bool(Period ac1, object ac2, bool expected)
+    [DynamicData(nameof(PeriodDataProvider.MethodEqualsResultTrueData), typeof(PeriodDataProvider))]
+    public void Equals_PeriodModelsAreEqual_True(Period p1, object p2)
     {
-        bool result = ac1.Equals(ac2);
+        Assert.AreEqual(p1, p2);
+    }
 
-        Assert.AreEqual(expected, result);
-
-        if (ac2 != null && ac1.GetType() == ac2.GetType())
-        {
-            Assert.AreEqual(ac1 == (Period)ac2, result);
-
-            Assert.AreEqual(ac1 != (Period)ac2, !result);
-
-            Assert.AreEqual(ac1 == ac1, true);
-
-            Assert.AreEqual(ac1 == null, false);
-        }
+    [TestMethod]
+    [DynamicData(nameof(PeriodDataProvider.MethodEqualsResultFalseData), typeof(PeriodDataProvider))]
+    public void Equals_PeriodModelsAreEqual_False(Period p1, object p2)
+    {
+        Assert.AreNotEqual(p1, p2);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DomainLayer.Models;
-using DomainLayerTests.Data;
+using DomainLayerTests.Data.Models;
 
 namespace DomainLayerTests.Models
 {
@@ -7,12 +7,17 @@ namespace DomainLayerTests.Models
     public class FinanceOperationTypeTest
     {
         [TestMethod]
-        [DynamicData(nameof(FinanceOperationTypeDataProvider.EqualsData), typeof(FinanceOperationTypeDataProvider))]
-        public void FinanceOperationType_Equals_Bool(FinanceOperationTypeModel fot1, object fot2, bool expected)
+        [DynamicData(nameof(FinanceOperationTypeDataProvider.MethodEqualsResultTrueData), typeof(FinanceOperationTypeDataProvider))]
+        public void Equals_FinanceOperationTypeModelsAreEqual_True(FinanceOperationTypeModel fot1, object fot2)
         {
-            bool result = fot1.Equals(fot2);
+            Assert.AreEqual(fot1, fot2);
+        }
 
-            Assert.AreEqual(expected, result);
+        [TestMethod]
+        [DynamicData(nameof(FinanceOperationTypeDataProvider.MethodEqualsResultFalseData), typeof(FinanceOperationTypeDataProvider))]
+        public void Equals_FinanceOperationTypeModelsAreEqual_False(FinanceOperationTypeModel fot1, object fot2)
+        {
+            Assert.AreNotEqual(fot1, fot2);
         }
     }
 }

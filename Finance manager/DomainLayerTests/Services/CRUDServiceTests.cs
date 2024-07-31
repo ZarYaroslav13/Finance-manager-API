@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using DataLayer;
+using DataLayer.Models;
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
-using DomainLayer.Infrastructure;
+using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayer.Services;
 using DomainLayerTests.Data;
@@ -18,17 +19,21 @@ public class CRUDServiceTests
     private AppDbContext _context;
     private IMapper _mapper;
     private IUnitOfWork _unitOfWork;
-    private Repository<DataLayer.Models.Account> _repository;
+    private Repository<Account> _repository;
 
-    private ICRUDService<AccountModel, DataLayer.Models.Account> _service;
+    private ICRUDService<AccountModel, Account> _service;
 
-    [TestInitialize]
-    public void Setup()
+    public CRUDServiceTests()
     {
         _mapper = new MapperConfiguration(
-                cfg =>
-                    cfg.AddProfile<DomainDbMappingProfile>())
-            .CreateMapper();
+               cfg =>
+               {
+                   cfg.AddProfile<AccountProfile>();
+                   cfg.AddProfile<WalletProfile>();
+                   cfg.AddProfile<FinanceOperationProfile>();
+                   cfg.AddProfile<FinanceOperationTypeProfile>();
+               })
+           .CreateMapper();
 
         var options = new DbContextOptionsBuilder<AppDbContext>();
 
@@ -40,7 +45,7 @@ public class CRUDServiceTests
 
         _repository = new(_context);
 
-        _service = new CRUDService<AccountModel, DataLayer.Models.Account>(_unitOfWork, _mapper);
+        _service = new CRUDService<AccountModel, Account>(_unitOfWork, _mapper);
     }
 
     [TestCleanup]
@@ -52,41 +57,62 @@ public class CRUDServiceTests
 
     [TestMethod]
     [DynamicData(nameof(CRUDServiceTestsDataProvider.ConstructorExceptions), typeof(CRUDServiceTestsDataProvider))]
-    public void CRUDServiceTests_Constructor_Exception(IUnitOfWork unitOfWork, IMapper mapper)
+    public void Constructor_NullValueOfConstructorArguments_ThrowsException(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new CRUDService<AccountModel, DataLayer.Models.Account>(unitOfWork, mapper));
+        Assert.ThrowsException<ArgumentNullException>(() => new CRUDService<AccountModel, Account>(unitOfWork, mapper));
     }
 
     [TestMethod]
-    public void CRUDServiceTests_GetAll_AccountsList()
+    public void GetAll_GettedExpectedAccounModelstList_AccountModelsList()
     {
-        _context.AddRange(FillerBbData.Accounts.GetRange(0, 4));
+        _context.AddRange(DbEntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
-
-        Expression<Func<DataLayer.Models.Account, bool>> expression = a => a.Id > 3;
-
-        var expected = FillerBbData.Accounts.GetRange(0, 4)
+        
+        var expected = DbEntitiesTestDataProvider.Accounts
                     .Select(_mapper.Map<AccountModel>)
                     .ToList();
 
-        Assert.IsTrue(Enumerable.SequenceEqual(expected, _service.GetAll()));
+        CollectionAssert.AreEqual(expected, _service.GetAll());
+    }
 
-        expected = FillerBbData.Accounts.GetRange(0, 4)
+    [TestMethod]
+    public void GetAllWithFilter_GettedExpectedAccounModelstList_FilteredAccountModelsList()
+    {
+        _context.AddRange(DbEntitiesTestDataProvider.Accounts.GetRange(0, 4));
+        _context.SaveChanges();
+
+        Expression<Func<Account, bool>> expression = a => a.Id > 3;
+
+        var expected = DbEntitiesTestDataProvider.Accounts.GetRange(0, 4)
                     .Where(expression.Compile())
                     .Select(_mapper.Map<AccountModel>)
                     .ToList();
 
-        Assert.IsTrue(Enumerable
-                .SequenceEqual(expected
-            , _service.GetAll(filter: expression)));
+        CollectionAssert.AreEqual(expected, _service.GetAll(filter: expression));
     }
 
     [TestMethod]
-    public void CRUDServiceTests_Add_Account()
+    public void GetAllWithOrder_GettedExpectedOrderedByLastNameAccounModelstList_OrderedByLastNameAccountModelsList()
+    {
+        _context.AddRange(DbEntitiesTestDataProvider.Accounts);
+        _context.SaveChanges();
+
+        Expression<Func<Account, string>> orderby = (Account a) => a.LastName;
+
+        var expected = DbEntitiesTestDataProvider.Accounts
+                    .OrderBy(orderby.Compile())
+                    .Select(_mapper.Map<AccountModel>)
+                    .ToList();
+
+        CollectionAssert.AreEqual(expected, _service.GetAll(orderBy: qa => qa.OrderBy(orderby)));
+    }
+
+    [TestMethod]
+    public void Add_AddedExpectedNewAccount_Account()
     {
         var expected = _mapper
             .Map<AccountModel>(
-                FillerBbData
+                DbEntitiesTestDataProvider
                     .Accounts
                     .FirstOrDefault());
 
@@ -100,11 +126,11 @@ public class CRUDServiceTests
     }
 
     [TestMethod]
-    public void CRUDServiceTests_Update_Account()
+    public void Update_UpdatedNeededAccount_Account()
     {
         var account = _mapper
             .Map<AccountModel>(
-                FillerBbData
+                DbEntitiesTestDataProvider
                     .Accounts
                     .FirstOrDefault());
 
@@ -122,14 +148,14 @@ public class CRUDServiceTests
     }
 
     [TestMethod]
-    public void CRUDServiceTests_Delete_Void()
+    public void Delete_DeletedAccountIsNotExistInDatabase_Void()
     {
-        _context.AddRange(FillerBbData.Accounts);
+        _context.AddRange(DbEntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
 
         const int idDeletedAccount = 3;
 
-        var expected = FillerBbData.Accounts
+        var expected = DbEntitiesTestDataProvider.Accounts
                     .Where(a => a.Id != idDeletedAccount)
                     .Select(_mapper.Map<AccountModel>)
                     .ToList();
@@ -140,26 +166,20 @@ public class CRUDServiceTests
 
         var result = _service.GetAll();
 
-        Assert.IsTrue(Enumerable
-                .SequenceEqual(expected
-            , result));
+        CollectionAssert.AreEqual(expected, result);
     }
 
     [TestMethod]
-    public void CRUDServiceTests_Find_Account()
+    [DynamicData(nameof(CRUDServiceTestsDataProvider.DataForFindTests), typeof(CRUDServiceTestsDataProvider))]
+    public void Find_WantedAndReceivedAccountsAreEqual_Account(List<Account> dbAccounts, AccountModel wantedAccount)
     {
-        _context.AddRange(FillerBbData.Accounts);
+        int idNeededAccount = wantedAccount.Id;
+
+        _context.AddRange(dbAccounts);
         _context.SaveChanges();
-
-        const int idNeededAccount = 3;
-
-        var expected = _mapper
-            .Map<AccountModel>(
-                FillerBbData.Accounts
-                    .FirstOrDefault(a => a.Id == idNeededAccount));
 
         var result = _service.Find(idNeededAccount);
 
-        Assert.AreEqual(expected, result);
+        Assert.AreEqual(wantedAccount, result);
     }
 }
