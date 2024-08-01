@@ -2,7 +2,7 @@
 using DataLayer.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
-namespace Finance_manager.HostBuilder;
+namespace Finance_manager_API.HostBuilder;
 
 public static class AddServicesConfigurationHostBuilderExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace Finance_manager.Models.Base;
+﻿namespace Finance_manager_API.Models.Base;
 
 public class ModelDTO
 {

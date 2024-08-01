@@ -8,7 +8,7 @@ public class PeriodTests
 {
     [TestMethod]
     [DynamicData(nameof(PeriodDataProvider.MethodEqualsResultTrueData), typeof(PeriodDataProvider))]
-    public void Equals_PeriodModelsAreEqual_True(Period p1, object p2)
+    public void Equals_PeriodModelsAreNotEqual_True(Period p1, Period p2)
     {
         Assert.AreEqual(p1, p2);
     }

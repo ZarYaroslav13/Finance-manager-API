@@ -1,9 +1,9 @@
-﻿using Finance_manager.Models;
+﻿using Finance_manager_API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Finance_manager.Controllers
+namespace Finance_manager_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

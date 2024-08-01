@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Finance_manager.Controllers.Base;
+namespace Finance_manager_API.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]

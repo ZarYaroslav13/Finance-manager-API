@@ -50,14 +50,14 @@ public class FinanceReportTests
 
     [TestMethod]
     [DynamicData(nameof(FinanceReportTestsDataProvider.MethodEqualsResultTrueData), typeof(FinanceReportTestsDataProvider))]
-    public void Equals_FinanceReportsAreEqual_True(FinanceReportModel fr1, object fr2)
+    public void Equals_FinanceReportsAreEqual_True(FinanceReportModel fr1, FinanceReportModel fr2)
     {
         Assert.AreEqual(fr1, fr1);
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceReportTestsDataProvider.MethodEqualsResultFalseData), typeof(FinanceReportTestsDataProvider))]
-    public void Equals_FinanceReportsAreEqual_False(FinanceReportModel fr1, object fr2)
+    public void Equals_FinanceReportsAreNotEqual_False(FinanceReportModel fr1, object fr2)
     {
         Assert.AreNotEqual(fr1, fr2);
     }
