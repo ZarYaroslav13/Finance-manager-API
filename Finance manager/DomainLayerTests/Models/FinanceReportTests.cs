@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using DomainLayer.Mapper.Profiles;
-using DomainLayer.Models;
-using DomainLayerTests.Data;
+﻿using DomainLayer.Models;
 using DomainLayerTests.Data.Models;
 using FakeItEasy;
 

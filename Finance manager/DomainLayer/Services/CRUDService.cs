@@ -69,7 +69,7 @@ public class CRUDService<T_Domain, T_DB> : ICRUDService<T_Domain, T_DB>
         Update(entity);
 
         var dbEntity = _repository.GetById(entity.Id);
-        
+
         _repository.Delete(dbEntity);
         _unitOfWork.SaveChanges();
     }

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using DataLayer.Models;
-using DomainLayer.Mapper.Profiles;
+﻿using DataLayer.Models;
 using DomainLayer.Models;
 
 namespace DomainLayerTests.Data.Models;

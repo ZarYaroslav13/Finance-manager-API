@@ -4,11 +4,6 @@ using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;
 using DomainLayerTests.TestHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayerTests.Mapper.Profiles;
 

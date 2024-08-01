@@ -67,7 +67,7 @@ public class CRUDServiceTests
     {
         _context.AddRange(DbEntitiesTestDataProvider.Accounts);
         _context.SaveChanges();
-        
+
         var expected = DbEntitiesTestDataProvider.Accounts
                     .Select(_mapper.Map<AccountModel>)
                     .ToList();

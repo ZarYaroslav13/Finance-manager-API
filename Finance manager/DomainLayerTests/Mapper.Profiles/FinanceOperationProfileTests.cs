@@ -1,15 +1,9 @@
 ﻿using AutoMapper;
-using DataLayer;
 using DataLayer.Models;
 using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;
 using DomainLayerTests.TestHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayerTests.Mapper.Profiles;
 
@@ -34,14 +28,14 @@ public class FinanceOperationProfileTests
     {
         var dbFinanceOperation = DbEntitiesTestDataProvider
             .FinanceOperations
-            .Select(fo => new FinanceOperation() 
-                {
-                    Id = fo.Id,
-                    Amount = fo.Amount,
-                    Date = fo.Date,
-                    Type = fo.Type,
-                    TypeId = fo.TypeId,
-                })
+            .Select(fo => new FinanceOperation()
+            {
+                Id = fo.Id,
+                Amount = fo.Amount,
+                Date = fo.Date,
+                Type = fo.Type,
+                TypeId = fo.TypeId,
+            })
             .FirstOrDefault();
         var typeOfOperation = DbEntitiesTestDataProvider.FinanceOperationTypes.FirstOrDefault(t => t.Id == dbFinanceOperation.TypeId);
 
