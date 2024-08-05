@@ -17,7 +17,7 @@ public class FinanceReportCreator
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-        _service = new CRUDService<FinanceOperationModel, FinanceOperation>(_unitOfWork, _mapper);
+        _service = new EntityService<FinanceOperationModel, FinanceOperation>(_unitOfWork, _mapper);
     }
 
     public FinanceReportModel CreateFinanceReport(WalletModel wallet, DateTime startDate, DateTime endDate)

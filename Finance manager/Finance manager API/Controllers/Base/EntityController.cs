@@ -14,6 +14,5 @@ public class EntityController<T> : ControllerBase where T : Models.Base.ModelDTO
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-
     }
 }

@@ -54,13 +54,22 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
 
     public T Update(T entity)
     {
-        _dbSet.Update(entity);
+        var toUpdate = _dbSet.FirstOrDefault(e => e.Id == entity.Id);
+
+        if (toUpdate != null)
+        {
+            toUpdate = entity;
+        }
+
+        _dbSet.Update(toUpdate);
 
         return entity;
     }
 
-    public void Delete(T entity)
+    public void Delete(int id)
     {
+        var entity = _dbSet.Find(id);
+
         _dbSet.Remove(entity);
     }
 }

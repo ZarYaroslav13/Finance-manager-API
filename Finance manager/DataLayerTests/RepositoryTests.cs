@@ -121,7 +121,7 @@ public class RepositoryTests
 
         var removedAccount = EntitiesTestDataProvider.Accounts[3];
 
-        _repository.Delete(removedAccount);
+        _repository.Delete(removedAccount.Id);
         _context.SaveChanges();
 
         var accounts = _repository.GetAll();

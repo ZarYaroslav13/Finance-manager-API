@@ -19,6 +19,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
                         GetConnectionString(connectionString)));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return builder;
     }
