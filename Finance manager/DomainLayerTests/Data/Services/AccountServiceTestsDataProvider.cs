@@ -6,30 +6,7 @@ namespace DomainLayerTests.Data.Services;
 
 public static class AccountServiceTestsDataProvider
 {
-    public static IEnumerable<object[]> AddNewAccountTestData { get; } = new List<object[]>
-    {
-        new object[]
-        {
-            new AccountModel()
-            {
-                Id = 1,
-                LastName = "LastName",
-                FirstName = "FirstName",
-                Email = "Email@gmail.com",
-                Password = "Password"
-            },
-            new Account()
-            {
-                Id = 1,
-                LastName = "LastName",
-                FirstName = "FirstName",
-                Email = "Email@gmail.com",
-                Password = "Password"
-            }
-        }
-    };
-
-    public static IEnumerable<object[]> UpdateAccountTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> AddOrUpdateAccountTestData { get; } = new List<object[]>
     {
         new object[]
         {

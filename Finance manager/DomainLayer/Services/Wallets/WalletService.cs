@@ -19,7 +19,7 @@ public class WalletService : EntityService<WalletModel, Wallet>, IWalletService
             .ToList();
     }
 
-    public WalletModel AddNewWallet(Wallet wallet)
+    public WalletModel AddNewWallet(WalletModel wallet)
     {
         var result = _mapper.Map<WalletModel>(
                         _repository.Insert(
@@ -29,7 +29,7 @@ public class WalletService : EntityService<WalletModel, Wallet>, IWalletService
         return result;
     }
 
-    public WalletModel Update(Wallet updatedWallet)
+    public WalletModel UpdateWallet(WalletModel updatedWallet)
     {
         var result = _mapper.Map<WalletModel>(
                         _repository.Update(
@@ -39,13 +39,13 @@ public class WalletService : EntityService<WalletModel, Wallet>, IWalletService
         return result;
     }
 
-    public void Delete(int id)
+    public void DeleteWalletById(int id)
     {
         _repository.Delete(id);
         _unitOfWork.SaveChanges();
     }
 
-    public WalletModel Find(int id)
+    public WalletModel FindWallet(int id)
     {
         return _mapper
             .Map<WalletModel>(

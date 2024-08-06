@@ -7,11 +7,11 @@ public interface IWalletService
 {
     public List<WalletModel> GetAllWalletsOfAccount(int accountId);
 
-    public WalletModel AddNewWallet(Wallet wallet);
+    public WalletModel AddNewWallet(WalletModel wallet);
 
-    public WalletModel Update(Wallet updatedWallet);
+    public WalletModel UpdateWallet(WalletModel updatedWallet);
 
-    public void Delete(int id);
+    public void DeleteWalletById(int id);
 
-    public WalletModel Find(int id);
+    public WalletModel FindWallet(int id);
 }

@@ -30,7 +30,7 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.AddNewAccountTestData), typeof(AccountServiceTestsDataProvider))]
+    [DynamicData(nameof(AccountServiceTestsDataProvider.AddOrUpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
     public void AddNewAccount_ServiceInvokeMethodInsertByRepository_AccountModel(AccountModel modelForAdding, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForAdding)).Returns(accountForRepository);
@@ -46,7 +46,7 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.UpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
+    [DynamicData(nameof(AccountServiceTestsDataProvider.AddOrUpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
     public void UpdateAccount_ServiceInvokeMethodUpdateByRepository_AccountModel(AccountModel modelForUpdate, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForUpdate)).Returns(accountForRepository);
