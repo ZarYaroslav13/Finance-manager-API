@@ -1,10 +1,19 @@
-﻿namespace DomainLayer.Models;
+﻿using DataLayer.Models;
+
+namespace DomainLayer.Models;
 
 public class IncomeModel : FinanceOperationModel
 {
     public IncomeModel(FinanceOperationTypeModel type) : base(type)
     {
-        if (type.EntryType != DataLayer.Models.EntryType.Income)
+        ChangeFinanceOperationType(type);
+    }
+
+    public override void ChangeFinanceOperationType(FinanceOperationTypeModel type)
+    {
+        base.ChangeFinanceOperationType(type);
+
+        if(type.EntryType != EntryType.Income)
             throw new ArgumentException(nameof(type));
     }
 }

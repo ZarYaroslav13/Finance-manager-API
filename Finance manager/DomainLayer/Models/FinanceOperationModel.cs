@@ -13,7 +13,7 @@ public abstract class FinanceOperationModel : Base.Model
         ChangeFinanceOperationType(type);
     }
 
-    public void ChangeFinanceOperationType(FinanceOperationTypeModel type)
+    public virtual void ChangeFinanceOperationType(FinanceOperationTypeModel type)
     {
         Type = type ?? throw new ArgumentNullException(nameof(type));
     }

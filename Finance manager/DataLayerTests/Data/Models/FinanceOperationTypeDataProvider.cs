@@ -8,15 +8,15 @@ public class FinanceOperationTypeDataProvider
     {
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2}
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2}
         },
         new object[]
         {
             new FinanceOperationType(){
                 Id = 1,
                 Description = "Description",
-                EntryType = EntryType.Exponse,
+                EntryType = EntryType.Expense,
                 FinanceOperations = EntitiesTestDataProvider.FinanceOperations
                     .Where(fo => fo.TypeId == 1)
                     .ToList(),
@@ -25,7 +25,7 @@ public class FinanceOperationTypeDataProvider
             new FinanceOperationType(){
                 Id = 1,
                 Description = "Description",
-                EntryType = EntryType.Exponse,
+                EntryType = EntryType.Expense,
                 FinanceOperations = EntitiesTestDataProvider.FinanceOperations
                     .Where(fo => fo.TypeId == 1)
                     .ToList(),
@@ -34,18 +34,18 @@ public class FinanceOperationTypeDataProvider
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name"},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name"}
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name"},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name"}
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,}
+            new FinanceOperationType(){ Id = 1, EntryType = EntryType.Expense, Name = "Name", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, EntryType = EntryType.Expense, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, WalletId = 2,}
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, WalletId = 2,}
         }
     };
 
@@ -53,32 +53,32 @@ public class FinanceOperationTypeDataProvider
     {
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description1", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,}
+            new FinanceOperationType(){ Id = 1, Description = "Description1", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name1", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,}
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name1", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,},
             new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Income, Name = "Name", WalletId = 2,}
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 3,}
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 3,}
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, Name = "Name", WalletId = 2,},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, Name = "Name", WalletId = 2,},
             null
         },
         new object[]
         {
-            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Exponse, FinanceOperations = null, Name = "Name", WalletId = 2},
+            new FinanceOperationType(){ Id = 1, Description = "Description", EntryType = EntryType.Expense, FinanceOperations = null, Name = "Name", WalletId = 2},
             new Wallet()
         }
     };

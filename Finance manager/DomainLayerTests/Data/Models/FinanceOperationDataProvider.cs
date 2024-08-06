@@ -20,7 +20,7 @@ public class FinanceOperationDataProvider
                 {
                     Id = 4,
                     Description = "Description",
-                    EntryType = DataLayer.Models.EntryType.Exponse,
+                    EntryType = DataLayer.Models.EntryType.Expense,
                     Name = "Name",
                     WalletId = 1,
                     WalletName = "WalletName"

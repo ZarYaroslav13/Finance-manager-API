@@ -11,8 +11,8 @@ public static class FinanceReportTestsDataProvider
     {
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 23},
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 31},
-        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse}) { Amount = 12},
-        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse }) { Amount = 7 }
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Expense}) { Amount = 12},
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Expense }) { Amount = 7 }
     };
 
     public static IEnumerable<object[]> MethodEqualsResultTrueData { get; } = new List<object[]>

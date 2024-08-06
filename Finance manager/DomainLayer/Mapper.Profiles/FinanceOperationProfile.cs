@@ -17,7 +17,7 @@ public class FinanceOperationProfile : Profile
                 {
                     case EntryType.Income:
                         return context.Mapper.Map<IncomeModel>(dbFinanceOperation);
-                    case EntryType.Exponse:
+                    case EntryType.Expense:
                         return context.Mapper.Map<ExpenseModel>(dbFinanceOperation);
                     default:
                         throw new ArgumentException(nameof(dbFinanceOperation.Type));

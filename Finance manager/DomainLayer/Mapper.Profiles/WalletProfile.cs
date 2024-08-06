@@ -12,7 +12,7 @@ public class WalletProfile : Profile
             .ForMember(dest => dest.Incomes, opt => opt.MapFrom(src => src.GetFinanceOperations()
                 .Where(fo => fo.Type.EntryType == EntryType.Income)))
             .ForMember(dest => dest.Expenses, opt => opt.MapFrom(src => src.GetFinanceOperations()
-                .Where(fo => fo.Type.EntryType == EntryType.Exponse)));
+                .Where(fo => fo.Type.EntryType == EntryType.Expense)));
 
         CreateMap<WalletModel, Wallet>();
     }

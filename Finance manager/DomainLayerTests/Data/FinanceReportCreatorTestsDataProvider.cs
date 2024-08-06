@@ -15,8 +15,8 @@ public static class FinanceReportCreatorTestsDataProvider
     {
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 23},
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 31},
-        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse}) { Amount = 12},
-        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse }) { Amount = 7 }
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Expense}) { Amount = 12},
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Expense }) { Amount = 7 }
     };
     private static FinanceReportModel _weekReport = new(_wallet.Id, _wallet.Name, new Period())
     {
@@ -36,7 +36,7 @@ public static class FinanceReportCreatorTestsDataProvider
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 23},
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 31},
         new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 12},
-        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse }) { Amount = 7 }
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Expense }) { Amount = 7 }
     };
     private static FinanceReportModel _dailyReport = new(_wallet.Id, _wallet.Name, new Period())
     {

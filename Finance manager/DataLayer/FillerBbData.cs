@@ -127,7 +127,7 @@ public class FillerBbData
             Id = 2,
             Name = "Groceries",
             Description = "Weekly groceries",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 1
         },
         new FinanceOperationType()
@@ -135,7 +135,7 @@ public class FillerBbData
             Id = 3,
             Name = "Rent",
             Description = "Monthly rent payment",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 2
         },
         new FinanceOperationType()
@@ -143,7 +143,7 @@ public class FillerBbData
             Id = 4,
             Name = "Electricity Bill",
             Description = "Monthly electricity bill",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 2
         },
         new FinanceOperationType()
@@ -159,7 +159,7 @@ public class FillerBbData
             Id = 6,
             Name = "Dining Out",
             Description = "Dinner at restaurant",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 3
         },
         new FinanceOperationType()
@@ -167,7 +167,7 @@ public class FillerBbData
             Id = 7,
             Name = "Gym Membership",
             Description = "Monthly gym membership",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 4
         },
         new FinanceOperationType()
@@ -175,7 +175,7 @@ public class FillerBbData
             Id = 8,
             Name = "Gift",
             Description = "Birthday gift",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 4
         },
         new FinanceOperationType()
@@ -191,7 +191,7 @@ public class FillerBbData
             Id = 10,
             Name = "Travel",
             Description = "Travel expenses",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 5
         },
         new FinanceOperationType()
@@ -199,7 +199,7 @@ public class FillerBbData
             Id = 11,
             Name = "Investment",
             Description = "Stock market investment",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 6
         },
         new FinanceOperationType()
@@ -223,7 +223,7 @@ public class FillerBbData
             Id = 14,
             Name = "Car Maintenance",
             Description = "Car repair and maintenance",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 7
         },
         new FinanceOperationType()
@@ -231,7 +231,7 @@ public class FillerBbData
             Id = 15,
             Name = "Internet Bill",
             Description = "Monthly internet bill",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 1
         },
         new FinanceOperationType()
@@ -247,7 +247,7 @@ public class FillerBbData
             Id = 17,
             Name = "Insurance",
             Description = "Health insurance payment",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 2
         },
         new FinanceOperationType()
@@ -263,7 +263,7 @@ public class FillerBbData
             Id = 19,
             Name = "Clothing",
             Description = "Purchase of clothing",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 3
         },
         new FinanceOperationType()
@@ -279,7 +279,7 @@ public class FillerBbData
             Id = 21,
             Name = "Medical Bills",
             Description = "Payment for medical services",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 4
         },
         new FinanceOperationType()
@@ -287,7 +287,7 @@ public class FillerBbData
             Id = 22,
             Name = "Tuition",
             Description = "Payment for education",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 4
         },
         new FinanceOperationType()
@@ -303,7 +303,7 @@ public class FillerBbData
             Id = 24,
             Name = "Household Supplies",
             Description = "Purchase of household supplies",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 5
         },
         new FinanceOperationType()
@@ -319,7 +319,7 @@ public class FillerBbData
             Id = 26,
             Name = "Charity",
             Description = "Donation to charity",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 6
         },
         new FinanceOperationType()
@@ -327,7 +327,7 @@ public class FillerBbData
             Id = 27,
             Name = "Furniture",
             Description = "Purchase of furniture",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 7
         },
         new FinanceOperationType()
@@ -351,7 +351,7 @@ public class FillerBbData
             Id = 30,
             Name = "Subscriptions",
             Description = "Monthly subscriptions",
-            EntryType = EntryType.Exponse,
+            EntryType = EntryType.Expense,
             WalletId = 2
         }
     };

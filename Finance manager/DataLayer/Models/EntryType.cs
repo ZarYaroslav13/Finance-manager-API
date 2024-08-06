@@ -3,5 +3,5 @@
 public enum EntryType
 {
     Income,
-    Exponse
+    Expense
 }

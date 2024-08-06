@@ -20,7 +20,7 @@ public static class FinanceServiceTestsDataProvider
                     Id = 2,
                     Name = "Groceries",
                     Description = "Weekly groceries",
-                    EntryType = EntryType.Exponse,
+                    EntryType = EntryType.Expense,
                     WalletId = 1
                 },
         new FinanceOperationType()
@@ -28,7 +28,7 @@ public static class FinanceServiceTestsDataProvider
                     Id = 3,
                     Name = "Rent",
                     Description = "Monthly rent payment",
-                    EntryType = EntryType.Exponse,
+                    EntryType = EntryType.Expense,
                     WalletId = 1
                 }
     };

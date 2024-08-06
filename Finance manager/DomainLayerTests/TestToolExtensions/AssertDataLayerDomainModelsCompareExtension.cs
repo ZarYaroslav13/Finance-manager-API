@@ -84,7 +84,7 @@ public static class AssertDataLayerDomainModelsCompareExtension
         && (dbFinanceOperation.Date == domainFinanceOperation.Date)
         && (dbFinanceOperation.Amount == domainFinanceOperation.Amount)
         && ((dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Income && domainFinanceOperation.GetType() == typeof(IncomeModel))
-            || (dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Exponse && domainFinanceOperation.GetType() == typeof(ExpenseModel))))
+            || (dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Expense && domainFinanceOperation.GetType() == typeof(ExpenseModel))))
             return true;
 
         return false;
@@ -97,7 +97,7 @@ public static class AssertDataLayerDomainModelsCompareExtension
 
     private static bool AreEqual(FinanceOperation dbFinanceOperation, ExpenseModel Expense)
     {
-        return AreEqual(dbFinanceOperation, (FinanceOperationModel)Expense) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Exponse;
+        return AreEqual(dbFinanceOperation, (FinanceOperationModel)Expense) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Expense;
     }
 
     private static bool AreEqualAccountWallets(Account dbAccount, AccountModel domainAccount)
