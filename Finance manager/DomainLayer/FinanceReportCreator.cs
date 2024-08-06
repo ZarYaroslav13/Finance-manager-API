@@ -9,14 +9,14 @@ public class FinanceReportCreator
 {
     protected readonly IMapper _mapper;
     protected readonly IUnitOfWork _unitOfWork;
-    protected readonly IFinanceOperationTypeService _service;
+    protected readonly IFinanceService _service;
 
     public FinanceReportCreator(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-        _service = new FinanceOperationTypeService(_unitOfWork, _mapper);
+        _service = new FinanceService(_unitOfWork, _mapper);
     }
 
     public FinanceReportModel CreateFinanceReport(WalletModel wallet, DateTime startDate, DateTime endDate)
@@ -28,9 +28,9 @@ public class FinanceReportCreator
 
         var report = new FinanceReportModel(wallet.Id, wallet.Name, period);
         var allOperations = new List<FinanceOperationModel>();
-        foreach (var fot in _service.GetAllFinanceOperationTypesWithWalletId(wallet.Id))
+        foreach (var fot in _service.GetAllFinanceOperationTypesOfWallet(wallet.Id))
         {
-            var operations = _service.GetAllFinanceOperationWithTypeId(fot.Id);
+            var operations = _service.GetAllFinanceOperationOfType(fot.Id);
             operations.ForEach(fo => fo.ChangeFinanceOperationType(fot));
 
             allOperations.AddRange(operations);

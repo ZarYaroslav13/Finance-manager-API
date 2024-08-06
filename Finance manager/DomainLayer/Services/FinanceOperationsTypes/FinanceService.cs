@@ -6,16 +6,18 @@ using DomainLayer.Models;
 
 namespace DomainLayer.Services.FinanceOperations;
 
-public class FinanceOperationTypeService : EntityService<FinanceOperationTypeModel, FinanceOperationType>, IFinanceOperationTypeService
+public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOperationType>, IFinanceService
 {
     private readonly IRepository<FinanceOperation> _financeOperationRepository;
 
-    public FinanceOperationTypeService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    public FinanceService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
         _financeOperationRepository = _unitOfWork.GetRepository<FinanceOperation>();
     }
 
-    public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesWithWalletId(int walletId)
+    #region FinanceOperationTypeMethods
+
+    public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId)
     {
         return _repository
                 .GetAll(filter: fot => fot.WalletId == walletId)
@@ -49,7 +51,22 @@ public class FinanceOperationTypeService : EntityService<FinanceOperationTypeMod
         _unitOfWork.SaveChanges();
     }
 
-    public List<FinanceOperationModel> GetAllFinanceOperationWithTypeId(int TypeId)
+    #endregion
+
+    #region FinanceOperationMethods
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId)
+    {
+        List<FinanceOperationModel> result = new();
+
+        foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
+        {
+            result.AddRange(GetAllFinanceOperationOfType(type.Id));
+        }
+
+        return result;
+    }
+
+    public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId)
     {
         return _financeOperationRepository
                 .GetAll(filter: fo => fo.TypeId == TypeId)
@@ -82,4 +99,5 @@ public class FinanceOperationTypeService : EntityService<FinanceOperationTypeMod
         _financeOperationRepository.Delete(id);
         _unitOfWork.SaveChanges();
     }
+    #endregion
 }

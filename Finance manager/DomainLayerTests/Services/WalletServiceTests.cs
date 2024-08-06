@@ -31,7 +31,7 @@ public class WalletServiceTests
 
     [TestMethod]
     [DynamicData(nameof(WalletServiceTestsDataProvider.GetAllWalletsOfAccountTestData), typeof(WalletServiceTestsDataProvider))]
-    public void GetAllWalletsOfAccount_ReturnWalletOfChoosenAccount_WalletModelList(List<Wallet> wallets, int accountId)
+    public void GetAllWalletsOfAccount_ReceivedExpectedNumberWallets_WalletModelList(List<Wallet> wallets, int accountId)
     {
         A.CallTo(() => _repository.GetAll(
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
@@ -51,6 +51,8 @@ public class WalletServiceTests
 
         A.CallTo(() => _mapper.Map<WalletModel>(A<Wallet>._))
             .MustHaveHappened(wallets.Count, Times.Exactly);
+
+        Assert.AreEqual(wallets.Count, result.Count);
     }
 
     [TestMethod]

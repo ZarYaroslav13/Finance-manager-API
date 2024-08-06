@@ -10,9 +10,9 @@ public class DbEntitiesTestDataProvider
 
     public static List<Wallet> Wallets { get { return _wallets; } }
 
-    public static List<FinanceOperationType> FinanceOperationTypes { get { return _transactionTypes; } }
+    public static List<FinanceOperationType> FinanceOperationTypes { get { return _financeOperationTypes; } }
 
-    public static List<FinanceOperation> FinanceOperations { get { return _transactions; } }
+    public static List<FinanceOperation> FinanceOperations { get { return _financeOperations; } }
 
     private static PasswordCoder _passwordCoder = new();
 
@@ -113,7 +113,7 @@ public class DbEntitiesTestDataProvider
     }
     };
 
-    private static List<FinanceOperationType> _transactionTypes = new()
+    private static List<FinanceOperationType> _financeOperationTypes = new()
     {
         new FinanceOperationType()
         {
@@ -357,7 +357,7 @@ public class DbEntitiesTestDataProvider
         }
     };
 
-    private static List<FinanceOperation> _transactions = new()
+    private static List<FinanceOperation> _financeOperations = new()
     {
         new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = 1 },
         new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = 2 },

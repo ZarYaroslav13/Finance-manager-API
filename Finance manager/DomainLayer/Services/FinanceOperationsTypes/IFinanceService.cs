@@ -2,9 +2,9 @@
 
 namespace DomainLayer.Services.FinanceOperations;
 
-public interface IFinanceOperationTypeService
+public interface IFinanceService
 {
-    public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesWithWalletId(int walletId);
+    public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId);
 
     public FinanceOperationTypeModel AddNewFinanceOperationType(FinanceOperationTypeModel type);
 
@@ -12,7 +12,9 @@ public interface IFinanceOperationTypeService
 
     public void DeleteFinanceOperationType(int id);
 
-    public List<FinanceOperationModel> GetAllFinanceOperationWithTypeId(int TypeId);
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId);
+
+    public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId);
 
     public FinanceOperationModel AddNewFinanceOperationType(FinanceOperationModel financeOperation);
 

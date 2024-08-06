@@ -1,5 +1,4 @@
-﻿using DataLayer.Models;
-using DomainLayer.Models;
+﻿using DomainLayer.Models;
 
 namespace DomainLayer.Services.Wallets;
 
