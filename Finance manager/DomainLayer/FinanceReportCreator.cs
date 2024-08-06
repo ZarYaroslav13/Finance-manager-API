@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using DataLayer.Models;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
-using DomainLayer.Services;
+using DomainLayer.Services.FinanceOperations;
 
 namespace DomainLayer;
 
@@ -10,14 +9,14 @@ public class FinanceReportCreator
 {
     protected readonly IMapper _mapper;
     protected readonly IUnitOfWork _unitOfWork;
-    protected readonly ICRUDService<FinanceOperationModel, FinanceOperation> _service;
+    protected readonly IFinanceOperationTypeService _service;
 
     public FinanceReportCreator(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-        _service = new EntityService<FinanceOperationModel, FinanceOperation>(_unitOfWork, _mapper);
+        _service = new FinanceOperationTypeService(_unitOfWork, _mapper);
     }
 
     public FinanceReportModel CreateFinanceReport(WalletModel wallet, DateTime startDate, DateTime endDate)
@@ -28,14 +27,16 @@ public class FinanceReportCreator
         Period period = new() { StartDate = startDate, EndDate = endDate };
 
         var report = new FinanceReportModel(wallet.Id, wallet.Name, period);
+        var allOperations = new List<FinanceOperationModel>();
+        foreach (var fot in _service.GetAllFinanceOperationTypesWithWalletId(wallet.Id))
+        {
+            var operations = _service.GetAllFinanceOperationWithTypeId(fot.Id);
+            operations.ForEach(fo => fo.ChangeFinanceOperationType(fot));
 
-        report.Operations = _service
-             .GetAll(
-                includeProperties: new string[] { nameof(FinanceOperation.Type), nameof(FinanceOperation.Type) + '.' + nameof(FinanceOperation.Type.Wallet) },
-                filter: t => startDate.Date <= t.Date.Date
-                    && t.Date.Date <= endDate.Date
-                    && t.Type.WalletId == report.WalletId)
-             .ToList();
+            allOperations.AddRange(operations);
+        }
+
+        report.Operations = allOperations;
 
         return report;
     }

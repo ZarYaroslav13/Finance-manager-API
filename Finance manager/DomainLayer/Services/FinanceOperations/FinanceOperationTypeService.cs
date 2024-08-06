@@ -3,11 +3,6 @@ using DataLayer.Models;
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayer.Services.FinanceOperations;
 
@@ -30,21 +25,28 @@ public class FinanceOperationTypeService : EntityService<FinanceOperationTypeMod
 
     public FinanceOperationTypeModel AddNewFinanceOperationType(FinanceOperationTypeModel type)
     {
-        return _mapper.Map<FinanceOperationTypeModel>(
-                _repository.Insert(
-                    _mapper.Map<FinanceOperationType>(type)));
+        var result = _mapper.Map<FinanceOperationTypeModel>(
+                         _repository.Insert(
+                            _mapper.Map<FinanceOperationType>(type)));
+        _unitOfWork.SaveChanges();
+
+        return result;
     }
 
     public FinanceOperationTypeModel UpdateFinanceOperationType(FinanceOperationTypeModel type)
     {
-        return _mapper.Map<FinanceOperationTypeModel>(
-                _repository.Update(
-                    _mapper.Map<FinanceOperationType>(type)));
+        var result = _mapper.Map<FinanceOperationTypeModel>(
+                         _repository.Update(
+                            _mapper.Map<FinanceOperationType>(type)));
+        _unitOfWork.SaveChanges();
+
+        return result;
     }
 
     public void DeleteFinanceOperationType(int id)
     {
         _repository.Delete(id);
+        _unitOfWork.SaveChanges();
     }
 
     public List<FinanceOperationModel> GetAllFinanceOperationWithTypeId(int TypeId)
@@ -57,20 +59,27 @@ public class FinanceOperationTypeService : EntityService<FinanceOperationTypeMod
 
     public FinanceOperationModel AddNewFinanceOperationType(FinanceOperationModel financeOperation)
     {
-        return _mapper.Map<FinanceOperationModel>(
-                _financeOperationRepository.Insert(
-                    _mapper.Map<FinanceOperation>(financeOperation)));
+        var result = _mapper.Map<FinanceOperationModel>(
+                        _financeOperationRepository.Insert(
+                            _mapper.Map<FinanceOperation>(financeOperation)));
+        _unitOfWork.SaveChanges();
+
+        return result;
     }
 
     public FinanceOperationModel UpdateFinanceOperationType(FinanceOperationModel financeOperation)
     {
-        return _mapper.Map<FinanceOperationModel>(
-                _financeOperationRepository.Update(
-                    _mapper.Map<FinanceOperation>(financeOperation)));
+        var result = _mapper.Map<FinanceOperationModel>(
+                        _financeOperationRepository.Update(
+                            _mapper.Map<FinanceOperation>(financeOperation)));
+        _unitOfWork.SaveChanges();
+
+        return result;
     }
 
     public void DeleteFinanceOperation(int id)
     {
         _financeOperationRepository.Delete(id);
+        _unitOfWork.SaveChanges();
     }
 }

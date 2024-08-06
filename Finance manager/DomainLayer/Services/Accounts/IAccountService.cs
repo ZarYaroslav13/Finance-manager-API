@@ -1,20 +1,18 @@
-﻿using DataLayer.Models;
-using DomainLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DomainLayer.Models;
 
 namespace DomainLayer.Services.Accounts;
 
 public interface IAccountService
 {
-    public AccountModel AddNewAccount(Account account);
+    public AccountModel AddNewAccount(AccountModel account);
 
-    public AccountModel UpdateAccount(Account updatedAccount);
+    public AccountModel UpdateAccount(AccountModel updatedAccount);
 
     public void DeleteAccountWithId(int id);
 
     public AccountModel TryLogIn(string email, string password);
+
+    public bool IsItEmail(string emailAddress);
+
+    public bool CanTakeThisEmail(string emailAddress);
 }

@@ -12,9 +12,9 @@ namespace Finance_manager_API.Controllers
     [ApiController]
     public class AccountController : EntityController<AccountDTO>
     {
-        AccountService _accountService;
+        IAccountService _accountService;
 
-        public AccountController(ILogger<EntityController<AccountDTO>> logger, IMapper mapper, AccountService service) : base(logger, mapper)
+        public AccountController(ILogger<EntityController<AccountDTO>> logger, IMapper mapper, IAccountService service) : base(logger, mapper)
         {
             _accountService = service ?? throw new ArgumentNullException(nameof(service));
         }

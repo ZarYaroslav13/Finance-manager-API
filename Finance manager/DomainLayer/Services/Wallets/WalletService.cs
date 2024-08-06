@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
 using DataLayer.Models;
-using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayer.Services.Wallets;
 
@@ -27,23 +21,28 @@ public class WalletService : EntityService<WalletModel, Wallet>, IWalletService
 
     public WalletModel AddNewWallet(Wallet wallet)
     {
-        return _mapper
-            .Map<WalletModel>(
-                _repository
-                    .Insert(_mapper.Map<Wallets>(wallet)));
+        var result = _mapper.Map<WalletModel>(
+                        _repository.Insert(
+                                _mapper.Map<Wallet>(wallet)));
+        _unitOfWork.SaveChanges();
+
+        return result;
     }
 
     public WalletModel Update(Wallet updatedWallet)
     {
-        return _mapper
-            .Map<WalletModel>(
-                _repository
-                    .Update(updatedWallet));
+        var result = _mapper.Map<WalletModel>(
+                        _repository.Update(
+                                _mapper.Map<Wallet>(updatedWallet)));
+        _unitOfWork.SaveChanges();
+
+        return result;
     }
 
     public void Delete(int id)
     {
         _repository.Delete(id);
+        _unitOfWork.SaveChanges();
     }
 
     public WalletModel Find(int id)

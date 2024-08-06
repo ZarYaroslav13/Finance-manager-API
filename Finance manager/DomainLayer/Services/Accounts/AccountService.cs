@@ -13,57 +13,27 @@ public class AccountService : EntityService<AccountModel, Account>, IAccountServ
     {
     }
 
-    public static bool IsItEmail(string emailAddress)
+    public AccountModel AddNewAccount(AccountModel account)
     {
-        try
-        {
-            MailAddress m = new(emailAddress);
-
-            return true;
-        }
-        catch (FormatException)
-        {
-            return false;
-        }
-    }
-
-    public AccountModel AddNewAccount(Account account)
-    {
-        if (IsItEmail(account.Email))
-        {
-            throw new FormatException("Email format is incorrect!");
-        }
-
-        if (_repository.GetAll().Any(a => a.Email == account.Email))
-        {
-            throw new ArgumentException("An account with this email already exist!");
-        }
+        CanTakeThisEmail(account.Email);
 
         var result = _mapper
             .Map<AccountModel>(
                 _repository
-                    .Insert(_mapper.Map<Accounts>(account)));
+                    .Insert(_mapper.Map<Account>(account)));
         _unitOfWork.SaveChanges();
 
         return result;
     }
 
-    public AccountModel UpdateAccount(Account updatedAccount)
+    public AccountModel UpdateAccount(AccountModel updatedAccount)
     {
-        if (IsItEmail(updatedAccount.Email))
-        {
-            throw new FormatException("Email format is incorrect!");
-        }
-
-        if (_repository.GetAll().Any(a => a.Email == updatedAccount.Email))
-        {
-            throw new ArgumentException("I cannot change your email address because an account with this new email adress already exist");
-        }
+        CanTakeThisEmail(updatedAccount.Email);
 
         var result = _mapper
             .Map<AccountModel>(
                 _repository
-                    .Update(updatedAccount));
+                    .Update(_mapper.Map<Account>(updatedAccount)));
         _unitOfWork.SaveChanges();
 
         return result;
@@ -78,8 +48,8 @@ public class AccountService : EntityService<AccountModel, Account>, IAccountServ
 
     public AccountModel TryLogIn(string email, string password)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(email);
-        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(password);
 
         string encodedPassword = new PasswordCoder().ComputeSHA256Hash(password);
 
@@ -89,5 +59,34 @@ public class AccountService : EntityService<AccountModel, Account>, IAccountServ
                 .SingleOrDefault(a =>
                         a.Email == email
                         && a.Password == encodedPassword));
+    }
+
+    public bool IsItEmail(string emailAddress)
+    {
+        try
+        {
+            MailAddress m = new(emailAddress);
+
+            return true;
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
+    }
+
+    public bool CanTakeThisEmail(string emailAddress)
+    {
+        if (!IsItEmail(emailAddress))
+        {
+            throw new FormatException("Email format is incorrect!");
+        }
+
+        if (_repository.GetAll().Any(a => a.Email == emailAddress))
+        {
+            throw new ArgumentException("An account with this email already exist!");
+        }
+
+        return true;
     }
 }
