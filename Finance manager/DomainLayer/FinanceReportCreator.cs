@@ -1,22 +1,15 @@
-﻿using AutoMapper;
-using DataLayer.UnitOfWork;
-using DomainLayer.Models;
+﻿using DomainLayer.Models;
 using DomainLayer.Services.FinanceOperations;
 
 namespace DomainLayer;
 
 public class FinanceReportCreator
 {
-    protected readonly IMapper _mapper;
-    protected readonly IUnitOfWork _unitOfWork;
     protected readonly IFinanceService _service;
 
-    public FinanceReportCreator(IUnitOfWork unitOfWork, IMapper mapper)
+    public FinanceReportCreator(IFinanceService service)
     {
-        _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-
-        _service = new FinanceService(_unitOfWork, _mapper);
+        _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
     public FinanceReportModel CreateFinanceReport(WalletModel wallet, DateTime startDate, DateTime endDate)
@@ -27,14 +20,7 @@ public class FinanceReportCreator
         Period period = new() { StartDate = startDate, EndDate = endDate };
 
         var report = new FinanceReportModel(wallet.Id, wallet.Name, period);
-        var allOperations = new List<FinanceOperationModel>();
-        foreach (var fot in _service.GetAllFinanceOperationTypesOfWallet(wallet.Id))
-        {
-            var operations = _service.GetAllFinanceOperationOfType(fot.Id);
-            operations.ForEach(fo => fo.ChangeFinanceOperationType(fot));
-
-            allOperations.AddRange(operations);
-        }
+        var allOperations = _service.GetAllFinanceOperationOfWallet(wallet.Id);
 
         report.Operations = allOperations;
 

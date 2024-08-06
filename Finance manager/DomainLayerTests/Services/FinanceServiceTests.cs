@@ -123,8 +123,8 @@ public class FinanceServiceTests
         List<FinanceOperationType> financeOperationTypes,
         int walletId)
     {
-        int numberFinanceOperationForIneType = 4;
-        int startofFinanceOperations = 0 - numberFinanceOperationForIneType;
+        int numberFinanceOperationForOneType = financeOperations.Count / financeOperationTypes.Count;
+        int startofFinanceOperations = 0 - numberFinanceOperationForOneType;
 
         A.CallTo(() => _repository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
                                             A<Expression<Func<FinanceOperationType, bool>>>._,
@@ -136,8 +136,8 @@ public class FinanceServiceTests
                                                              A<string[]>._))
           .ReturnsLazily(call =>
           {
-              startofFinanceOperations += numberFinanceOperationForIneType;
-              return financeOperations.GetRange(startofFinanceOperations, numberFinanceOperationForIneType);
+              startofFinanceOperations += numberFinanceOperationForOneType;
+              return financeOperations.GetRange(startofFinanceOperations, numberFinanceOperationForOneType);
           });
 
 

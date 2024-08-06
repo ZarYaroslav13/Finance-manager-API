@@ -1,15 +1,53 @@
-﻿using AutoMapper;
-using DataLayer.UnitOfWork;
-using FakeItEasy;
+﻿using DataLayer.Models;
+using DomainLayer.Models;
 
 namespace DomainLayerTests.Data;
 
-public class FinanceReportCreatorTestsDataProvider
+public static class FinanceReportCreatorTestsDataProvider
 {
-    public static IEnumerable<object[]> ConstructorException { get; } = new List<object[]>()
+    private static WalletModel _wallet = new()
     {
-        new object[] { A.Fake<IUnitOfWork>(), null },
-        new object[] { null, A.Fake<IMapper>() },
-        new object[] { null, null }
+        Id = 1,
+        Name = "WalletName"
+    };
+
+    private static List<FinanceOperationModel> _weekFinanceOperation = new()
+    {
+        new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 23},
+        new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 31},
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse}) { Amount = 12},
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse }) { Amount = 7 }
+    };
+    private static FinanceReportModel _weekReport = new(_wallet.Id, _wallet.Name, new Period())
+    {
+        Operations = _weekFinanceOperation
+    };
+    public static IEnumerable<object[]> CreateFinanceReportTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            _wallet, _weekReport
+
+        }
+    };
+
+    private static List<FinanceOperationModel> _dailyFinanceOperation = new()
+    {
+        new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 23},
+        new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 31},
+        new IncomeModel(new FinanceOperationTypeModel() { EntryType = EntryType.Income}) { Amount = 12},
+        new ExpenseModel(new FinanceOperationTypeModel() { EntryType = EntryType.Exponse }) { Amount = 7 }
+    };
+    private static FinanceReportModel _dailyReport = new(_wallet.Id, _wallet.Name, new Period())
+    {
+        Operations = _dailyFinanceOperation
+    };
+    public static IEnumerable<object[]> CreateDailyFinanceReportTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            _wallet, _dailyReport
+
+        }
     };
 }

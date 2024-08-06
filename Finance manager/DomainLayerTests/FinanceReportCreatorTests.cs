@@ -1,59 +1,28 @@
-using AutoMapper;
-using DataLayer;
-using DataLayer.UnitOfWork;
 using DomainLayer;
-using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
+using DomainLayer.Services.FinanceOperations;
 using DomainLayerTests.Data;
 using FakeItEasy;
-using Microsoft.EntityFrameworkCore;
 
 namespace DomainLayerTests;
 
 [TestClass]
 public class FinanceReportCreatorTests
 {
-    private AppDbContext _context;
-    private IMapper _mapper;
-    private IUnitOfWork _unitOfWork;
-
-    private FinanceReportCreator _creator;
+    private readonly IFinanceService _service;
+    private readonly FinanceReportCreator _creator;
 
     public FinanceReportCreatorTests()
     {
-        _mapper = new MapperConfiguration(
-           cfg =>
-           cfg.AddProfiles(new List<Profile>()
-           {
-               new WalletProfile(),
-               new FinanceOperationProfile(),
-               new FinanceOperationTypeProfile()
-           }))
-       .CreateMapper();
+        _service = A.Fake<IFinanceService>();
 
-        var options = new DbContextOptionsBuilder<AppDbContext>();
-
-        options.UseInMemoryDatabase("TestDbForServises");
-
-        _context = new AppDbContext(options.Options);
-
-        _unitOfWork = new UnitOfWork(_context);
-
-        _creator = new(_unitOfWork, _mapper);
-    }
-
-    [TestCleanup]
-    public void Cleanup()
-    {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
+        _creator = new(_service);
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.ConstructorException), typeof(FinanceReportCreatorTestsDataProvider))]
-    public void Constructor_ContructorArgumentValuesAreNull_ThrowsException(IUnitOfWork unitOfWork, IMapper mapper)
+    public void Constructor_ContructorArgumentValuesAreNull_ThrowsException()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new FinanceReportCreator(unitOfWork, mapper));
+        Assert.ThrowsException<ArgumentNullException>(() => new FinanceReportCreator(null));
     }
 
     [TestMethod]
@@ -70,53 +39,29 @@ public class FinanceReportCreatorTests
     }
 
     [TestMethod]
-    public void CreateFinanceReport_GeneratedReportISAsExpected_FinanceReport()
+    [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.CreateFinanceReportTestData), typeof(FinanceReportCreatorTestsDataProvider))]
+    public void CreateFinanceReport_GeneratedAndExpectedReportsAreEqual_FinanceReport(WalletModel wallet, FinanceReportModel expected)
     {
-        _context.AddRange(FillerBbData.FinanceOperationTypes);
-        _context.AddRange(FillerBbData.FinanceOperations);
-        _context.AddRange(FillerBbData.Wallets);
-        _context.SaveChanges();
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).Returns(expected.Operations);
 
-        var wallet = _mapper.Map<WalletModel>(_unitOfWork.GetRepository<DataLayer.Models.Wallet>().GetById(1));
-
-        var period = new Period() { StartDate = new DateTime(2024, 1, 7), EndDate = new DateTime(2024, 3, 28) };
-
-        var financeOperations = new List<FinanceOperationModel>();
-        financeOperations.AddRange(wallet.Incomes.Where(fo => period.StartDate.Date <= fo.Date && fo.Date.Date <= period.EndDate));
-        financeOperations.AddRange(wallet.Expenses.Where(fo => period.StartDate <= fo.Date.Date && fo.Date.Date <= period.EndDate));
-
-        var expected = new FinanceReportModel(wallet.Id, wallet.Name, period) { Operations = financeOperations.OrderBy(fo => fo.Id).ToList() };
-
-        var result = _creator.CreateFinanceReport(wallet, period.StartDate, period.EndDate);
+        var result = _creator.CreateFinanceReport(wallet, expected.Period.StartDate, expected.Period.EndDate);
         result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
+
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(expected, result);
     }
 
     [TestMethod]
-    public void CreateDailyFinanceReport_GeneratedDailyReportISAsExpected_FinanceReport()
+    [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.CreateDailyFinanceReportTestData), typeof(FinanceReportCreatorTestsDataProvider))]
+    public void CreateDailyFinanceReport_GeneratedDailyReportISAsExpected_FinanceReport(WalletModel wallet, FinanceReportModel expected)
     {
-        _context.AddRange(FillerBbData.FinanceOperationTypes);
-        _context.AddRange(FillerBbData.FinanceOperations);
-        _context.AddRange(FillerBbData.Wallets);
-        _context.SaveChanges();
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).Returns(expected.Operations);
 
-        var wallet = _mapper.Map<WalletModel>(_unitOfWork.GetRepository<DataLayer.Models.Wallet>().GetById(1));
+        var result = _creator.CreateFinanceReport(wallet, expected.Period.StartDate);
+        result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
 
-        var day = new DateTime(2024, 4, 11);
-
-        var financeOperations = new List<FinanceOperationModel>();
-        financeOperations.AddRange(wallet.Incomes.Where(fo => day.Date == fo.Date.Date));
-        financeOperations.AddRange(wallet.Expenses.Where(fo => day.Date == fo.Date.Date));
-
-        var expected = new FinanceReportModel(wallet.Id, wallet.Name, new Period() { StartDate = day, EndDate = day })
-        {
-            Operations = financeOperations
-            .OrderBy(fo => fo.Id)
-            .ToList()
-        };
-
-        var result = _creator.CreateFinanceReport(wallet, day);
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(expected, result);
     }
