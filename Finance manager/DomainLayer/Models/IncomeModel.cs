@@ -6,14 +6,14 @@ public class IncomeModel : FinanceOperationModel
 {
     public IncomeModel(FinanceOperationTypeModel type) : base(type)
     {
-        ChangeFinanceOperationType(type);
+       
     }
 
     public override void ChangeFinanceOperationType(FinanceOperationTypeModel type)
     {
         base.ChangeFinanceOperationType(type);
 
-        if(type.EntryType != EntryType.Income)
+        if (type.EntryType != EntryType.Income)
             throw new ArgumentException(nameof(type));
     }
 }

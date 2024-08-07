@@ -8,9 +8,9 @@ public class WalletDTO : Base.ModelDTO
 
     public List<FinanceOperationTypeDTO> FinanceOperationTypes { get; set; } = default!;
 
-    public List<FinanceOperationDTO> Incomes { get; set; } = default!;
+    public List<IncomeDTO> Incomes { get; set; } = default!;
 
-    public List<FinanceOperationDTO> Expenses { get; set; } = default!;
+    public List<ExpenseDTO> Expenses { get; set; } = default!;
 
     public int AccountId { get; set; }
 

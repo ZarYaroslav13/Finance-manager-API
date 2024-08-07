@@ -1,6 +1,6 @@
 ﻿namespace Finance_manager_API.Models;
 
-public class FinanceOperationDTO : Base.ModelDTO
+public abstract class FinanceOperationDTO : Base.ModelDTO
 {
     public int Amount { get; set; }
 
@@ -13,7 +13,7 @@ public class FinanceOperationDTO : Base.ModelDTO
         ChangeFinanceOperationType(type);
     }
 
-    public void ChangeFinanceOperationType(FinanceOperationTypeDTO type)
+    public virtual void ChangeFinanceOperationType(FinanceOperationTypeDTO type)
     {
         Type = type ?? throw new ArgumentNullException(nameof(type));
     }
