@@ -1,7 +1,7 @@
-﻿using ApplicationLayerTests.Data.Models;
+﻿using ApplicationLayer.Models;
+using ApplicationLayerTests.Data.Models;
 using DomainLayer.Models;
 using FakeItEasy;
-using ApplicationLayer.Models;
 
 namespace ApplicationLayerTests.Models;
 

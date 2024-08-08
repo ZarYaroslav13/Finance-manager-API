@@ -1,5 +1,5 @@
-﻿using DomainLayer.Models;
-using ApplicationLayer.Models;
+﻿using ApplicationLayer.Models;
+using DomainLayer.Models;
 
 namespace ApplicationLayerTests.TestToolExtensions;
 

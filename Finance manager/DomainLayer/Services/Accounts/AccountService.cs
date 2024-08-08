@@ -9,13 +9,18 @@ namespace DomainLayer.Services.Accounts;
 
 public class AccountService : EntityService<AccountModel, Account>, IAccountService
 {
+    private protected PasswordCoder _passwordCoder;
+
     public AccountService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
+        _passwordCoder = new PasswordCoder();
     }
 
     public AccountModel AddNewAccount(AccountModel account)
     {
         CanTakeThisEmail(account.Email);
+
+        account.Password = _passwordCoder.ComputeSHA256Hash(account.Password);
 
         var result = _mapper
             .Map<AccountModel>(
@@ -51,14 +56,16 @@ public class AccountService : EntityService<AccountModel, Account>, IAccountServ
         ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(password);
 
-        string encodedPassword = new PasswordCoder().ComputeSHA256Hash(password);
+        string encodedPassword = _passwordCoder.ComputeSHA256Hash(password);
 
-        return _mapper.Map<AccountModel>(
-            _repository
-                .GetAll()
-                .SingleOrDefault(a =>
-                        a.Email == email
-                        && a.Password == encodedPassword));
+        var result = _mapper.Map<AccountModel>(
+           _repository
+               .GetAll()
+               .SingleOrDefault(a =>
+                       a.Email == email
+                       && a.Password == encodedPassword)); ;
+
+        return result;
     }
 
     public bool IsItEmail(string emailAddress)

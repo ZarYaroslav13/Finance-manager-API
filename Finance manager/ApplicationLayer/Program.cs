@@ -1,5 +1,5 @@
-using DataLayer;
 using ApplicationLayer.HostBuilder;
+using DataLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 

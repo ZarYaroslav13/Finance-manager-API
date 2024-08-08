@@ -1,6 +1,6 @@
-﻿using DataLayer.Models;
+﻿using ApplicationLayer.Models;
+using DataLayer.Models;
 using DomainLayer.Models;
-using ApplicationLayer.Models;
 
 namespace ApplicationLayerTests.Data.Models;
 
