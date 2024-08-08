@@ -30,5 +30,17 @@ public class FinanceOperationProfile : Profile
 
         CreateMap<FinanceOperationModel, IncomeDTO>();
         CreateMap<FinanceOperationModel, ExpenseDTO>();
+
+        CreateMap<IncomeDTO, FinanceOperationModel>()
+            .ConvertUsing((incomeDTO, financeOperationModel, context) =>
+            {
+                return context.Mapper.Map<IncomeModel>(incomeDTO);
+            });
+
+        CreateMap<ExpenseDTO, FinanceOperationModel>()
+            .ConvertUsing((expenseDTO, financeOperationModel, context) =>
+            {
+                return context.Mapper.Map<ExpenseModel>(expenseDTO);
+            });
     }
 }

@@ -10,8 +10,6 @@ public class AccountDTO : Base.ModelDTO
 
     public string Password { get; set; } = String.Empty;
 
-    public List<WalletDTO> Wallets { get; set; } = new();
-
     public override bool Equals(object? obj)
     {
         if (obj == null || GetType() != obj.GetType())
@@ -23,12 +21,11 @@ public class AccountDTO : Base.ModelDTO
                && FirstName == account.FirstName
                && LastName == account.LastName
                && Email == account.Email
-               && Password == account.Password
-               && AreEqualLists(Wallets, account.Wallets);
+               && Password == account.Password;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, FirstName, LastName, Email, Password, Wallets);
+        return HashCode.Combine(Id, FirstName, LastName, Email, Password);
     }
 }

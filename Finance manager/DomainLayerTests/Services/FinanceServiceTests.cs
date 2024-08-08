@@ -3,7 +3,7 @@ using DataLayer.Models;
 using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
-using DomainLayer.Services.FinanceOperations;
+using DomainLayer.Services.Finances;
 using DomainLayerTests.Data.Services;
 using FakeItEasy;
 using System.Linq.Expressions;

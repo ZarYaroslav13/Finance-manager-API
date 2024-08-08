@@ -8,8 +8,8 @@ public static class AccountDTOTestDataProvider
     {
         new object[]
         {
-            new AccountDTO(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password", Wallets = new()},
-            new AccountDTO(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password", Wallets = new()}
+            new AccountDTO(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password"},
+            new AccountDTO(){ Id = 1, LastName = "LastName", FirstName = "FirstName", Email = "Email", Password = "Password"}
         },
         new object[]
         {

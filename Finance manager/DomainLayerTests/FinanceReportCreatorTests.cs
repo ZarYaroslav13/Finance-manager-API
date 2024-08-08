@@ -1,6 +1,6 @@
 using DomainLayer;
 using DomainLayer.Models;
-using DomainLayer.Services.FinanceOperations;
+using DomainLayer.Services.Finances;
 using DomainLayerTests.Data;
 using FakeItEasy;
 

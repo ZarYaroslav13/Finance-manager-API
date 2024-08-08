@@ -1,5 +1,5 @@
 ﻿using DomainLayer.Models;
-using DomainLayer.Services.FinanceOperations;
+using DomainLayer.Services.Finances;
 
 namespace DomainLayer;
 

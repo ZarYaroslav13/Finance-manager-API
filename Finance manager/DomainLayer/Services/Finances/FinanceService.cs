@@ -4,7 +4,7 @@ using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
 
-namespace DomainLayer.Services.FinanceOperations;
+namespace DomainLayer.Services.Finances;
 
 public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOperationType>, IFinanceService
 {
