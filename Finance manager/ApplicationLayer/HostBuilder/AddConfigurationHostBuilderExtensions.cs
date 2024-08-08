@@ -1,4 +1,4 @@
-﻿namespace Finance_manager_API.HostBuilder;
+﻿namespace ApplicationLayer.HostBuilder;
 
 public static class AddConfigurationHostBuilderExtensions
 {

@@ -2,8 +2,8 @@
 using ApplicationLayerTests.TestToolExtensions;
 using AutoMapper;
 using DomainLayer.Models;
-using Finance_manager_API.Mapper.Profiles;
-using Finance_manager_API.Models;
+using ApplicationLayer.Mapper.Profiles;
+using ApplicationLayer.Models;
 
 namespace ApplicationLayerTests.Mapper.Profiles;
 

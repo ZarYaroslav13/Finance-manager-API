@@ -1,6 +1,6 @@
 ﻿using DomainLayer.Models;
 
-namespace Finance_manager_API.Models;
+namespace ApplicationLayer.Models;
 
 public class FinanceReportDTO : Base.ModelDTO
 {

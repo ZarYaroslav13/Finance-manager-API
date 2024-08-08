@@ -1,4 +1,4 @@
-﻿namespace Finance_manager_API.Models;
+﻿namespace ApplicationLayer.Models;
 
 public abstract class FinanceOperationDTO : Base.ModelDTO
 {

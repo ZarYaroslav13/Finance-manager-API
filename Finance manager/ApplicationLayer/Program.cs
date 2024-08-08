@@ -1,5 +1,5 @@
 using DataLayer;
-using Finance_manager_API.HostBuilder;
+using ApplicationLayer.HostBuilder;
 
 var builder = WebApplication.CreateBuilder(args);
 

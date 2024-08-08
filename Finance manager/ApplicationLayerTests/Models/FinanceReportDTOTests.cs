@@ -1,7 +1,7 @@
 ﻿using ApplicationLayerTests.Data.Models;
 using DomainLayer.Models;
 using FakeItEasy;
-using Finance_manager_API.Models;
+using ApplicationLayer.Models;
 
 namespace ApplicationLayerTests.Models;
 

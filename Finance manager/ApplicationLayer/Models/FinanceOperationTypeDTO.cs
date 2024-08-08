@@ -1,6 +1,6 @@
 ﻿using DataLayer.Models;
 
-namespace Finance_manager_API.Models;
+namespace ApplicationLayer.Models;
 
 public class FinanceOperationTypeDTO : Base.ModelDTO
 {

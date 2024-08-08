@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using DomainLayer.Models;
-using Finance_manager_API.Models;
+using ApplicationLayer.Models;
 
-namespace Finance_manager_API.Mapper.Profiles;
+namespace ApplicationLayer.Mapper.Profiles;
 
 public class FinanceOperationTypeProfile : Profile
 {
