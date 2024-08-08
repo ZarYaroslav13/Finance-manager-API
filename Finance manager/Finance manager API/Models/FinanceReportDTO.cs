@@ -16,12 +16,35 @@ public class FinanceReportDTO : Base.ModelDTO
         string walletName,
         int totalIncome,
         int totalExpense,
+        List<FinanceOperationDTO> operation,
         Period period)
     {
         WalletId = walletId;
         WalletName = walletName ?? throw new ArgumentNullException(nameof(walletName));
         TotalIncome = totalIncome;
         TotalExpense = totalExpense;
+        Operations = operation ?? throw new ArgumentNullException(nameof(operation));
         Period = period;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        var financeReport = (FinanceReportDTO)obj;
+
+        return Id == financeReport.Id
+            && WalletId == financeReport.WalletId
+            && WalletName == financeReport.WalletName
+            && TotalIncome == financeReport.TotalIncome
+            && TotalExpense == financeReport.TotalExpense
+            && Period == financeReport.Period
+            && AreEqualLists(Operations, financeReport.Operations);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id, WalletId, WalletName, TotalIncome, TotalExpense, Period, Operations);
     }
 }

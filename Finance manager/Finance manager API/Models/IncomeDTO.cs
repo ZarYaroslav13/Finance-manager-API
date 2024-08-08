@@ -1,5 +1,4 @@
 ﻿using DataLayer.Models;
-using DomainLayer.Models;
 
 namespace Finance_manager_API.Models;
 
@@ -7,7 +6,7 @@ public class IncomeDTO : FinanceOperationDTO
 {
     public IncomeDTO(FinanceOperationTypeDTO type) : base(type)
     {
-        
+
     }
 
     public override void ChangeFinanceOperationType(FinanceOperationTypeDTO type)

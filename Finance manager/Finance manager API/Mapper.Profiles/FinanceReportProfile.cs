@@ -9,8 +9,10 @@ public class FinanceReportProfile : Profile
     public FinanceReportProfile()
     {
         CreateMap<FinanceReportModel, FinanceReportDTO>()
-            .ConstructUsing(
-                src => 
-                    new FinanceReportDTO(src.WalletId, src.WalletName, src.TotalIncome, src.TotalExpense, src.Period));
+             .ConstructUsing((src, context) =>
+             {
+                 var operations = src.Operations.Select(op => context.Mapper.Map<FinanceOperationDTO>(op)).ToList();
+                 return new FinanceReportDTO(src.WalletId, src.WalletName, src.TotalIncome, src.TotalExpense, operations, src.Period);
+             });
     }
 }
