@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
 using Finance_manager_API.Controllers.Base;
 using Finance_manager_API.Models;
@@ -27,16 +28,20 @@ namespace Finance_manager_API.Controllers
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public AccountDTO Get(int id)
+        [HttpGet]
+        public AccountDTO LogIn(string email, string password)
         {
-            return new AccountDTO();
+            var result = _accountService.TryLogIn(email, password);
+
+            return _mapper.Map<AccountDTO>(result);
         }
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post(AccountDTO account)
+        public void AddAccount(AccountDTO account)
         {
+            _accountService.AddNewAccount(
+                _mapper.Map<AccountModel>(account));
         }
 
         // PUT api/<ValuesController>/5
@@ -49,6 +54,7 @@ namespace Finance_manager_API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _accountService.DeleteAccountWithId(id);
         }
     }
 }

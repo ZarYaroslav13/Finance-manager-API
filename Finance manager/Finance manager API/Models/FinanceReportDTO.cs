@@ -16,14 +16,12 @@ public class FinanceReportDTO : Base.ModelDTO
         string walletName,
         int totalIncome,
         int totalExpense,
-        List<FinanceOperationDTO> operations,
         Period period)
     {
         WalletId = walletId;
         WalletName = walletName ?? throw new ArgumentNullException(nameof(walletName));
         TotalIncome = totalIncome;
         TotalExpense = totalExpense;
-        Operations = operations ?? throw new ArgumentNullException(nameof(operations));
         Period = period;
     }
 }
