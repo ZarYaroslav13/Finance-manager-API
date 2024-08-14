@@ -56,14 +56,14 @@ public class WalletServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(WalletServiceTestsDataProvider.AddOrUpdateWalletTestData), typeof(WalletServiceTestsDataProvider))]
+    [DynamicData(nameof(WalletServiceTestsDataProvider.AddWalletTestData), typeof(WalletServiceTestsDataProvider))]
     public void AddNewWallet_ServiceInvokeMethodInsertByRepository_WalletModel(WalletModel modelForAdding, Wallet walletForRepository)
     {
         A.CallTo(() => _mapper.Map<Wallet>(modelForAdding)).Returns(walletForRepository);
         A.CallTo(() => _repository.Insert(walletForRepository)).Returns(walletForRepository);
         A.CallTo(() => _mapper.Map<WalletModel>(walletForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddNewWallet(modelForAdding);
+        var result = _service.AddWallet(modelForAdding);
 
         A.CallTo(() => _repository.Insert(walletForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
@@ -72,7 +72,7 @@ public class WalletServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(WalletServiceTestsDataProvider.AddOrUpdateWalletTestData), typeof(WalletServiceTestsDataProvider))]
+    [DynamicData(nameof(WalletServiceTestsDataProvider.UpdateWalletTestData), typeof(WalletServiceTestsDataProvider))]
     public void UpdateWallet_ServiceInvokeMethodUpdateByRepository_WalletModel(WalletModel modelForUpdate, Wallet walletForRepository)
     {
         A.CallTo(() => _mapper.Map<Wallet>(modelForUpdate)).Returns(walletForRepository);

@@ -18,20 +18,20 @@ public static class WalletServiceTestsDataProvider
         }
     };
 
-    public static IEnumerable<object[]> AddOrUpdateWalletTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> AddWalletTestData { get; } = new List<object[]>
     {
         new object[]
         {
             new WalletModel()
             {
-                Id = 1,
+                Id = 0,
                 AccountId = 1,
                 Balance = 1000,
                 Name = "Test"
             },
             new Wallet()
             {
-                Id = 1,
+                Id = 0,
                 AccountId = 1,
                 Balance = 1000,
                 Name = "Test"
@@ -39,7 +39,7 @@ public static class WalletServiceTestsDataProvider
         }
     };
 
-    public static IEnumerable<object[]> UpdateAccountTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> UpdateWalletTestData { get; } = new List<object[]>
     {
         new object[]
         {

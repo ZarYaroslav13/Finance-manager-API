@@ -20,7 +20,7 @@ public class FinanceReportCreator
         Period period = new() { StartDate = startDate, EndDate = endDate };
 
         var report = new FinanceReportModel(wallet.Id, wallet.Name, period);
-        var allOperations = _service.GetAllFinanceOperationOfWallet(wallet.Id);
+        var allOperations = _service.GetAllFinanceOperationOfWallet(wallet.Id, startDate, endDate);
 
         report.Operations = allOperations;
 

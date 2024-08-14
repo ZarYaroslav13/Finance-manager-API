@@ -30,14 +30,14 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.AddOrUpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
-    public void AddNewAccount_ServiceInvokeMethodInsertByRepository_AccountModel(AccountModel modelForAdding, Account accountForRepository)
+    [DynamicData(nameof(AccountServiceTestsDataProvider.AddAccountTestData), typeof(AccountServiceTestsDataProvider))]
+    public void AddAccount_ServiceInvokeMethodInsertByRepository_AccountModel(AccountModel modelForAdding, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForAdding)).Returns(accountForRepository);
         A.CallTo(() => _repository.Insert(accountForRepository)).Returns(accountForRepository);
         A.CallTo(() => _mapper.Map<AccountModel>(accountForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddNewAccount(modelForAdding);
+        var result = _service.AddAccount(modelForAdding);
 
         A.CallTo(() => _repository.Insert(accountForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
@@ -46,7 +46,7 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.AddOrUpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
+    [DynamicData(nameof(AccountServiceTestsDataProvider.UpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
     public void UpdateAccount_ServiceInvokeMethodUpdateByRepository_AccountModel(AccountModel modelForUpdate, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForUpdate)).Returns(accountForRepository);

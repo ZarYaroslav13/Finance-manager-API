@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.Models;
+using DataLayer.Repository;
 using DataLayer.Security;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
@@ -7,17 +8,25 @@ using System.Net.Mail;
 
 namespace DomainLayer.Services.Accounts;
 
-public class AccountService : EntityService<AccountModel, Account>, IAccountService
+public class AccountService : BaseService, IAccountService
 {
-    private protected PasswordCoder _passwordCoder;
+    private readonly PasswordCoder _passwordCoder;
+    private readonly IRepository<Account> _repository;
 
     public AccountService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
         _passwordCoder = new PasswordCoder();
+
+        _repository = _unitOfWork.GetRepository<Account>();
     }
 
-    public AccountModel AddNewAccount(AccountModel account)
+    public AccountModel AddAccount(AccountModel account)
     {
+        ArgumentNullException.ThrowIfNull(account);
+
+        if (account.Id != 0)
+            throw new ArgumentException(nameof(account));
+
         CanTakeThisEmail(account.Email);
 
         account.Password = _passwordCoder.ComputeSHA256Hash(account.Password);
@@ -33,12 +42,20 @@ public class AccountService : EntityService<AccountModel, Account>, IAccountServ
 
     public AccountModel UpdateAccount(AccountModel updatedAccount)
     {
+        ArgumentNullException.ThrowIfNull(updatedAccount);
+
+        if (updatedAccount.Id == 0)
+            throw new ArgumentException(nameof(updatedAccount));
+
+        var accountDb = _mapper.Map<Account>(updatedAccount);
+        if (_repository.GetAll(filter: a => a == accountDb).Any())
+            throw new InvalidOperationException();
+
         CanTakeThisEmail(updatedAccount.Email);
 
         var result = _mapper
             .Map<AccountModel>(
-                _repository
-                    .Update(_mapper.Map<Account>(updatedAccount)));
+                _repository.Update(accountDb));
         _unitOfWork.SaveChanges();
 
         return result;

@@ -6,30 +6,43 @@ using DomainLayer.Models;
 
 namespace DomainLayer.Services.Finances;
 
-public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOperationType>, IFinanceService
+public class FinanceService : BaseService, IFinanceService
 {
     private readonly IRepository<FinanceOperation> _financeOperationRepository;
+    private readonly IRepository<FinanceOperationType> _financeOperationTypeRepository;
 
     public FinanceService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
         _financeOperationRepository = _unitOfWork.GetRepository<FinanceOperation>();
+        _financeOperationTypeRepository = _unitOfWork.GetRepository<FinanceOperationType>();
     }
 
     #region FinanceOperationTypeMethods
 
     public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId)
     {
-        return _repository
+        return _financeOperationTypeRepository
                 .GetAll(filter: fot => fot.WalletId == walletId)
                 .Select(_mapper.Map<FinanceOperationTypeModel>)
                 .ToList();
     }
 
-    public FinanceOperationTypeModel AddNewFinanceOperationType(FinanceOperationTypeModel type)
+    public FinanceOperationTypeModel AddFinanceOperationType(FinanceOperationTypeModel type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
+        if (type.Id != 0)
+            throw new ArgumentException(nameof(type));
+
+        var typeForDb = _mapper.Map<FinanceOperationType>(type);
+
+        if (_financeOperationTypeRepository.GetAll(filter: fot => fot == typeForDb).Any())
+        {
+            throw new InvalidOperationException();
+        }
+
         var result = _mapper.Map<FinanceOperationTypeModel>(
-                         _repository.Insert(
-                            _mapper.Map<FinanceOperationType>(type)));
+                         _financeOperationTypeRepository.Insert(typeForDb));
         _unitOfWork.SaveChanges();
 
         return result;
@@ -37,8 +50,13 @@ public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOp
 
     public FinanceOperationTypeModel UpdateFinanceOperationType(FinanceOperationTypeModel type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
+        if (type.Id == 0)
+            throw new ArgumentException(nameof(type));
+
         var result = _mapper.Map<FinanceOperationTypeModel>(
-                         _repository.Update(
+                         _financeOperationTypeRepository.Update(
                             _mapper.Map<FinanceOperationType>(type)));
         _unitOfWork.SaveChanges();
 
@@ -47,7 +65,15 @@ public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOp
 
     public void DeleteFinanceOperationType(int id)
     {
-        _repository.Delete(id);
+        if (_financeOperationRepository.GetAll(
+                includeProperties: nameof(FinanceOperation.Type),
+                filter: fo => fo.Type.Id == id)
+            .Any())
+        {
+            throw new InvalidOperationException();
+        }
+
+        _financeOperationTypeRepository.Delete(id);
         _unitOfWork.SaveChanges();
     }
 
@@ -56,11 +82,65 @@ public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOp
     #region FinanceOperationMethods
     public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId)
     {
+        if (walletId <= 0)
+            throw new ArgumentException(nameof(walletId));
+
         List<FinanceOperationModel> result = new();
 
         foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
         {
             result.AddRange(GetAllFinanceOperationOfType(type.Id));
+        }
+
+        return result;
+    }
+
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count)
+    {
+        if (walletId <= 0)
+            throw new ArgumentException(nameof(walletId));
+
+        if (count <= 0)
+            throw new ArgumentException(nameof(count));
+
+        List<FinanceOperationModel> result = new();
+        int numberNeededOperation;
+
+        foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
+        {
+            var financeOperations = GetAllFinanceOperationOfType(type.Id);
+            numberNeededOperation = (count < financeOperations.Count) ? count : financeOperations.Count;
+
+            result.AddRange(financeOperations.GetRange(0, numberNeededOperation));
+
+            count -= numberNeededOperation;
+
+            if (count == 0)
+                return result;
+        }
+
+        return result;
+    }
+
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, DateTime startDate, DateTime endDate)
+    {
+        if (walletId <= 0)
+            throw new ArgumentException(nameof(walletId));
+
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(startDate, endDate);
+
+        List<FinanceOperationModel> result = new();
+
+        foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
+        {
+
+            var financeOperation = _financeOperationRepository
+                .GetAll(filter: fo =>
+                       fo.TypeId == type.Id
+                    && fo.Date <= endDate
+                    && fo.Date >= startDate)
+                .Select(_mapper.Map<FinanceOperationModel>)
+                .ToList();
         }
 
         return result;
@@ -74,11 +154,20 @@ public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOp
                 .ToList();
     }
 
-    public FinanceOperationModel AddNewFinanceOperationType(FinanceOperationModel financeOperation)
+    public FinanceOperationModel AddFinanceOperationType(FinanceOperationModel financeOperation)
     {
+        ArgumentNullException.ThrowIfNull(financeOperation);
+
+        if (financeOperation.Id != 0)
+            throw new ArgumentException(nameof(financeOperation));
+
+        var financeOperationForDb = _mapper.Map<FinanceOperation>(financeOperation);
+
+        if (_financeOperationRepository.GetAll(filter: fo => fo == financeOperationForDb).Any())
+            throw new InvalidOperationException();
+
         var result = _mapper.Map<FinanceOperationModel>(
-                        _financeOperationRepository.Insert(
-                            _mapper.Map<FinanceOperation>(financeOperation)));
+                        _financeOperationRepository.Insert(financeOperationForDb));
         _unitOfWork.SaveChanges();
 
         return result;
@@ -86,6 +175,11 @@ public class FinanceService : EntityService<FinanceOperationTypeModel, FinanceOp
 
     public FinanceOperationModel UpdateFinanceOperationType(FinanceOperationModel financeOperation)
     {
+        ArgumentNullException.ThrowIfNull(financeOperation);
+
+        if (financeOperation.Id == 0)
+            throw new ArgumentException(nameof(financeOperation));
+
         var result = _mapper.Map<FinanceOperationModel>(
                         _financeOperationRepository.Update(
                             _mapper.Map<FinanceOperation>(financeOperation)));

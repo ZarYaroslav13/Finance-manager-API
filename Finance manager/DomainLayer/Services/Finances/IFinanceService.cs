@@ -6,7 +6,7 @@ public interface IFinanceService
 {
     public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId);
 
-    public FinanceOperationTypeModel AddNewFinanceOperationType(FinanceOperationTypeModel type);
+    public FinanceOperationTypeModel AddFinanceOperationType(FinanceOperationTypeModel type);
 
     public FinanceOperationTypeModel UpdateFinanceOperationType(FinanceOperationTypeModel type);
 
@@ -14,9 +14,13 @@ public interface IFinanceService
 
     public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId);
 
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int numberOfOperation);
+
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, DateTime startDate, DateTime endDate);
+
     public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId);
 
-    public FinanceOperationModel AddNewFinanceOperationType(FinanceOperationModel financeOperation);
+    public FinanceOperationModel AddFinanceOperationType(FinanceOperationModel financeOperation);
 
     public FinanceOperationModel UpdateFinanceOperationType(FinanceOperationModel financeOperation);
 

@@ -70,14 +70,14 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceServiceTestsDataProvider.AddOrUpdateFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void AddNewFinanceOperationType_ServiceInvokeMethodInsertByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.AddFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
+    public void AddFinanceOperationType_ServiceInvokeMethodInsertByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
         A.CallTo(() => _repository.Insert(typeForRepository)).Returns(typeForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationTypeModel>(typeForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddNewFinanceOperationType(modelForAdding);
+        var result = _service.AddFinanceOperationType(modelForAdding);
 
         A.CallTo(() => _repository.Insert(typeForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
@@ -86,7 +86,7 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceServiceTestsDataProvider.AddOrUpdateFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.UpdateFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
     public void UpdateFinanceOperationType_ServiceInvokeMethodUpdateByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
@@ -175,14 +175,14 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceServiceTestsDataProvider.AddOrUpdateFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void AddNewFinanceOperation_ServiceInvokeMethodInsertByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.AddFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
+    public void AddFinanceOperation_ServiceInvokeMethodInsertByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperation>(modelForAdding)).Returns(financeOperationForRepository);
         A.CallTo(() => _financeOperationsRepository.Insert(financeOperationForRepository)).Returns(financeOperationForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(financeOperationForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddNewFinanceOperationType(modelForAdding);
+        var result = _service.AddFinanceOperationType(modelForAdding);
 
         A.CallTo(() => _financeOperationsRepository.Insert(financeOperationForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
@@ -191,7 +191,7 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceServiceTestsDataProvider.AddOrUpdateFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.UpdateFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
     public void UpdateFinanceOperation_ServiceInvokeMethodUpdateByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperation>(modelForAdding)).Returns(financeOperationForRepository);

@@ -11,11 +11,11 @@ namespace ApplicationLayer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController : EntityController<AccountDTO>
+public class AccountController : EntityController
 {
     IAccountService _accountService;
 
-    public AccountController(ILogger<EntityController<AccountDTO>> logger, IMapper mapper, IAccountService service) : base(logger, mapper)
+    public AccountController(ILogger<EntityController> logger, IMapper mapper, IAccountService service) : base(logger, mapper)
     {
         _accountService = service ?? throw new ArgumentNullException(nameof(service));
     }
@@ -36,7 +36,7 @@ public class AccountController : EntityController<AccountDTO>
     public AccountDTO CreateAccount(AccountDTO account)
     {
         return _mapper.Map<AccountDTO>(
-                _accountService.AddNewAccount(
+                _accountService.AddAccount(
                     _mapper.Map<AccountModel>(account)));
     }
 

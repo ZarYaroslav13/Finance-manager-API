@@ -41,7 +41,28 @@ public static class FinanceServiceTestsDataProvider
         }
     };
 
-    public static IEnumerable<object[]> AddOrUpdateFinanceOperationTypeTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> AddFinanceOperationTypeTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            new FinanceOperationTypeModel()
+            {
+                Id = 0,
+                Description = "Description",
+                EntryType = EntryType.Income,
+                Name = "Name"
+            },
+            new FinanceOperationType()
+            {
+                Id = 0,
+                Description = "Description",
+                EntryType = EntryType.Income,
+                Name = "Name"
+            }
+        }
+    };
+
+    public static IEnumerable<object[]> UpdateFinanceOperationTypeTestData { get; } = new List<object[]>
     {
         new object[]
         {
@@ -101,7 +122,34 @@ public static class FinanceServiceTestsDataProvider
         }
     };
 
-    public static IEnumerable<object[]> AddOrUpdateFinanceOperationTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> AddFinanceOperationTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            new IncomeModel(new FinanceOperationTypeModel()
+            {
+                Id = 2,
+                Description = "Description",
+                EntryType = EntryType.Income,
+                Name = "Name"
+            })
+            {
+                Id = 0, Amount = 100, Date = DateTime.MinValue
+            },
+            new FinanceOperation()
+            {
+                Id = 0, Amount = 100, Date = DateTime.MinValue, TypeId = 2, Type = new FinanceOperationType()
+                {
+                    Id = 2,
+                    Description = "Description",
+                    EntryType = EntryType.Income,
+                    Name = "Name"
+                }
+            }
+        }
+    };
+
+    public static IEnumerable<object[]> UpdateFinanceOperationTestData { get; } = new List<object[]>
     {
         new object[]
         {
@@ -127,5 +175,4 @@ public static class FinanceServiceTestsDataProvider
             }
         }
     };
-
 }

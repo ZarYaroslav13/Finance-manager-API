@@ -6,7 +6,7 @@ public interface IWalletService
 {
     public List<WalletModel> GetAllWalletsOfAccount(int accountId);
 
-    public WalletModel AddNewWallet(WalletModel wallet);
+    public WalletModel AddWallet(WalletModel wallet);
 
     public WalletModel UpdateWallet(WalletModel updatedWallet);
 

@@ -7,7 +7,7 @@ using FakeItEasy;
 namespace DomainLayerTests.Services;
 
 [TestClass]
-public class EntityServiceTests
+public class BaseServiceTests
 {
     [TestMethod]
     public void Constructor_ArgumentsAreNull_ThrowException()

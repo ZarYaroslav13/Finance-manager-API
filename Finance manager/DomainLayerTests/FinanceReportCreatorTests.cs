@@ -42,12 +42,12 @@ public class FinanceReportCreatorTests
     [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.CreateFinanceReportTestData), typeof(FinanceReportCreatorTestsDataProvider))]
     public void CreateFinanceReport_GeneratedAndExpectedReportsAreEqual_FinanceReport(WalletModel wallet, FinanceReportModel expected)
     {
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).Returns(expected.Operations);
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.EndDate)).Returns(expected.Operations);
 
         var result = _creator.CreateFinanceReport(wallet, expected.Period.StartDate, expected.Period.EndDate);
         result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
 
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.EndDate)).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(expected, result);
     }
@@ -56,12 +56,12 @@ public class FinanceReportCreatorTests
     [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.CreateDailyFinanceReportTestData), typeof(FinanceReportCreatorTestsDataProvider))]
     public void CreateDailyFinanceReport_GeneratedDailyReportISAsExpected_FinanceReport(WalletModel wallet, FinanceReportModel expected)
     {
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).Returns(expected.Operations);
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.StartDate)).Returns(expected.Operations);
 
         var result = _creator.CreateFinanceReport(wallet, expected.Period.StartDate);
         result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
 
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.StartDate)).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(expected, result);
     }
