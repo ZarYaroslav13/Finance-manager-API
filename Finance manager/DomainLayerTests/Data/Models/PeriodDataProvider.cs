@@ -35,11 +35,6 @@ public class PeriodDataProvider
         {
             new Period(){ StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue},
             null
-        },
-        new object[]
-        {
-            new Period(){ StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue},
-            new WalletModel()
         }
     };
 }

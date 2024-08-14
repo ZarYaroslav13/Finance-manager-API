@@ -34,15 +34,9 @@ public class FinanceService : BaseService, IFinanceService
         if (type.Id != 0)
             throw new ArgumentException(nameof(type));
 
-        var typeForDb = _mapper.Map<FinanceOperationType>(type);
-
-        if (_financeOperationTypeRepository.GetAll(filter: fot => fot == typeForDb).Any())
-        {
-            throw new InvalidOperationException();
-        }
-
         var result = _mapper.Map<FinanceOperationTypeModel>(
-                         _financeOperationTypeRepository.Insert(typeForDb));
+                         _financeOperationTypeRepository.Insert(
+                             _mapper.Map<FinanceOperationType>(type)));
         _unitOfWork.SaveChanges();
 
         return result;
@@ -80,43 +74,41 @@ public class FinanceService : BaseService, IFinanceService
     #endregion
 
     #region FinanceOperationMethods
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId)
+
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count = 0)
     {
         if (walletId <= 0)
             throw new ArgumentException(nameof(walletId));
 
-        List<FinanceOperationModel> result = new();
-
-        foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
-        {
-            result.AddRange(GetAllFinanceOperationOfType(type.Id));
-        }
-
-        return result;
-    }
-
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count)
-    {
-        if (walletId <= 0)
-            throw new ArgumentException(nameof(walletId));
-
-        if (count <= 0)
+        if (count < 0)
             throw new ArgumentException(nameof(count));
 
         List<FinanceOperationModel> result = new();
-        int numberNeededOperation;
 
-        foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
+        if (count == 0)
         {
-            var financeOperations = GetAllFinanceOperationOfType(type.Id);
-            numberNeededOperation = (count < financeOperations.Count) ? count : financeOperations.Count;
+            foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
+            {
+                result.AddRange(GetAllFinanceOperationOfType(type.Id));
+            }
+        }
 
-            result.AddRange(financeOperations.GetRange(0, numberNeededOperation));
+        if (count > 0)
+        {
+            int numberNeededOperation;
 
-            count -= numberNeededOperation;
+            foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
+            {
+                var financeOperations = GetAllFinanceOperationOfType(type.Id);
+                numberNeededOperation = (count < financeOperations.Count) ? count : financeOperations.Count;
 
-            if (count == 0)
-                return result;
+                result.AddRange(financeOperations.GetRange(0, numberNeededOperation));
+
+                count -= numberNeededOperation;
+
+                if (count == 0)
+                    return result;
+            }
         }
 
         return result;
@@ -133,14 +125,13 @@ public class FinanceService : BaseService, IFinanceService
 
         foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
         {
-
-            var financeOperation = _financeOperationRepository
+            result.AddRange(_financeOperationRepository
                 .GetAll(filter: fo =>
                        fo.TypeId == type.Id
                     && fo.Date <= endDate
                     && fo.Date >= startDate)
                 .Select(_mapper.Map<FinanceOperationModel>)
-                .ToList();
+                .ToList());
         }
 
         return result;
@@ -154,7 +145,7 @@ public class FinanceService : BaseService, IFinanceService
                 .ToList();
     }
 
-    public FinanceOperationModel AddFinanceOperationType(FinanceOperationModel financeOperation)
+    public FinanceOperationModel AddFinanceOperation(FinanceOperationModel financeOperation)
     {
         ArgumentNullException.ThrowIfNull(financeOperation);
 
@@ -173,7 +164,7 @@ public class FinanceService : BaseService, IFinanceService
         return result;
     }
 
-    public FinanceOperationModel UpdateFinanceOperationType(FinanceOperationModel financeOperation)
+    public FinanceOperationModel UpdateFinanceOperation(FinanceOperationModel financeOperation)
     {
         ArgumentNullException.ThrowIfNull(financeOperation);
 

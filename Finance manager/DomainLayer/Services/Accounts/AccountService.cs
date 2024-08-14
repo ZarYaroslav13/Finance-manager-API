@@ -47,15 +47,11 @@ public class AccountService : BaseService, IAccountService
         if (updatedAccount.Id == 0)
             throw new ArgumentException(nameof(updatedAccount));
 
-        var accountDb = _mapper.Map<Account>(updatedAccount);
-        if (_repository.GetAll(filter: a => a == accountDb).Any())
-            throw new InvalidOperationException();
-
         CanTakeThisEmail(updatedAccount.Email);
 
         var result = _mapper
             .Map<AccountModel>(
-                _repository.Update(accountDb));
+                _repository.Update(_mapper.Map<Account>(updatedAccount)));
         _unitOfWork.SaveChanges();
 
         return result;

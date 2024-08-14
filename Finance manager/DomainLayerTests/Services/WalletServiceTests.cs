@@ -56,8 +56,16 @@ public class WalletServiceTests
     }
 
     [TestMethod]
+    public void AddWallet_InstanceIdNotEqualZero_ThrowsException()
+    {
+        WalletModel wallet = new() { Id = 1 };
+
+        Assert.ThrowsException<ArgumentException>(() => _service.AddWallet(wallet));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(WalletServiceTestsDataProvider.AddWalletTestData), typeof(WalletServiceTestsDataProvider))]
-    public void AddNewWallet_ServiceInvokeMethodInsertByRepository_WalletModel(WalletModel modelForAdding, Wallet walletForRepository)
+    public void AddWallet_ServiceInvokeMethodInsertByRepository_WalletModel(WalletModel modelForAdding, Wallet walletForRepository)
     {
         A.CallTo(() => _mapper.Map<Wallet>(modelForAdding)).Returns(walletForRepository);
         A.CallTo(() => _repository.Insert(walletForRepository)).Returns(walletForRepository);
@@ -69,6 +77,14 @@ public class WalletServiceTests
         A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
+    }
+
+    [TestMethod]
+    public void UpdateWallet_InstanceIdEqualZero_ThrowsException()
+    {
+        WalletModel wallet = new() { Id = 0 };
+
+        Assert.ThrowsException<ArgumentException>(() => _service.UpdateWallet(wallet));
     }
 
     [TestMethod]

@@ -12,17 +12,15 @@ public interface IFinanceService
 
     public void DeleteFinanceOperationType(int id);
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId);
-
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int numberOfOperation);
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count = 0);
 
     public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, DateTime startDate, DateTime endDate);
 
     public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId);
 
-    public FinanceOperationModel AddFinanceOperationType(FinanceOperationModel financeOperation);
+    public FinanceOperationModel AddFinanceOperation(FinanceOperationModel financeOperation);
 
-    public FinanceOperationModel UpdateFinanceOperationType(FinanceOperationModel financeOperation);
+    public FinanceOperationModel UpdateFinanceOperation(FinanceOperationModel financeOperation);
 
     public void DeleteFinanceOperation(int id);
 }

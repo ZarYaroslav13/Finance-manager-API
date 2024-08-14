@@ -45,12 +45,9 @@ public class WalletService : BaseService, IWalletService
         if (updatedWallet.Id == 0)
             throw new ArgumentException(nameof(updatedWallet));
 
-        var walletDb = _mapper.Map<Wallet>(updatedWallet);
-        if (_repository.GetAll(filter: w => w == walletDb).Any())
-            throw new InvalidOperationException();
-
         var result = _mapper.Map<WalletModel>(
-                        _repository.Update(walletDb));
+                        _repository.Update(
+                            _mapper.Map<Wallet>(updatedWallet)));
         _unitOfWork.SaveChanges();
 
         return result;

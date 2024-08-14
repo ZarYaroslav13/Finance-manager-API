@@ -33,6 +33,31 @@ public static class FinanceServiceTestsDataProvider
                 }
     };
 
+    public static List<List<FinanceOperation>> FinanceOperations = new()
+    {
+        new List<FinanceOperation>
+        {
+            new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
+            new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
+            new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
+            new FinanceOperation() { Id = 4, Amount = 120, Date = new DateTime(2024, 1, 4), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] }
+        },
+        new List<FinanceOperation>
+        {
+            new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
+            new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
+            new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
+            new FinanceOperation() { Id = 4, Amount = 120, Date = new DateTime(2024, 1, 4), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] }
+        },
+        new List<FinanceOperation>
+        {
+            new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] },
+            new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] },
+            new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] },
+            new FinanceOperation() { Id = 4, Amount = 120, Date = new DateTime(2024, 1, 4), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] }
+        }
+    };
+
     public static IEnumerable<object[]> GetAllFinanceOperationTypesOfWalletTestData { get; } = new List<object[]>
     {
         new object[]
@@ -83,27 +108,17 @@ public static class FinanceServiceTestsDataProvider
         }
     };
 
-    public static IEnumerable<object[]> GetAllFinanceOperationsOfWalletTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> DeleteFinanceOperationTypeTestData { get; } = new List<object[]>
     {
         new object[]
         {
-            new List<FinanceOperation>()
+            1,
+            new List<FinanceOperation>
             {
                 new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
-                new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
-                new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
-                new FinanceOperation() { Id = 4, Amount = 120, Date = new DateTime(2024, 1, 4), TypeId = FinanceOperationTypes[0].Id, Type = FinanceOperationTypes[0] },
-                new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
                 new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
-                new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
-                new FinanceOperation() { Id = 4, Amount = 120, Date = new DateTime(2024, 1, 4), TypeId = FinanceOperationTypes[1].Id, Type = FinanceOperationTypes[1] },
-                new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] },
-                new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] },
-                new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] },
-                new FinanceOperation() { Id = 4, Amount = 120, Date = new DateTime(2024, 1, 4), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] }
-            },
-            FinanceOperationTypes,
-            FinanceOperationTypes[0].WalletId
+                new FinanceOperation() { Id = 3, Amount = 750, Date = new DateTime(2024, 1, 3), TypeId = FinanceOperationTypes[2].Id, Type = FinanceOperationTypes[2] }
+            }
         }
     };
 

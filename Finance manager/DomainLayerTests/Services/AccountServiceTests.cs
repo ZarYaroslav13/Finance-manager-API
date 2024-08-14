@@ -30,6 +30,14 @@ public class AccountServiceTests
     }
 
     [TestMethod]
+    public void AddAccount_InstanceIdNotEqualZero_Throwexception()
+    {
+        AccountModel account = new() { Id = 1 };
+
+        Assert.ThrowsException<ArgumentException>(() => _service.AddAccount(account));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.AddAccountTestData), typeof(AccountServiceTestsDataProvider))]
     public void AddAccount_ServiceInvokeMethodInsertByRepository_AccountModel(AccountModel modelForAdding, Account accountForRepository)
     {
@@ -43,6 +51,14 @@ public class AccountServiceTests
         A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
+    }
+
+    [TestMethod]
+    public void UpdateAccount_InstanceIdEqualZero_Throwexception()
+    {
+        AccountModel account = new() { Id = 0 };
+
+        Assert.ThrowsException<ArgumentException>(() => _service.UpdateAccount(account));
     }
 
     [TestMethod]
