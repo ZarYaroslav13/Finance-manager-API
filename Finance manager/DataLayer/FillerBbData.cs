@@ -56,6 +56,14 @@ public class FillerBbData
             LastName = "Brown",
             Email = "chris.brown@example.com",
             Password = _passwordCoder.ComputeSHA256Hash("password102"),
+        },
+        new Account()
+        {
+            Id = 6,
+            LastName = "Your best",
+            FirstName = "Admin",
+            Email = "mr.admin.number1@gmail.com",
+            Password= _passwordCoder.ComputeSHA256Hash("adminParol124")
         }
     };
 
