@@ -75,38 +75,26 @@ public class FinanceService : BaseService, IFinanceService
 
     #region FinanceOperationMethods
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count = 0, int index = 0)
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int index = 0, int count = 0)
     {
         if (walletId <= 0)
-            throw new ArgumentException(nameof(walletId));
+            throw new ArgumentOutOfRangeException(nameof(walletId));
 
         if (count < 0)
-            throw new ArgumentException(nameof(count));
+            throw new ArgumentOutOfRangeException(nameof(count));
 
-        List<FinanceOperationModel> result = new();
+        if (index < 0)
+            throw new ArgumentOutOfRangeException(nameof(index));
 
-        if (count == 0)
-        {
-            foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
-            {
-                result.AddRange(GetAllFinanceOperationOfType(type.Id));
-            }
-        }
-
-        if (count > 0)
-        {
-            result = _financeOperationRepository
+        List<FinanceOperationModel> result = _financeOperationRepository
                 .GetAll(
                    includeProperties: nameof(FinanceOperation.Type),
-                    filter: fo => fo.Type.WalletId == walletId, orderBy:
-                    iQ => iQ.OrderBy(fo => fo.Date),
+                    filter: fo => fo.Type.WalletId == walletId, 
+                    orderBy: iQ => iQ.OrderBy(fo => fo.Date),
                     skip: count,
                     take: index)
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
-
-            return result;
-        }
 
         return result;
     }
@@ -118,18 +106,15 @@ public class FinanceService : BaseService, IFinanceService
 
         ArgumentOutOfRangeException.ThrowIfGreaterThan(startDate, endDate);
 
-        List<FinanceOperationModel> result = new();
-
-        foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
-        {
-            result.AddRange(_financeOperationRepository
-                .GetAll(filter: fo =>
-                       fo.TypeId == type.Id
+        List<FinanceOperationModel> result = _financeOperationRepository
+                .GetAll(
+                includeProperties: nameof(FinanceOperation.Type),
+                filter: fo =>
+                       fo.Type.WalletId == walletId
                     && fo.Date <= endDate
                     && fo.Date >= startDate)
                 .Select(_mapper.Map<FinanceOperationModel>)
-                .ToList());
-        }
+                .ToList();
 
         return result;
     }

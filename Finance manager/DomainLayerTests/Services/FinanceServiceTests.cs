@@ -5,7 +5,9 @@ using DataLayer.UnitOfWork;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using DomainLayerTests.Data.Services;
+using DomainLayerTests.TestHelpers;
 using FakeItEasy;
+using System;
 using System.Linq.Expressions;
 
 namespace DomainLayerTests.Services;
@@ -149,76 +151,31 @@ public class FinanceServiceTests
     #region Tests for GetAllFinanceOperationOfWallet(int walletId, int count = 0)
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void GetAllFinanceOperationOfWallet_WalletIdIsLessThanOrEqualToZero_ThrowsArgumentException()
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationOfWalletArgumentsAreLessThenZeroTestData), typeof(FinanceServiceTestsDataProvider))]
+    public void GetAllFinanceOperationOfWallet_ArgumentsAreLessThenZero_ThrowsArgumentException(int walletId, int count,int index)
     {
-        _service.GetAllFinanceOperationOfWallet(0);
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => _service.GetAllFinanceOperationOfWallet(walletId, count, index));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void GetAllFinanceOperationOfWallet_CountIsLessThanZero_ThrowsArgumentException()
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationOfWalletWithCountAndIndexTestData), typeof(FinanceServiceTestsDataProvider))]
+    public void GetAllFinanceOperationOfWallet_WithCountAndIndex_GetAllWasInvokedAndReceivedExpectedList_ListFinanceOperationModels(List<FinanceOperation> operations, int walletId, int index, int count)
     {
-        _service.GetAllFinanceOperationOfWallet(1, -1);
-    }
+        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+                                                            A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
+                                                                filter != null && filter.Compile()(new FinanceOperation { Type = new() { WalletId = walletId } })),
+                                                             index, count,
+                                                            A<string[]>._)).Returns(operations);
 
-    [TestMethod]
-    public void GetAllFinanceOperationOfWallet_DefaultCount_ReturnsAllOperations()
-    {
-        var financeOperations = new List<List<FinanceOperation>>
-        {
-            new List<FinanceOperation> { new FinanceOperation(), new FinanceOperation() },
-            new List<FinanceOperation> { new FinanceOperation() }
-        };
-        var financeOperationTypes = new List<FinanceOperationType> { new FinanceOperationType(), new FinanceOperationType() };
-        int walletId = 1;
-        int numberOfType = -1;
-
-        A.CallTo(() => _financeOperationTypesRepository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
-                                            A<Expression<Func<FinanceOperationType, bool>>>._,
-            A<int>._, A<int>._,
-                                            A<string[]>._))
-        .Returns(financeOperationTypes);
+        var result = _service.GetAllFinanceOperationOfWallet(walletId, count, index);
 
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
-                                                             A<Expression<Func<FinanceOperation, bool>>>._,
-            A<int>._, A<int>._,
-                                                             A<string[]>._))
-          .ReturnsLazily(call => financeOperations.ElementAtOrDefault(++numberOfType));
+                                                            A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
+                                                                filter != null && filter.Compile()(new FinanceOperation { Type = new() { WalletId = walletId } })),
+                                                             index, count,
+                                                            A<string[]>._)).MustHaveHappenedOnceExactly();
 
-        var result = _service.GetAllFinanceOperationOfWallet(walletId);
-
-        Assert.AreEqual(financeOperations.Sum(l => l.Count), result.Count);
-    }
-
-    [TestMethod]
-    public void GetAllFinanceOperationOfWallet_SpecificCount_ReturnsSpecifiedNumberOfOperations()
-    {
-        var financeOperations = new List<List<FinanceOperation>>
-        {
-            new List<FinanceOperation> { new FinanceOperation(), new FinanceOperation() },
-            new List<FinanceOperation> { new FinanceOperation(), new FinanceOperation() }
-        };
-        var financeOperationTypes = new List<FinanceOperationType> { new FinanceOperationType(), new FinanceOperationType() };
-        int walletId = 1;
-        int count = 3;
-        int numberOfType = -1;
-
-        A.CallTo(() => _financeOperationTypesRepository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
-                                            A<Expression<Func<FinanceOperationType, bool>>>._,
-            A<int>._, A<int>._,
-                                            A<string[]>._))
-        .Returns(financeOperationTypes);
-
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
-                                                             A<Expression<Func<FinanceOperation, bool>>>._,
-            A<int>._, A<int>._,
-                                                             A<string[]>._))
-          .ReturnsLazily(call => financeOperations.ElementAtOrDefault(++numberOfType));
-
-        var result = _service.GetAllFinanceOperationOfWallet(walletId, count);
-
-        Assert.AreEqual(count, result.Count);
+        Assert.AreEqual(operations.Count, result.Count);
     }
 
     #endregion

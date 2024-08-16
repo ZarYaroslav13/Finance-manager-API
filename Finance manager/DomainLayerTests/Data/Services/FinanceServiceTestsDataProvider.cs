@@ -190,4 +190,51 @@ public static class FinanceServiceTestsDataProvider
             }
         }
     };
+
+    public static IEnumerable<object[]> GetAllFinanceOperationOfWalletArgumentsAreLessThenZeroTestData { get; } = new List<object[]>
+    {
+        new object[] { -1, 1, 1 },
+        new object[] { 0, 1, 1 },
+        new object[] { 1, -1, 1 },
+        new object[] { 1, 1, -1 }
+    };
+
+    public static IEnumerable<object[]> GetAllFinanceOperationOfWalletWithCountAndIndexTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            new List<FinanceOperation>
+            {
+                new FinanceOperation() { Id = 1, TypeId = 1, Type = new(){ Id = 1, WalletId = 2 } },
+                new FinanceOperation() { Id = 2, TypeId = 2, Type = new(){ Id = 2, WalletId = 2 } },
+                new FinanceOperation() { Id = 3, TypeId = 3, Type = new(){ Id = 3, WalletId = 2 } }
+            },
+            2, 
+            0, 3
+        },
+        new object[]
+        {
+            new List<FinanceOperation>
+            {
+                new FinanceOperation() { Id = 3, TypeId = 3, Type = new(){ Id = 3, WalletId = 2 } },
+                new FinanceOperation() { Id = 4, TypeId = 4, Type = new(){ Id = 4, WalletId = 2 } },
+                new FinanceOperation() { Id = 5, TypeId = 5, Type = new(){ Id = 5, WalletId = 2 } },
+                new FinanceOperation() { Id = 6, TypeId = 6, Type = new(){ Id = 6, WalletId = 2 } },
+                new FinanceOperation() { Id = 7, TypeId = 7, Type = new(){ Id = 7, WalletId = 2 } }
+            },
+            2,
+            2, 0
+        },
+        new object[]
+        {
+            new List<FinanceOperation>
+            {
+                new FinanceOperation() { Id = 3, TypeId = 3, Type = new(){ Id = 3, WalletId = 2 } },
+                new FinanceOperation() { Id = 4, TypeId = 4, Type = new(){ Id = 4, WalletId = 2 } },
+                new FinanceOperation() { Id = 5, TypeId = 5, Type = new(){ Id = 5, WalletId = 2 } }
+            },
+            2,
+            2, 3
+        },
+    };
 }
