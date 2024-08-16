@@ -1,6 +1,7 @@
 ﻿using DataLayer;
 using DataLayer.UnitOfWork;
 using DomainLayer.Services.Accounts;
+using DomainLayer.Services.Finances;
 using DomainLayer.Services.Wallets;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IWalletService, WalletService>();
+        services.AddScoped<IFinanceService, FinanceService>();
 
         return builder;
     }

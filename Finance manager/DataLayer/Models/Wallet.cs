@@ -52,4 +52,3 @@ public class Wallet : Entity
         return HashCode.Combine(Id, Name, Balance, FinanceOperationTypes, AccountId, Account);
     }
 }
-

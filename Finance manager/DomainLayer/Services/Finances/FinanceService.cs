@@ -75,7 +75,7 @@ public class FinanceService : BaseService, IFinanceService
 
     #region FinanceOperationMethods
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count = 0)
+    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int count = 0, int index = 0)
     {
         if (walletId <= 0)
             throw new ArgumentException(nameof(walletId));
@@ -95,20 +95,17 @@ public class FinanceService : BaseService, IFinanceService
 
         if (count > 0)
         {
-            int numberNeededOperation;
+            result = _financeOperationRepository
+                .GetAll(
+                   includeProperties: nameof(FinanceOperation.Type),
+                    filter: fo => fo.Type.WalletId == walletId, orderBy:
+                    iQ => iQ.OrderBy(fo => fo.Date),
+                    skip: count,
+                    take: index)
+                .Select(_mapper.Map<FinanceOperationModel>)
+                .ToList();
 
-            foreach (var type in GetAllFinanceOperationTypesOfWallet(walletId))
-            {
-                var financeOperations = GetAllFinanceOperationOfType(type.Id);
-                numberNeededOperation = (count < financeOperations.Count) ? count : financeOperations.Count;
-
-                result.AddRange(financeOperations.GetRange(0, numberNeededOperation));
-
-                count -= numberNeededOperation;
-
-                if (count == 0)
-                    return result;
-            }
+            return result;
         }
 
         return result;

@@ -118,6 +118,7 @@ public class AccountServiceTests
         A.CallTo(() => _repository.GetAll(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
+            A<int>._, A<int>._,
             A<string[]>._))
             .Returns(dbAccounts);
         A.CallTo(() => _mapper.Map<AccountModel>(expectedAccountFromDb)).Returns(accountModel);
@@ -134,6 +135,7 @@ public class AccountServiceTests
         A.CallTo(() => _repository.GetAll(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
+            A<int>._, A<int>._,
             A<string[]>._))
             .Returns(dbAccounts);
         A.CallTo(() => _mapper.Map<AccountModel>(null)).Returns(null);
@@ -164,6 +166,7 @@ public class AccountServiceTests
         A.CallTo(() => _repository.GetAll(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
+            A<int>._, A<int>._,
             A<string[]>._))
             .Returns(accounts);
 
@@ -184,6 +187,7 @@ public class AccountServiceTests
         A.CallTo(() => _repository.GetAll(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
+            A<int>._, A<int>._,
             A<string[]>._))
             .Returns(accounts);
 

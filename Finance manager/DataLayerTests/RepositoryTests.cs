@@ -12,7 +12,7 @@ namespace DataLayerTests;
 public class RepositoryTests
 {
     private readonly AppDbContext _context;
-    private readonly Repository<Account> _repository;
+    private readonly IRepository<Account> _repository;
 
     public RepositoryTests()
     {
@@ -22,7 +22,7 @@ public class RepositoryTests
 
         _context = new AppDbContext(options.Options);
 
-        _repository = new(_context);
+        _repository = new Repository<Account>(_context);
     }
 
     [TestCleanup]
@@ -36,6 +36,13 @@ public class RepositoryTests
     public void Constructor_DbContextIsNull_ThrowsException()
     {
         Assert.ThrowsException<ArgumentNullException>(() => new Repository<Account>(null));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(RepositoryDataProvider.GetAllIntArgumentsAreLessThenZeroTestData), typeof(RepositoryDataProvider))]
+    public void GetAll_IntArgumentsAreLessThenZero_ThrowException(int skip, int take)
+    {
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => _repository.GetAll(take: take, skip: skip));
     }
 
     [TestMethod]
@@ -69,6 +76,18 @@ public class RepositoryTests
                 .OrderBy(a => a.Id).ToList(),
             resultFilteredAccountList
                 .OrderBy(a => a.Id).ToList());
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(RepositoryDataProvider.GetAllWithSkipAndTakeTestData), typeof(RepositoryDataProvider))]
+    public void GetAll_WithSkipAndTake_ReceivedExpectedAccountList_AccountList(List<Account> accounts, List<Account> expectedAccountList, int skip, int take)
+    {
+        _context.AddRange(accounts);
+        _context.SaveChanges();
+
+        var result = _repository.GetAll(skip: skip, take: take).ToList();
+
+        CollectionAssert.AreEqual(expectedAccountList, result);
     }
 
     [TestMethod]

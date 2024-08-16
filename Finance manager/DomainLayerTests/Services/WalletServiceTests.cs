@@ -37,6 +37,7 @@ public class WalletServiceTests
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
             A<Expression<Func<Wallet, bool>>>.That.Matches(filter =>
                 filter != null && filter.Compile()(new Wallet { AccountId = accountId })),
+            A<int>._, A<int>._,
             A<string[]>._))
             .Returns(wallets);
 
@@ -46,6 +47,7 @@ public class WalletServiceTests
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
             A<Expression<Func<Wallet, bool>>>.That.Matches(filter =>
                 filter != null && filter.Compile()(new Wallet { AccountId = accountId })),
+            A<int>._, A<int>._,
             A<string[]>._))
             .MustHaveHappenedOnceExactly();
 

@@ -2,7 +2,7 @@
 
 namespace DataLayerTests.Data;
 
-public class RepositoryDataProvider
+public static class RepositoryDataProvider
 {
     static RepositoryDataProvider()
     {
@@ -62,6 +62,47 @@ public class RepositoryDataProvider
         new object[]
         {
             EntitiesTestDataProvider.Accounts.FirstOrDefault(a => a.Id == 2)
+        }
+    };
+
+    public static IEnumerable<object[]> GetAllIntArgumentsAreLessThenZeroTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            0, -1
+        },
+        new object[]
+        {
+            -1, 0
+        },
+        new object[]
+        {
+            -1, -1
+        },
+    };
+
+    public static IEnumerable<object[]> GetAllWithSkipAndTakeTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            EntitiesTestDataProvider.Accounts,
+            EntitiesTestDataProvider.Accounts.GetRange(0, 3),
+            0,
+            3
+        },
+        new object[]
+        {
+            EntitiesTestDataProvider.Accounts,
+            EntitiesTestDataProvider.Accounts.GetRange(1, 3),
+            1,
+            3
+        },
+        new object[]
+        {
+            EntitiesTestDataProvider.Accounts,
+            EntitiesTestDataProvider.Accounts.GetRange(3, 2),
+            3,
+            2
         }
     };
 }

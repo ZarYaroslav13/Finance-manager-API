@@ -48,6 +48,7 @@ public class FinanceServiceTests
             IOrderedQueryable<FinanceOperationType>>>._,
             A<Expression<Func<FinanceOperationType, bool>>>.That.Matches(filter =>
                 filter != null && filter.Compile()(new FinanceOperationType { WalletId = walletId })),
+            A<int>._, A<int>._,
         A<string[]>._))
             .Returns(financeOperationTypes);
 
@@ -60,6 +61,7 @@ public class FinanceServiceTests
            IOrderedQueryable<FinanceOperationType>>>._,
            A<Expression<Func<FinanceOperationType, bool>>>.That.Matches(filter =>
                filter != null && filter.Compile()(new FinanceOperationType { WalletId = walletId })),
+            A<int>._, A<int>._,
        A<string[]>._))
            .MustHaveHappenedOnceExactly();
 
@@ -123,6 +125,7 @@ public class FinanceServiceTests
     {
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                            A<Expression<Func<FinanceOperation, bool>>>._,
+            A<int>._, A<int>._,
                                            A<string[]>._))
        .Returns(financeOperations);
 
@@ -173,11 +176,13 @@ public class FinanceServiceTests
 
         A.CallTo(() => _financeOperationTypesRepository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
                                             A<Expression<Func<FinanceOperationType, bool>>>._,
+            A<int>._, A<int>._,
                                             A<string[]>._))
         .Returns(financeOperationTypes);
 
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                              A<Expression<Func<FinanceOperation, bool>>>._,
+            A<int>._, A<int>._,
                                                              A<string[]>._))
           .ReturnsLazily(call => financeOperations.ElementAtOrDefault(++numberOfType));
 
@@ -201,11 +206,13 @@ public class FinanceServiceTests
 
         A.CallTo(() => _financeOperationTypesRepository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
                                             A<Expression<Func<FinanceOperationType, bool>>>._,
+            A<int>._, A<int>._,
                                             A<string[]>._))
         .Returns(financeOperationTypes);
 
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                              A<Expression<Func<FinanceOperation, bool>>>._,
+            A<int>._, A<int>._,
                                                              A<string[]>._))
           .ReturnsLazily(call => financeOperations.ElementAtOrDefault(++numberOfType));
 
@@ -248,11 +255,13 @@ public class FinanceServiceTests
 
         A.CallTo(() => _financeOperationTypesRepository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
                                             A<Expression<Func<FinanceOperationType, bool>>>._,
+            A<int>._, A<int>._,
                                             A<string[]>._))
         .Returns(financeOperationTypes);
 
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                              A<Expression<Func<FinanceOperation, bool>>>._,
+            A<int>._, A<int>._,
                                                              A<string[]>._))
           .Returns(financeOperations);
 
@@ -272,6 +281,7 @@ public class FinanceServiceTests
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
                                                                 filter != null && filter.Compile()(new FinanceOperation { TypeId = typeId })),
+                                                             A<int>._, A<int>._,
                                                             A<string[]>._))
             .Returns(financeOperations);
 
@@ -282,6 +292,7 @@ public class FinanceServiceTests
         A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
                                                                 filter != null && filter.Compile()(new FinanceOperation { TypeId = typeId })),
+                                                                A<int>._, A<int>._,
                                                             A<string[]>._))
            .MustHaveHappenedOnceExactly();
 

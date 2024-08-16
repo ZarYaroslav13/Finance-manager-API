@@ -17,7 +17,6 @@ public class AccountController : EntityController
 
     public AccountController(ILogger<EntityController> logger, IMapper mapper, IAccountService service) : base(logger, mapper)
     {
-        _accountService = service ?? throw new ArgumentNullException(nameof(service));
     }
 
     [HttpGet]

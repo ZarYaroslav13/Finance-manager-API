@@ -18,8 +18,20 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
             Func<IQueryable<T>,
                 IOrderedQueryable<T>> orderBy = null,
                 Expression<Func<T, bool>> filter = null,
+                int skip = 0,
+                int take = 0,
                 params string[] includeProperties)
     {
+        if (skip < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(skip));
+        }
+
+        if (take < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(take));
+        }
+
         IQueryable<T> query = _dbSet;
 
         foreach (var includeProperty in includeProperties)
@@ -34,7 +46,17 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
 
         if (orderBy != null)
         {
-            return orderBy(query).AsNoTracking().ToList();
+            query = orderBy(query);
+        }
+
+        if (skip != 0)
+        {
+            query = query.Skip(skip);
+        }
+
+        if (take != 0)
+        {
+            query = query.Take(take);
         }
 
         return query.AsNoTracking().ToList();
