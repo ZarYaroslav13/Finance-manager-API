@@ -9,9 +9,9 @@ public class FillerBbData
 
     public static List<Wallet> Wallets { get { return _wallets; } }
 
-    public static List<FinanceOperationType> FinanceOperationTypes { get { return _transactionTypes; } }
+    public static List<FinanceOperationType> FinanceOperationTypes { get { return _financeOperationTypes; } }
 
-    public static List<FinanceOperation> FinanceOperations { get { return _transactions; } }
+    public static List<FinanceOperation> FinanceOperations { get { return _fnanceOperations; } }
 
     private static PasswordCoder _passwordCoder = new();
 
@@ -23,7 +23,7 @@ public class FillerBbData
             FirstName = "John",
             LastName = "Doe",
             Email = "john.doe@example.com",
-            Password = _passwordCoder.ComputeSHA256Hash("password123"),
+            Password = _passwordCoder.ComputeSHA256Hash("saferPassword123"),
         },
         new Account()
         {
@@ -31,7 +31,7 @@ public class FillerBbData
             FirstName = "Jane",
             LastName = "Smith",
             Email = "jane.smith@example.com",
-            Password = _passwordCoder.ComputeSHA256Hash("password456"),
+            Password = _passwordCoder.ComputeSHA256Hash("saferPassword456"),
         },
         new Account()
         {
@@ -39,7 +39,7 @@ public class FillerBbData
             FirstName = "Michael",
             LastName = "Johnson",
             Email = "michael.johnson@example.com",
-            Password = _passwordCoder.ComputeSHA256Hash("password789"),
+            Password = _passwordCoder.ComputeSHA256Hash("saferPassword789"),
         },
         new Account()
         {
@@ -47,7 +47,7 @@ public class FillerBbData
             FirstName = "Emily",
             LastName = "Davis",
             Email = "emily.davis@example.com",
-            Password = _passwordCoder.ComputeSHA256Hash("password101"),
+            Password = _passwordCoder.ComputeSHA256Hash("saferPassword101"),
         },
         new Account()
         {
@@ -55,7 +55,7 @@ public class FillerBbData
             FirstName = "Chris",
             LastName = "Brown",
             Email = "chris.brown@example.com",
-            Password = _passwordCoder.ComputeSHA256Hash("password102"),
+            Password = _passwordCoder.ComputeSHA256Hash("saferPassword102"),
         },
         new Account()
         {
@@ -63,7 +63,7 @@ public class FillerBbData
             LastName = "Your best",
             FirstName = "Admin",
             Email = "mr.admin.number1@gmail.com",
-            Password= _passwordCoder.ComputeSHA256Hash("adminParol124")
+            Password= _passwordCoder.ComputeSHA256Hash("saferAdminParol124")
         }
     };
 
@@ -120,7 +120,7 @@ public class FillerBbData
     }
     };
 
-    private static List<FinanceOperationType> _transactionTypes = new()
+    private static List<FinanceOperationType> _financeOperationTypes = new()
     {
         new FinanceOperationType()
         {
@@ -364,7 +364,7 @@ public class FillerBbData
         }
     };
 
-    private static List<FinanceOperation> _transactions = new()
+    private static List<FinanceOperation> _fnanceOperations = new()
     {
         new FinanceOperation() { Id = 1, Amount = 500, Date = new DateTime(2024, 1, 1), TypeId = 1 },
         new FinanceOperation() { Id = 2, Amount = 100, Date = new DateTime(2024, 1, 2), TypeId = 2 },

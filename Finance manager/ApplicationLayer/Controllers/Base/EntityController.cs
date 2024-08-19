@@ -5,7 +5,7 @@ namespace ApplicationLayer.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EntityController : ControllerBase
+public class EntityController : Controller
 {
     protected readonly ILogger<EntityController> _logger;
     protected readonly IMapper _mapper;

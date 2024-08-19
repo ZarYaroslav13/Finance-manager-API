@@ -74,7 +74,7 @@ public class AccountService : BaseService, IAccountService
         var result = _mapper.Map<AccountModel>(
            _repository
                .GetAll()
-               .SingleOrDefault(a =>
+               .FirstOrDefault(a =>
                        a.Email == email
                        && a.Password == encodedPassword)); ;
 
