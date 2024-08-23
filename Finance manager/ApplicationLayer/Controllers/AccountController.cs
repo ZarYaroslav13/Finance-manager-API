@@ -1,32 +1,30 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
-using ApplicationLayer.Security;
+using ApplicationLayer.Security.Jwt;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ApplicationLayer.Controllers;
 
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController : EntityController
+public class AccountController : BaseController
 {
-    IAccountService _accountService;
+    private readonly IAccountService _accountService;
+    private readonly ITokenManager _tokenManager;
 
-    public AccountController(ILogger<EntityController> logger, IMapper mapper, IAccountService service) : base(logger, mapper)
+    public AccountController(IAccountService service, IMapper mapper, ITokenManager tokenManager, ILogger<BaseController> logger) : base(mapper, logger)
     {
-        _accountService = service;
+        _accountService = service ?? throw new ArgumentNullException(nameof(service));
+        _tokenManager = tokenManager ?? throw new ArgumentNullException(nameof(tokenManager));
     }
 
-    [HttpGet("LogIn")]
+    [HttpPost("login")]
     [AllowAnonymous]
     public IActionResult LogIn(string email, string password)
     {
@@ -37,17 +35,7 @@ public class AccountController : EntityController
             return BadRequest(new { errorText = "Invalid email or username" });
         }
 
-        var now = DateTime.UtcNow;
-        
-        var jwt = new JwtSecurityToken(
-            issuer: AuthOptions.ISSUER,
-            audience: AuthOptions.AUDIENCE,
-            notBefore: now,
-            claims: identity.Claims,
-            expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-            signingCredentials: new(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.Aes128CbcHmacSha256));
-
-        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+        var encodedJwt = _tokenManager.CreateToken(identity);
 
         var response = new
         {
@@ -55,12 +43,12 @@ public class AccountController : EntityController
             email = identity.Name
         };
 
-        return Json(response);
+        return new JsonResult(response);
     }
 
-    [HttpPost]
+    [HttpPost("CreateAccount")]
     [AllowAnonymous]
-    public IActionResult CreateAccount(AccountDTO account)
+    public ActionResult<AccountDTO> CreateAccount(AccountDTO account)
     {
         try
         {
@@ -68,7 +56,7 @@ public class AccountController : EntityController
                     _accountService.AddAccount(
                         _mapper.Map<AccountModel>(account)));
 
-            return LogIn(newAccount.Email, account.Password);
+            return newAccount;
         }
         catch (Exception e)
         {
@@ -76,7 +64,7 @@ public class AccountController : EntityController
         }
     }
 
-    [HttpPut]
+    [HttpPut("UpdateAccount")]
     public AccountDTO UpdateAccount(AccountDTO account)
     {
         return _mapper.Map<AccountDTO>(
@@ -84,7 +72,7 @@ public class AccountController : EntityController
                     _mapper.Map<AccountModel>(account)));
     }
 
-    [HttpDelete]
+    [HttpDelete("DeleteAccount")]
     public void DeleteAccountById(int id)
     {
         _accountService.DeleteAccountWithId(id);

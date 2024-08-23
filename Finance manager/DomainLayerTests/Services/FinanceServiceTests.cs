@@ -5,9 +5,7 @@ using DataLayer.UnitOfWork;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using DomainLayerTests.Data.Services;
-using DomainLayerTests.TestHelpers;
 using FakeItEasy;
-using System;
 using System.Linq.Expressions;
 
 namespace DomainLayerTests.Services;
@@ -152,7 +150,7 @@ public class FinanceServiceTests
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationOfWalletArgumentsAreLessThenZeroTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void GetAllFinanceOperationOfWallet_ArgumentsAreLessThenZero_ThrowsArgumentException(int walletId, int count,int index)
+    public void GetAllFinanceOperationOfWallet_ArgumentsAreLessThenZero_ThrowsArgumentException(int walletId, int count, int index)
     {
         Assert.ThrowsException<ArgumentOutOfRangeException>(() => _service.GetAllFinanceOperationOfWallet(walletId, count, index));
     }

@@ -11,17 +11,17 @@ namespace ApplicationLayer.Controllers;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class WalletController : EntityController
+public class WalletController : BaseController
 {
     private readonly IWalletService _service;
 
-    public WalletController(ILogger<EntityController> logger, IMapper mapper, IWalletService service) : base(logger, mapper)
+    public WalletController(IWalletService service, IMapper mapper, ILogger<BaseController> logger) : base(mapper, logger)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
-    //[Authorize(Policy = "OnlyForAdmins")]
-    [HttpGet]
+    [Authorize(Policy = "OnlyForAdmins")]
+    [HttpGet("GetWalletsOfAccount")]
     public List<WalletDTO> GetWalletsOfAccount(int accountId)
     {
         return _service.GetAllWalletsOfAccount(accountId)
@@ -29,8 +29,7 @@ public class WalletController : EntityController
                 .ToList();
     }
 
-
-    [HttpPost]
+    [HttpPost("CreateNewWallet")]
     public WalletDTO CreateWallet(WalletDTO wallet)
     {
         return _mapper.Map<WalletDTO>(
@@ -39,7 +38,7 @@ public class WalletController : EntityController
     }
 
 
-    [HttpPut]
+    [HttpPut("UpdateWallet")]
     public WalletDTO UpdateWallet(WalletDTO wallet)
     {
         return _mapper.Map<WalletDTO>(
@@ -48,14 +47,14 @@ public class WalletController : EntityController
     }
 
 
-    [HttpDelete]
+    [HttpDelete("DeleteWallet")]
     public void DeleteWallet(int id)
     {
         _service.DeleteWalletById(id);
     }
 
 
-    [HttpGet("{id}")]
+    [HttpGet("GetWalletOfAccount/{id}")]
     public WalletDTO GetWalletById(int id)
     {
         return _mapper.Map<WalletDTO>(

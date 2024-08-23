@@ -209,7 +209,7 @@ public static class FinanceServiceTestsDataProvider
                 new FinanceOperation() { Id = 2, TypeId = 2, Type = new(){ Id = 2, WalletId = 2 } },
                 new FinanceOperation() { Id = 3, TypeId = 3, Type = new(){ Id = 3, WalletId = 2 } }
             },
-            2, 
+            2,
             0, 3
         },
         new object[]

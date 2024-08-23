@@ -5,12 +5,12 @@ namespace ApplicationLayer.Controllers.Base;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EntityController : Controller
+public class BaseController : ControllerBase
 {
-    protected readonly ILogger<EntityController> _logger;
+    protected readonly ILogger<BaseController> _logger;
     protected readonly IMapper _mapper;
 
-    public EntityController(ILogger<EntityController> logger, IMapper mapper)
+    public BaseController(IMapper mapper, ILogger<BaseController> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

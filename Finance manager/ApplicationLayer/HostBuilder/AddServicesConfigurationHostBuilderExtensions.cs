@@ -1,4 +1,5 @@
 ﻿using ApplicationLayer.Security;
+using ApplicationLayer.Security.Jwt;
 using DataLayer;
 using DataLayer.UnitOfWork;
 using DomainLayer.Services.Accounts;
@@ -35,6 +36,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IFinanceService, FinanceService>();
+        services.AddScoped<ITokenManager, TokenManager>();
 
         return builder;
     }
@@ -44,25 +46,19 @@ public static class AddServicesConfigurationHostBuilderExtensions
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
-                        options.RequireHttpsMetadata = false;
+                        options.SaveToken = true;
+
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-
                             ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
 
                             ValidIssuer = AuthOptions.ISSUER,
-
-
-                            ValidateAudience = true,
-
                             ValidAudience = AuthOptions.AUDIENCE,
 
-
-                            ValidateLifetime = true,
-
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-
-                            ValidateIssuerSigningKey = true,
                         };
                     });
 

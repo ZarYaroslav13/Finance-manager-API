@@ -89,7 +89,7 @@ public class FinanceService : BaseService, IFinanceService
         List<FinanceOperationModel> result = _financeOperationRepository
                 .GetAll(
                    includeProperties: nameof(FinanceOperation.Type),
-                    filter: fo => fo.Type.WalletId == walletId, 
+                    filter: fo => fo.Type.WalletId == walletId,
                     orderBy: iQ => iQ.OrderBy(fo => fo.Date),
                     skip: count,
                     take: index)
