@@ -50,18 +50,11 @@ public class AccountController : BaseController
     [AllowAnonymous]
     public ActionResult<AccountDTO> CreateAccount(AccountDTO account)
     {
-        try
-        {
-            var newAccount = _mapper.Map<AccountDTO>(
-                    _accountService.AddAccount(
-                        _mapper.Map<AccountModel>(account)));
+        var newAccount = _mapper.Map<AccountDTO>(
+                   _accountService.AddAccount(
+                       _mapper.Map<AccountModel>(account)));
 
-            return newAccount;
-        }
-        catch (Exception e)
-        {
-            return BadRequest(new { errorText = e.Message });
-        }
+        return newAccount;
     }
 
     [HttpPut("UpdateAccount")]

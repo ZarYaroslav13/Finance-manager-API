@@ -1,4 +1,5 @@
 using ApplicationLayer.HostBuilder;
+using ApplicationLayer.Middleware;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,9 +50,9 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.UseHttpsRedirection();
-
+app.UseApplicationMiddleware();
 app.UseRouting();
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
