@@ -6,6 +6,8 @@ using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
 using DomainLayerTests.Data.Services;
 using FakeItEasy;
+using Microsoft.Identity.Client;
+using System;
 using System.Linq.Expressions;
 
 namespace DomainLayerTests.Services;
@@ -35,6 +37,70 @@ public class AccountServiceTests
         AccountModel account = new() { Id = 1 };
 
         Assert.ThrowsException<ArgumentException>(() => _service.AddAccount(account));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsSkipOrTakeNegativeTestData), typeof(AccountServiceTestsDataProvider))]
+    public void GetAccounts_WithNegativeSkipOrTake_ThrowsArgumentException(int skip, int take)
+    {
+        Assert.ThrowsException<ArgumentException>(() => _service.GetAccounts(skip, take));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsValidInputsTestData), typeof(AccountServiceTestsDataProvider))]
+    public void GetAccounts_ValidInputs_ReturnsExpectedNumberMappedAccountModels(List<Account> accounts, int skip, int take)
+    {
+        A.CallTo(() => _repository.GetAll(
+                A<Func< IQueryable<Account>,
+                 IOrderedQueryable < Account >>>._,
+                 A<Expression<Func<Account, bool>>>._,
+                 skip, take,
+                 A<string[]>._))
+            .Returns(accounts);
+
+        A.CallTo(() => _mapper.Map<AccountModel>(A<Account>.Ignored))
+            .Returns(new());
+
+        
+        var result = _service.GetAccounts(skip, take);
+
+
+        Assert.AreEqual(accounts.Count, result.Count);
+
+        A.CallTo(() => _repository.GetAll(
+                A<Func<IQueryable<Account>,
+                 IOrderedQueryable<Account>>>._,
+                 A<Expression<Func<Account, bool>>>._,
+                 skip, take,
+                 A<string[]>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _mapper.Map<AccountModel>(A<Account>.Ignored)).MustHaveHappened();
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsNoSkipOrTakeTestData), typeof(AccountServiceTestsDataProvider))]
+    public void GetAccounts_NoSkipOrTake_ReturnsAllMappedAccountModels(List<Account> accounts)
+    {
+        A.CallTo(() => _repository.GetAll(
+                A<Func<IQueryable<Account>,
+                 IOrderedQueryable<Account>>>._,
+                 A<Expression<Func<Account, bool>>>._,
+                 0, 0,
+                 A<string[]>._))
+            .Returns(accounts);
+
+        
+        var result = _service.GetAccounts();
+
+        
+        Assert.AreEqual(accounts.Count, result.Count);
+
+        A.CallTo(() => _repository.GetAll(
+                A<Func<IQueryable<Account>,
+                 IOrderedQueryable<Account>>>._,
+                 A<Expression<Func<Account, bool>>>._,
+                 0, 0,
+                 A<string[]>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _mapper.Map<AccountModel>(A<Account>.Ignored)).MustHaveHappened(accounts.Count, Times.Exactly);
     }
 
     [TestMethod]

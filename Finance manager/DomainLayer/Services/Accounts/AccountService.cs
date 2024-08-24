@@ -20,6 +20,16 @@ public class AccountService : BaseService, IAccountService
         _repository = _unitOfWork.GetRepository<Account>();
     }
 
+    public List<AccountModel> GetAccounts(int skip = 0, int take = 0)
+    {
+        if (skip < 0 || take < 0)
+            throw new ArgumentException("skip and take arguments cannot be less 0");
+
+        return _repository.GetAll(skip: skip, take: take)
+                .Select(_mapper.Map<AccountModel>)
+                .ToList();
+    }
+
     public AccountModel AddAccount(AccountModel account)
     {
         ArgumentNullException.ThrowIfNull(account);

@@ -17,6 +17,7 @@ public class AccountController : BaseController
 {
     private readonly IAccountService _accountService;
     private readonly ITokenManager _tokenManager;
+    private const string _adminPolicy = "OnlyForAdmins";
 
     public AccountController(IAccountService service, IMapper mapper, ITokenManager tokenManager, ILogger<BaseController> logger) : base(mapper, logger)
     {
@@ -60,16 +61,48 @@ public class AccountController : BaseController
     [HttpPut("UpdateAccount")]
     public AccountDTO UpdateAccount(AccountDTO account)
     {
+        int id = GetUserId();
+
+        if (account.Id != id)
+            throw new UnauthorizedAccessException(nameof(account));
+
         return _mapper.Map<AccountDTO>(
                 _accountService.UpdateAccount(
                     _mapper.Map<AccountModel>(account)));
     }
 
     [HttpDelete("DeleteAccount")]
+    public void DeleteAccountById()
+    {
+        _accountService.DeleteAccountWithId(GetUserId());
+    }
+
+    #region Endpoints for admins
+    [Authorize(Policy = _adminPolicy)]
+    [HttpGet("Admin/GetAccounts")]
+    public List<AccountDTO> GetAllAccounts(int skip, int take)
+    {
+        return _accountService.GetAccounts(skip, take)
+                .Select(_mapper.Map<AccountDTO>)
+                .ToList();
+    }
+
+    [Authorize(Policy = _adminPolicy)]
+    [HttpPut("Admin/UpdateAccount")]
+    public AccountDTO AdminUpdateAccount(AccountDTO account)
+    {
+        return _mapper.Map<AccountDTO>(
+                _accountService.UpdateAccount(
+                    _mapper.Map<AccountModel>(account)));
+    }
+
+    [Authorize(Policy = _adminPolicy)]
+    [HttpDelete("Admin/DeleteAccount/{id}")]
     public void DeleteAccountById(int id)
     {
         _accountService.DeleteAccountWithId(id);
     }
+    #endregion
 
     private ClaimsIdentity GetIdentity(string email, string password)
     {
@@ -80,7 +113,7 @@ public class AccountController : BaseController
 
         var claims = new List<Claim>()
         {
-            new("Id", account.Id.ToString()),
+            new(nameof(AccountDTO.Id), account.Id.ToString()),
             new(ClaimsIdentity.DefaultNameClaimType, account.Email),
         };
 

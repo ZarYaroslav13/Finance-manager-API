@@ -6,6 +6,74 @@ namespace DomainLayerTests.Data.Services;
 
 public static class AccountServiceTestsDataProvider
 {
+    private static List<Account> accountsUntouchable = new()
+    {
+        new Account()
+        {
+            Id = 1,
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "john.doe@example.com",
+            Password = new PasswordCoder().ComputeSHA256Hash("password123"),
+        },
+        new Account()
+        {
+            Id = 2,
+            FirstName = "Jane",
+            LastName = "Smith",
+            Email = "jane.smith@example.com",
+            Password = new PasswordCoder().ComputeSHA256Hash("password456"),
+        },
+        new Account()
+        {
+            Id = 3,
+            FirstName = "Michael",
+            LastName = "Johnson",
+            Email = "michael.johnson@example.com",
+            Password = new PasswordCoder().ComputeSHA256Hash("password789"),
+        }
+    };
+
+    private static List<Account> _accounts { 
+        get { 
+            return accountsUntouchable.Select(a => new Account
+                { 
+                    Id = a.Id, 
+                    LastName = 
+                    a.LastName, 
+                    FirstName = 
+                    a.FirstName, 
+                    Email = a.Email, 
+                    Password = a.Password 
+                }
+            ).ToList(); 
+        } 
+    }
+
+    public static IEnumerable<object[]> GetAccountsNoSkipOrTakeTestData { get; } = new List<object[]>
+    {
+        new object[]{ _accounts}
+    };
+
+    public static IEnumerable<object[]> GetAccountsSkipOrTakeNegativeTestData { get; } = new List<object[]>
+    {
+        new object[] { -1, 1},
+        new object[] { 1, -1},
+        new object[] { -1, -1}
+    };
+
+    public static IEnumerable<object[]> GetAccountsValidInputsTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            _accounts.GetRange(1, 2), 1 ,2
+        },
+        new object[]
+        {
+            _accounts.GetRange(0, 3), 0, 3
+        }
+    };
+
     public static IEnumerable<object[]> AddAccountTestData { get; } = new List<object[]>
     {
         new object[]
@@ -66,47 +134,19 @@ public static class AccountServiceTestsDataProvider
         new object[] { "", "" }
     };
 
-    private static List<Account> accounts = new()
-    {
-        new Account()
-        {
-            Id = 1,
-            FirstName = "John",
-            LastName = "Doe",
-            Email = "john.doe@example.com",
-            Password = new PasswordCoder().ComputeSHA256Hash("password123"),
-        },
-        new Account()
-        {
-            Id = 2,
-            FirstName = "Jane",
-            LastName = "Smith",
-            Email = "jane.smith@example.com",
-            Password = new PasswordCoder().ComputeSHA256Hash("password456"),
-        },
-        new Account()
-        {
-            Id = 3,
-            FirstName = "Michael",
-            LastName = "Johnson",
-            Email = "michael.johnson@example.com",
-            Password = new PasswordCoder().ComputeSHA256Hash("password789"),
-        }
-    };
-
     public static IEnumerable<object[]> TryLogInAccountWithEmailAndPasswordExistTestData { get; } = new List<object[]>
     {
         new object[]
         {
-            accounts, accounts[0], "password123"
+            _accounts, _accounts[0], "password123"
         },
         new object[]
         {
-            accounts, accounts[1], "password456"
+            _accounts, _accounts[1], "password456"
         },
         new object[]
         {
-            accounts, accounts[2], "password789"
+            _accounts, _accounts[2], "password789"
         },
     };
 
@@ -114,15 +154,15 @@ public static class AccountServiceTestsDataProvider
     {
         new object[]
         {
-            accounts, accounts[0].Email, "notExistedPassword"
+            _accounts, _accounts[0].Email, "notExistedPassword"
         },
         new object[]
         {
-            accounts, "notExistedEmail", "password456"
+            _accounts, "notExistedEmail", "password456"
         },
         new object[]
         {
-            accounts, "notExistedEmail", "notExistedPassword"
+            _accounts, "notExistedEmail", "notExistedPassword"
         },
     };
 
@@ -146,14 +186,14 @@ public static class AccountServiceTestsDataProvider
 
     public static IEnumerable<object[]> CanTakeThisEmailReturnTrueTestData { get; } = new List<object[]>
     {
-        new object[]{ accounts, "NewEmail@gmail.com"},
-        new object[]{ accounts, "NewEmail1@gmail.com"}
+        new object[]{ _accounts, "NewEmail@gmail.com"},
+        new object[]{ _accounts, "NewEmail1@gmail.com"}
     };
 
     public static IEnumerable<object[]> CanTakeThisEmailThrowsArgumentExceptionTestData { get; } = new List<object[]>
     {
-        new object[]{ accounts, accounts[0].Email },
-        new object[]{ accounts, accounts[1].Email },
-        new object[]{ accounts, accounts[2].Email },
+        new object[]{ _accounts, _accounts[0].Email },
+        new object[]{ _accounts, _accounts[1].Email },
+        new object[]{ _accounts, _accounts[2].Email },
     };
 }
