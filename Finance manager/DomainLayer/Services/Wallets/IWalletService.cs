@@ -13,4 +13,6 @@ public interface IWalletService
     public void DeleteWalletById(int id);
 
     public WalletModel FindWallet(int id);
+
+    public bool IsAccountOwnerWallet(int acoountId, int walletId);
 }

@@ -30,6 +30,10 @@ public class ApplicationExceptionHandlerMiddleware
         var result = string.Empty;
         switch (exception)
         {
+            case UnauthorizedAccessException accessException:
+                code = HttpStatusCode.Unauthorized;
+                result = JsonSerializer.Serialize(exception.Message);
+                break;
             default:
                 code = HttpStatusCode.BadRequest;
                 result = JsonSerializer.Serialize(exception.Message);

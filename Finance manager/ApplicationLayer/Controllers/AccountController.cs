@@ -10,14 +10,10 @@ using System.Security.Claims;
 
 namespace ApplicationLayer.Controllers;
 
-[Authorize]
-[Route("api/[controller]")]
-[ApiController]
 public class AccountController : BaseController
 {
     private readonly IAccountService _accountService;
     private readonly ITokenManager _tokenManager;
-    private const string _adminPolicy = "OnlyForAdmins";
 
     public AccountController(IAccountService service, IMapper mapper, ITokenManager tokenManager, ILogger<BaseController> logger) : base(mapper, logger)
     {
@@ -47,9 +43,9 @@ public class AccountController : BaseController
         return new JsonResult(response);
     }
 
-    [HttpPost("CreateAccount")]
+    [HttpPost("Create")]
     [AllowAnonymous]
-    public ActionResult<AccountDTO> CreateAccount(AccountDTO account)
+    public ActionResult<AccountDTO> Create(AccountDTO account)
     {
         var newAccount = _mapper.Map<AccountDTO>(
                    _accountService.AddAccount(
@@ -58,8 +54,8 @@ public class AccountController : BaseController
         return newAccount;
     }
 
-    [HttpPut("UpdateAccount")]
-    public AccountDTO UpdateAccount(AccountDTO account)
+    [HttpPut("Update")]
+    public AccountDTO Update(AccountDTO account)
     {
         int id = GetUserId();
 
@@ -71,16 +67,16 @@ public class AccountController : BaseController
                     _mapper.Map<AccountModel>(account)));
     }
 
-    [HttpDelete("DeleteAccount")]
-    public void DeleteAccountById()
+    [HttpDelete("Delete")]
+    public void Delete()
     {
         _accountService.DeleteAccountWithId(GetUserId());
     }
 
     #region Endpoints for admins
     [Authorize(Policy = _adminPolicy)]
-    [HttpGet("Admin/GetAccounts")]
-    public List<AccountDTO> GetAllAccounts(int skip, int take)
+    [HttpGet("Admin/GetAllAccounts")]
+    public List<AccountDTO> GetAll(int skip, int take)
     {
         return _accountService.GetAccounts(skip, take)
                 .Select(_mapper.Map<AccountDTO>)
@@ -98,7 +94,7 @@ public class AccountController : BaseController
 
     [Authorize(Policy = _adminPolicy)]
     [HttpDelete("Admin/DeleteAccount/{id}")]
-    public void DeleteAccountById(int id)
+    public void DeleteById(int id)
     {
         _accountService.DeleteAccountWithId(id);
     }

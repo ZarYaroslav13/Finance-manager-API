@@ -1,16 +1,20 @@
 ﻿using ApplicationLayer.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace ApplicationLayer.Controllers.Base;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class BaseController : ControllerBase
 {
     protected readonly ILogger<BaseController> _logger;
     protected readonly IMapper _mapper;
+
+    protected const string _adminPolicy = "OnlyForAdmins";
 
     public BaseController(IMapper mapper, ILogger<BaseController> logger)
     {
