@@ -49,7 +49,7 @@ public class WalletController : BaseController
     [HttpDelete("DeleteWallet{id}")]
     public void Delete(int id)
     {
-        if(!_service.IsAccountOwnerWallet(GetUserId(), id))
+        if (!_service.IsAccountOwnerWallet(GetUserId(), id))
             throw new UnauthorizedAccessException(nameof(id));
 
         _service.DeleteWalletById(id);

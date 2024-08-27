@@ -4,7 +4,7 @@ namespace DomainLayer.Services.Accounts;
 
 public interface IAccountService
 {
-    public List<AccountModel> GetAccounts(int skip = 0, int take = 0);
+    public List<AccountModel> GetAccounts(string adminEmail, int skip = 0, int take = 0);
 
     public AccountModel AddAccount(AccountModel account);
 

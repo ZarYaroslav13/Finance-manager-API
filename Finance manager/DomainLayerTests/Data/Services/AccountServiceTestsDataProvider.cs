@@ -34,20 +34,22 @@ public static class AccountServiceTestsDataProvider
         }
     };
 
-    private static List<Account> _accounts { 
-        get { 
+    private static List<Account> _accounts
+    {
+        get
+        {
             return accountsUntouchable.Select(a => new Account
-                { 
-                    Id = a.Id, 
-                    LastName = 
-                    a.LastName, 
-                    FirstName = 
-                    a.FirstName, 
-                    Email = a.Email, 
-                    Password = a.Password 
-                }
-            ).ToList(); 
-        } 
+            {
+                Id = a.Id,
+                LastName =
+                    a.LastName,
+                FirstName =
+                    a.FirstName,
+                Email = a.Email,
+                Password = a.Password
+            }
+            ).ToList();
+        }
     }
 
     public static IEnumerable<object[]> GetAccountsNoSkipOrTakeTestData { get; } = new List<object[]>

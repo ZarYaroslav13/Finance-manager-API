@@ -4,10 +4,9 @@ using DataLayer.Repository;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
+using DomainLayer.Services.Admins;
 using DomainLayerTests.Data.Services;
 using FakeItEasy;
-using Microsoft.Identity.Client;
-using System;
 using System.Linq.Expressions;
 
 namespace DomainLayerTests.Services;
@@ -16,19 +15,27 @@ namespace DomainLayerTests.Services;
 public class AccountServiceTests
 {
     private readonly IAccountService _service;
+    public readonly IAdminService _adminService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<Account> _repository;
     private readonly IMapper _mapper;
 
     public AccountServiceTests()
     {
+        _adminService = A.Fake<IAdminService>();
         _repository = A.Fake<IRepository<Account>>();
         _unitOfWork = A.Fake<IUnitOfWork>();
         _mapper = A.Fake<IMapper>();
 
         A.CallTo(() => _unitOfWork.GetRepository<Account>()).Returns(_repository);
 
-        _service = new AccountService(_unitOfWork, _mapper);
+        _service = new AccountService(_adminService, _unitOfWork, _mapper);
+    }
+
+    [TestMethod]
+    public void Constructor_AdminServiceNull_ThrowsException()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(null, _unitOfWork, _mapper));
     }
 
     [TestMethod]
@@ -40,19 +47,37 @@ public class AccountServiceTests
     }
 
     [TestMethod]
+    public void GetAccounts_IncorrectAdminEmail_ThrowsUnauthorizedAccessException()
+    {
+        string email = "incorrectEmail";
+
+        A.CallTo(() => _adminService.IsItAdmin(email)).Returns(false);
+
+        Assert.ThrowsException<UnauthorizedAccessException>(() => _service.GetAccounts(email));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsSkipOrTakeNegativeTestData), typeof(AccountServiceTestsDataProvider))]
     public void GetAccounts_WithNegativeSkipOrTake_ThrowsArgumentException(int skip, int take)
     {
-        Assert.ThrowsException<ArgumentException>(() => _service.GetAccounts(skip, take));
+        string adminEmail = "email";
+
+        A.CallTo(() => _adminService.IsItAdmin(adminEmail)).Returns(true);
+
+        Assert.ThrowsException<ArgumentException>(() => _service.GetAccounts(adminEmail, skip, take));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsValidInputsTestData), typeof(AccountServiceTestsDataProvider))]
     public void GetAccounts_ValidInputs_ReturnsExpectedNumberMappedAccountModels(List<Account> accounts, int skip, int take)
     {
+        string adminEmail = "email";
+
+        A.CallTo(() => _adminService.IsItAdmin(adminEmail)).Returns(true);
+
         A.CallTo(() => _repository.GetAll(
-                A<Func< IQueryable<Account>,
-                 IOrderedQueryable < Account >>>._,
+                A<Func<IQueryable<Account>,
+                 IOrderedQueryable<Account>>>._,
                  A<Expression<Func<Account, bool>>>._,
                  skip, take,
                  A<string[]>._))
@@ -61,8 +86,8 @@ public class AccountServiceTests
         A.CallTo(() => _mapper.Map<AccountModel>(A<Account>.Ignored))
             .Returns(new());
 
-        
-        var result = _service.GetAccounts(skip, take);
+
+        var result = _service.GetAccounts(adminEmail, skip, take);
 
 
         Assert.AreEqual(accounts.Count, result.Count);
@@ -80,6 +105,10 @@ public class AccountServiceTests
     [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsNoSkipOrTakeTestData), typeof(AccountServiceTestsDataProvider))]
     public void GetAccounts_NoSkipOrTake_ReturnsAllMappedAccountModels(List<Account> accounts)
     {
+        string adminEmail = "email";
+
+        A.CallTo(() => _adminService.IsItAdmin(adminEmail)).Returns(true);
+
         A.CallTo(() => _repository.GetAll(
                 A<Func<IQueryable<Account>,
                  IOrderedQueryable<Account>>>._,
@@ -88,10 +117,10 @@ public class AccountServiceTests
                  A<string[]>._))
             .Returns(accounts);
 
-        
-        var result = _service.GetAccounts();
 
-        
+        var result = _service.GetAccounts(adminEmail);
+
+
         Assert.AreEqual(accounts.Count, result.Count);
 
         A.CallTo(() => _repository.GetAll(
@@ -120,7 +149,7 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    public void UpdateAccount_InstanceIdEqualZero_Throwexception()
+    public void UpdateAccount_InstanceIdEqualZero_ThrowsException()
     {
         AccountModel account = new() { Id = 0 };
 

@@ -73,12 +73,11 @@ public class AccountController : BaseController
         _accountService.DeleteAccountWithId(GetUserId());
     }
 
-    #region Endpoints for admins
     [Authorize(Policy = _adminPolicy)]
     [HttpGet("Admin/GetAllAccounts")]
     public List<AccountDTO> GetAll(int skip, int take)
     {
-        return _accountService.GetAccounts(skip, take)
+        return _accountService.GetAccounts(GetUserEmail(), skip, take)
                 .Select(_mapper.Map<AccountDTO>)
                 .ToList();
     }
@@ -98,7 +97,6 @@ public class AccountController : BaseController
     {
         _accountService.DeleteAccountWithId(id);
     }
-    #endregion
 
     private ClaimsIdentity GetIdentity(string email, string password)
     {

@@ -3,6 +3,7 @@ using ApplicationLayer.Security.Jwt;
 using DataLayer;
 using DataLayer.UnitOfWork;
 using DomainLayer.Services.Accounts;
+using DomainLayer.Services.Admins;
 using DomainLayer.Services.Finances;
 using DomainLayer.Services.Wallets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -33,6 +34,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
         services.AddPoliticalAuthorization(configuration);
 
+        services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IFinanceService, FinanceService>();

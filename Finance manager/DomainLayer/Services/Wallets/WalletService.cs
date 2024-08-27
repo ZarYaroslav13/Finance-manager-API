@@ -30,7 +30,7 @@ public class WalletService : BaseService, IWalletService
         if (wallet.Id != 0)
             throw new ArgumentException(nameof(wallet));
 
-        if(wallet.AccountId <= 0) 
+        if (wallet.AccountId <= 0)
             throw new ArgumentOutOfRangeException(nameof(wallet));
 
         var result = _mapper.Map<WalletModel>(
@@ -72,9 +72,9 @@ public class WalletService : BaseService, IWalletService
 
     public bool IsAccountOwnerWallet(int acoountId, int walletId)
     {
-        if (acoountId <=0 ||  walletId <=0)
+        if (acoountId <= 0 || walletId <= 0)
             throw new ArgumentOutOfRangeException("account id and wallet id cannot be less or equal 0");
 
-        return _repository.GetAll().Any( w => w.Id == walletId && w.AccountId == acoountId);
+        return _repository.GetAll().Any(w => w.Id == walletId && w.AccountId == acoountId);
     }
 }

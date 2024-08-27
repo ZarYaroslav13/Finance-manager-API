@@ -4,6 +4,7 @@ using DataLayer.Repository;
 using DataLayer.Security;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
+using DomainLayer.Services.Admins;
 using System.Net.Mail;
 
 namespace DomainLayer.Services.Accounts;
@@ -12,16 +13,22 @@ public class AccountService : BaseService, IAccountService
 {
     private readonly PasswordCoder _passwordCoder;
     private readonly IRepository<Account> _repository;
+    private readonly IAdminService _adminService;
 
-    public AccountService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    public AccountService(IAdminService adminService, IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
+        _adminService = adminService ?? throw new ArgumentNullException(nameof(adminService));
+
         _passwordCoder = new PasswordCoder();
 
         _repository = _unitOfWork.GetRepository<Account>();
     }
 
-    public List<AccountModel> GetAccounts(int skip = 0, int take = 0)
+    public List<AccountModel> GetAccounts(string adminEmail, int skip = 0, int take = 0)
     {
+        if (!_adminService.IsItAdmin(adminEmail))
+            throw new UnauthorizedAccessException();
+
         if (skip < 0 || take < 0)
             throw new ArgumentException("skip and take arguments cannot be less 0");
 

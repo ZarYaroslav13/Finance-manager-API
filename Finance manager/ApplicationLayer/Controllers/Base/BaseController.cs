@@ -38,4 +38,16 @@ public class BaseController : ControllerBase
 
         return id;
     }
+
+    protected string GetUserEmail()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+        if (identity == null)
+            throw new InvalidOperationException(nameof(identity));
+
+        string email = identity.FindFirst(nameof(AccountDTO.Email)).Value;
+
+        return email;
+    }
 }
