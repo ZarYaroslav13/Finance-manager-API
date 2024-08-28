@@ -13,6 +13,8 @@ public class AdminService : IAdminService
 
     public bool IsItAdmin(string email)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
+
         return Admins.Any(a => a.Email == email);
     }
 }
