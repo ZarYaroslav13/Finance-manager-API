@@ -46,8 +46,6 @@ public class BaseController : ControllerBase
         if (identity == null)
             throw new InvalidOperationException(nameof(identity));
 
-        string email = identity.FindFirst(nameof(AccountDTO.Email)).Value;
-
-        return email;
+        return identity.Name;
     }
 }
