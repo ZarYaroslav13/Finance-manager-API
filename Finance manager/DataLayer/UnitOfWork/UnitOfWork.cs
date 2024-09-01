@@ -14,8 +14,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IRepository<T> GetRepository<T>() where T : Entity => new Repository<T>(_context);
 
-    public void SaveChanges()
+    public async Task SaveChangesAsync()
     {
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

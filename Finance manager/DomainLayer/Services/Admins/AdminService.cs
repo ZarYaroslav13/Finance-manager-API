@@ -6,7 +6,7 @@ namespace DomainLayer.Services.Admins;
 public class AdminService : IAdminService
 {
     private const int AdminNumberInArray = 5;
-    private readonly List<Account> Admins = new()
+    public List<Account> Admins { get; } = new()
     {
         FillerBbData.Accounts[AdminNumberInArray]
     };

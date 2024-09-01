@@ -15,7 +15,7 @@ public class AccountController : BaseController
     private readonly IAccountService _accountService;
     private readonly ITokenManager _tokenManager;
 
-    public AccountController(IAccountService service, IMapper mapper, ITokenManager tokenManager, ILogger<BaseController> logger) : base(mapper, logger)
+    public AccountController(IAccountService service, IMapper mapper, ITokenManager tokenManager, ILogger<AccountController> logger) : base(mapper, logger)
     {
         _accountService = service ?? throw new ArgumentNullException(nameof(service));
         _tokenManager = tokenManager ?? throw new ArgumentNullException(nameof(tokenManager));

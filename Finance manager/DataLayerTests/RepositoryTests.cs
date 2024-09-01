@@ -26,10 +26,10 @@ public class RepositoryTests
     }
 
     [TestCleanup]
-    public void Cleanup()
+    public async Task Cleanup()
     {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
+        await _context.Database.EnsureDeletedAsync();
+        await _context.DisposeAsync();
     }
 
     [TestMethod]
@@ -40,36 +40,35 @@ public class RepositoryTests
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.GetAllIntArgumentsAreLessThenZeroTestData), typeof(RepositoryDataProvider))]
-    public void GetAll_IntArgumentsAreLessThenZero_ThrowException(int skip, int take)
+    public async Task GetAll_IntArgumentsAreLessThenZero_ThrowException(int skip, int take)
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => _repository.GetAll(take: take, skip: skip));
+        await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _repository.GetAllAsync(take: take, skip: skip));
     }
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.OrderedAccountListForGetAll), typeof(RepositoryDataProvider))]
-    public void GetAll_AccountsWithWalletListIsOrderedByLastName_OrderedAccountListWithWallets(List<Account> expectedOrderedAccountsList)
+    public async Task GetAll_AccountsWithWalletListIsOrderedByLastName_OrderedAccountListWithWallets(List<Account> expectedOrderedAccountsList)
     {
-        _context.AddRange(EntitiesTestDataProvider.Accounts);
-        _context.AddRange(EntitiesTestDataProvider.Wallets);
-        _context.SaveChanges();
+        await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
+        await _context.AddRangeAsync(EntitiesTestDataProvider.Wallets);
+        await _context.SaveChangesAsync();
 
-        var resultOrderedAccountsList = _repository.GetAll(includeProperties: nameof(Account.Wallets),
-                                           orderBy: qa => qa.OrderBy(a => a.LastName))
-                                  .ToList();
+        var resultOrderedAccountsList = await _repository.GetAllAsync(includeProperties: nameof(Account.Wallets),
+                                           orderBy: qa => qa.OrderBy(a => a.LastName));
 
-        CollectionAssert.AreEqual(expectedOrderedAccountsList, resultOrderedAccountsList);
+        CollectionAssert.AreEqual(expectedOrderedAccountsList, resultOrderedAccountsList.ToList());
     }
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.AccountsWithIdMoreThen3ListForGetAll), typeof(RepositoryDataProvider))]
-    public void GetAll_AccountListIsFilteredById_FilteredAccountList(List<Account> expectedFilteredAccountList)
+    public async Task GetAll_AccountListIsFilteredById_FilteredAccountList(List<Account> expectedFilteredAccountList)
     {
         Expression<Func<Account, bool>> predicate = (ac) => ac.Id > 3;
 
-        _context.AddRange(EntitiesTestDataProvider.Accounts);
-        _context.SaveChanges();
+        await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
+        await _context.SaveChangesAsync();
 
-        var resultFilteredAccountList = _repository.GetAll(filter: predicate).ToList();
+        var resultFilteredAccountList = await _repository.GetAllAsync(filter: predicate);
 
         CollectionAssert.AreEqual(
             expectedFilteredAccountList
@@ -80,18 +79,18 @@ public class RepositoryTests
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.GetAllWithSkipAndTakeTestData), typeof(RepositoryDataProvider))]
-    public void GetAll_WithSkipAndTake_ReceivedExpectedAccountList_AccountList(List<Account> accounts, List<Account> expectedAccountList, int skip, int take)
+    public async Task GetAll_WithSkipAndTake_ReceivedExpectedAccountList_AccountList(List<Account> accounts, List<Account> expectedAccountList, int skip, int take)
     {
-        _context.AddRange(accounts);
-        _context.SaveChanges();
+        await _context.AddRangeAsync(accounts);
+        await _context.SaveChangesAsync();
 
-        var result = _repository.GetAll(skip: skip, take: take).ToList();
+        var result = await _repository.GetAllAsync(skip: skip, take: take);
 
-        CollectionAssert.AreEqual(expectedAccountList, result);
+        CollectionAssert.AreEqual(expectedAccountList, result.ToList());
     }
 
     [TestMethod]
-    public void Insert_AddedNewAccountToDatabase_NewAccount()
+    public async Task Insert_AddedNewAccountToDatabase_NewAccount()
     {
         var newAccount = new Account()
         {
@@ -102,15 +101,15 @@ public class RepositoryTests
         };
 
         _repository.Insert(newAccount);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
-        var accounts = _repository.GetAll();
+        var accounts = await _repository.GetAllAsync();
 
         Assert.IsTrue(accounts.Any(a => a.Equals(newAccount)));
     }
 
     [TestMethod]
-    public void Update_AccountAftetUpdatingIsChanged_UpdatedAccount()
+    public async Task Update_AccountAfterUpdatingIsChanged_UpdatedAccount()
     {
         var account = new Account()
         {
@@ -121,41 +120,41 @@ public class RepositoryTests
         };
 
         _repository.Insert(account);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         account.FirstName = "New FirstName";
-        _repository.Update(account);
-        _context.SaveChanges();
+        await _repository.UpdateAsync(account);
+        await _context.SaveChangesAsync();
 
-        var updatedAccount = _repository.GetAll().LastOrDefault();
+        var updatedAccount = (await _repository.GetAllAsync()).LastOrDefault();
 
         Assert.AreEqual(account, updatedAccount);
     }
 
     [TestMethod]
-    public void Delete_AccountDontExistsInDatabase_Void()
+    public async Task Delete_AccountDoesNotExistInDatabase_Void()
     {
-        _context.AddRange(EntitiesTestDataProvider.Accounts);
-        _context.SaveChanges();
+        await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
+        await _context.SaveChangesAsync();
 
         var removedAccount = EntitiesTestDataProvider.Accounts[3];
 
         _repository.Delete(removedAccount.Id);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
-        var accounts = _repository.GetAll();
+        var accounts = await _repository.GetAllAsync();
 
         Assert.IsFalse(accounts.Contains(removedAccount));
     }
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.AccountWithIdEqual2ForGetById), typeof(RepositoryDataProvider))]
-    public void GetById_GettedAccountWithNeededId_Account(Account expectedAccount)
+    public async Task GetById_GettedAccountWithNeededId_Account(Account expectedAccount)
     {
-        _context.AddRange(EntitiesTestDataProvider.Accounts);
-        _context.SaveChanges();
+        await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
+        await _context.SaveChangesAsync();
 
-        var foundAccount = _repository.GetById(expectedAccount.Id);
+        var foundAccount = await _repository.GetByIdAsync(expectedAccount.Id);
 
         foundAccount.Wallets = null;
 

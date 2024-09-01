@@ -43,7 +43,7 @@ public class FinanceServiceTests
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationTypesOfWalletTestData), typeof(FinanceServiceTestsDataProvider))]
     public void GetAllFinanceOperationTypesOfWallet_ReceivedExpectedNumberFinanceOperationTypes_FinanceOperationTypesList(List<FinanceOperationType> financeOperationTypes, int walletId)
     {
-        A.CallTo(() => _financeOperationTypesRepository.GetAll(
+        A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(
             A<Func<IQueryable<FinanceOperationType>,
             IOrderedQueryable<FinanceOperationType>>>._,
             A<Expression<Func<FinanceOperationType, bool>>>.That.Matches(filter =>
@@ -56,7 +56,7 @@ public class FinanceServiceTests
         var result = _service.GetAllFinanceOperationTypesOfWallet(walletId);
 
 
-        A.CallTo(() => _financeOperationTypesRepository.GetAll(
+        A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(
            A<Func<IQueryable<FinanceOperationType>,
            IOrderedQueryable<FinanceOperationType>>>._,
            A<Expression<Func<FinanceOperationType, bool>>>.That.Matches(filter =>
@@ -123,7 +123,7 @@ public class FinanceServiceTests
     [DynamicData(nameof(FinanceServiceTestsDataProvider.DeleteFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
     public void DeleteFinanceOperationType_SomeFinanceOperationsHaveReferenceToType_ThrowsException(int typeId, List<FinanceOperation> financeOperations)
     {
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+        A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                            A<Expression<Func<FinanceOperation, bool>>>._,
             A<int>._, A<int>._,
                                            A<string[]>._))
@@ -159,7 +159,7 @@ public class FinanceServiceTests
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationOfWalletWithCountAndIndexTestData), typeof(FinanceServiceTestsDataProvider))]
     public void GetAllFinanceOperationOfWallet_WithCountAndIndex_GetAllWasInvokedAndReceivedExpectedList_ListFinanceOperationModels(List<FinanceOperation> operations, int walletId, int index, int count)
     {
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+        A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
                                                                 filter != null && filter.Compile()(new FinanceOperation { Type = new() { WalletId = walletId } })),
                                                              index, count,
@@ -167,7 +167,7 @@ public class FinanceServiceTests
 
         var result = _service.GetAllFinanceOperationOfWallet(walletId, count, index);
 
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+        A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
                                                                 filter != null && filter.Compile()(new FinanceOperation { Type = new() { WalletId = walletId } })),
                                                              index, count,
@@ -208,13 +208,13 @@ public class FinanceServiceTests
         DateTime startDate = DateTime.Now.AddDays(-4);
         DateTime endDate = DateTime.Now.AddDays(-1);
 
-        A.CallTo(() => _financeOperationTypesRepository.GetAll(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
+        A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
                                             A<Expression<Func<FinanceOperationType, bool>>>._,
             A<int>._, A<int>._,
                                             A<string[]>._))
         .Returns(financeOperationTypes);
 
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+        A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                              A<Expression<Func<FinanceOperation, bool>>>._,
             A<int>._, A<int>._,
                                                              A<string[]>._))
@@ -233,7 +233,7 @@ public class FinanceServiceTests
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationsOfTypeTestData), typeof(FinanceServiceTestsDataProvider))]
     public void GetAllFinanceOperationOfType_ReceivedExpectedNumberFinanceOperations_FinanceOperationsList(List<FinanceOperation> financeOperations, int typeId)
     {
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+        A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
                                                                 filter != null && filter.Compile()(new FinanceOperation { TypeId = typeId })),
                                                              A<int>._, A<int>._,
@@ -244,7 +244,7 @@ public class FinanceServiceTests
         var result = _service.GetAllFinanceOperationOfType(typeId);
 
 
-        A.CallTo(() => _financeOperationsRepository.GetAll(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
+        A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
                                                                 filter != null && filter.Compile()(new FinanceOperation { TypeId = typeId })),
                                                                 A<int>._, A<int>._,

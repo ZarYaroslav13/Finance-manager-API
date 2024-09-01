@@ -32,7 +32,7 @@ public class AccountService : BaseService, IAccountService
         if (skip < 0 || take < 0)
             throw new ArgumentException("skip and take arguments cannot be less 0");
 
-        return _repository.GetAll(skip: skip, take: take)
+        return _repository.GetAllAsync(skip: skip, take: take)
                 .Select(_mapper.Map<AccountModel>)
                 .ToList();
     }
@@ -90,7 +90,7 @@ public class AccountService : BaseService, IAccountService
 
         var result = _mapper.Map<AccountModel>(
            _repository
-               .GetAll()
+               .GetAllAsync()
                .FirstOrDefault(a =>
                        a.Email == email
                        && a.Password == encodedPassword)); ;
@@ -119,7 +119,7 @@ public class AccountService : BaseService, IAccountService
             throw new FormatException("Email format is incorrect!");
         }
 
-        if (_repository.GetAll().Any(a => a.Email == emailAddress))
+        if (_repository.GetAllAsync().Any(a => a.Email == emailAddress))
         {
             throw new ArgumentException("An account with this email already exist!");
         }

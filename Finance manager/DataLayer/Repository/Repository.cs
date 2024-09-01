@@ -14,7 +14,7 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
         _dbSet = _context.Set<T>() ?? throw new ArgumentNullException();
     }
 
-    public virtual IEnumerable<T> GetAll(
+    public virtual async Task<IEnumerable<T>> GetAllAsync(
             Func<IQueryable<T>,
                 IOrderedQueryable<T>> orderBy = null,
                 Expression<Func<T, bool>> filter = null,
@@ -59,7 +59,12 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
             query = query.Take(take);
         }
 
-        return query.AsNoTracking().ToList();
+        return await query.AsNoTracking().ToListAsync();
+    }
+
+    public async Task<T> GetByIdAsync(int id)
+    {
+        return await _dbSet.FindAsync(id);
     }
 
     public T Insert(T entity)
@@ -69,14 +74,9 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
         return entity;
     }
 
-    public T GetById(int id)
+    public async Task<T> UpdateAsync(T entity)
     {
-        return _dbSet.Find(id);
-    }
-
-    public T Update(T entity)
-    {
-        var toUpdate = _dbSet.FirstOrDefault(e => e.Id == entity.Id);
+        var toUpdate = await _dbSet.FindAsync(entity.Id);
 
         if (toUpdate != null)
         {

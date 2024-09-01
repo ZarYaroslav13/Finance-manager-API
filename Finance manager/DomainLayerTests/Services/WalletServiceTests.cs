@@ -33,7 +33,7 @@ public class WalletServiceTests
     [DynamicData(nameof(WalletServiceTestsDataProvider.GetAllWalletsOfAccountTestData), typeof(WalletServiceTestsDataProvider))]
     public void GetAllWalletsOfAccount_ReceivedExpectedNumberWallets_WalletModelList(List<Wallet> wallets, int accountId)
     {
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
             A<Expression<Func<Wallet, bool>>>.That.Matches(filter =>
                 filter != null && filter.Compile()(new Wallet { AccountId = accountId })),
@@ -43,7 +43,7 @@ public class WalletServiceTests
 
         var result = _service.GetAllWalletsOfAccount(accountId);
 
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
             A<Expression<Func<Wallet, bool>>>.That.Matches(filter =>
                 filter != null && filter.Compile()(new Wallet { AccountId = accountId })),

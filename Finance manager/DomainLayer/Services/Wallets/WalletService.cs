@@ -18,7 +18,7 @@ public class WalletService : BaseService, IWalletService
     public List<WalletModel> GetAllWalletsOfAccount(int accountId)
     {
         return _repository
-            .GetAll(filter: w => w.AccountId == accountId)
+            .GetAllAsync(filter: w => w.AccountId == accountId)
             .Select(_mapper.Map<WalletModel>)
             .ToList();
     }
@@ -75,6 +75,6 @@ public class WalletService : BaseService, IWalletService
         if (acoountId <= 0 || walletId <= 0)
             throw new ArgumentOutOfRangeException("account id and wallet id cannot be less or equal 0");
 
-        return _repository.GetAll().Any(w => w.Id == walletId && w.AccountId == acoountId);
+        return _repository.GetAllAsync().Any(w => w.Id == walletId && w.AccountId == acoountId);
     }
 }

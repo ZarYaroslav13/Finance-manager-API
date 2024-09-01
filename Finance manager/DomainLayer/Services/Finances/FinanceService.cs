@@ -22,7 +22,7 @@ public class FinanceService : BaseService, IFinanceService
     public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId)
     {
         return _financeOperationTypeRepository
-                .GetAll(filter: fot => fot.WalletId == walletId)
+                .GetAllAsync(filter: fot => fot.WalletId == walletId)
                 .Select(_mapper.Map<FinanceOperationTypeModel>)
                 .ToList();
     }
@@ -59,7 +59,7 @@ public class FinanceService : BaseService, IFinanceService
 
     public void DeleteFinanceOperationType(int id)
     {
-        if (_financeOperationRepository.GetAll(
+        if (_financeOperationRepository.GetAllAsync(
                 includeProperties: nameof(FinanceOperation.Type),
                 filter: fo => fo.Type.Id == id)
             .Any())
@@ -87,7 +87,7 @@ public class FinanceService : BaseService, IFinanceService
             throw new ArgumentOutOfRangeException(nameof(index));
 
         List<FinanceOperationModel> result = _financeOperationRepository
-                .GetAll(
+                .GetAllAsync(
                    includeProperties: nameof(FinanceOperation.Type),
                     filter: fo => fo.Type.WalletId == walletId,
                     orderBy: iQ => iQ.OrderBy(fo => fo.Date),
@@ -107,7 +107,7 @@ public class FinanceService : BaseService, IFinanceService
         ArgumentOutOfRangeException.ThrowIfGreaterThan(startDate, endDate);
 
         List<FinanceOperationModel> result = _financeOperationRepository
-                .GetAll(
+                .GetAllAsync(
                 includeProperties: nameof(FinanceOperation.Type),
                 filter: fo =>
                        fo.Type.WalletId == walletId
@@ -122,7 +122,7 @@ public class FinanceService : BaseService, IFinanceService
     public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId)
     {
         return _financeOperationRepository
-                .GetAll(filter: fo => fo.TypeId == TypeId)
+                .GetAllAsync(filter: fo => fo.TypeId == TypeId)
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
     }
@@ -136,7 +136,7 @@ public class FinanceService : BaseService, IFinanceService
 
         var financeOperationForDb = _mapper.Map<FinanceOperation>(financeOperation);
 
-        if (_financeOperationRepository.GetAll(filter: fo => fo == financeOperationForDb).Any())
+        if (_financeOperationRepository.GetAllAsync(filter: fo => fo == financeOperationForDb).Any())
             throw new InvalidOperationException();
 
         var result = _mapper.Map<FinanceOperationModel>(

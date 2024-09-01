@@ -37,29 +37,29 @@ public class UnitOfWorkTests
     }
 
     [TestMethod]
-    public void GetRepository_ReturnedEntitiesFromRepositoryAreExpected_Repository()
+    public async Task GetRepository_ReturnedEntitiesFromRepositoryAreExpected_Repository()
     {
-        _context.AddRange(EntitiesTestDataProvider.Accounts);
-        _context.SaveChanges();
+        await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
+        await _context.SaveChangesAsync();
         var expected = EntitiesTestDataProvider.Accounts;
         expected.ForEach(a => a.Wallets = null);
 
-        var result = _unitOfWork.GetRepository<Account>().GetAll().ToList();
+        var result = await _unitOfWork.GetRepository<Account>().GetAllAsync();
 
-        CollectionAssert.AreEqual(expected, result);
+        CollectionAssert.AreEqual(expected, result.ToList());
     }
 
     [TestMethod]
-    public void SaveChanges_NeededChangesAreSuccessfullySaved_Void()
+    public async Task SaveChangesAsync_NeededChangesAreSuccessfullySaved_Void()
     {
         var expected = EntitiesTestDataProvider.Accounts.GetRange(0, 2);
         expected.ForEach(a => a.Wallets = null);
 
-        _context.AddRange(expected);
-        _unitOfWork.SaveChanges();
+        await _context.AddRangeAsync(expected);
+        await _unitOfWork.SaveChangesAsync();
 
-        var result = _unitOfWork.GetRepository<Account>().GetAll().ToList();
+        var result = await _unitOfWork.GetRepository<Account>().GetAllAsync();
 
-        CollectionAssert.AreEqual(expected, result);
+        CollectionAssert.AreEqual(expected, result.ToList());
     }
 }

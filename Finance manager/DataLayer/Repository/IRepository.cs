@@ -5,7 +5,7 @@ namespace DataLayer.Repository;
 
 public interface IRepository<T> where T : Entity
 {
-    IEnumerable<T> GetAll(
+    Task<IEnumerable<T>> GetAllAsync(
             Func<IQueryable<T>,
                 IOrderedQueryable<T>> orderBy = null,
                 Expression<Func<T, bool>> filter = null,
@@ -13,11 +13,11 @@ public interface IRepository<T> where T : Entity
                 int take = 0,
                 params string[] includeProperties);
 
+    Task<T> GetByIdAsync(int id);
+
     T Insert(T entity);
 
-    T GetById(int id);
-
-    T Update(T entity);
+    Task<T> UpdateAsync(T entity);
 
     void Delete(int id);
 }

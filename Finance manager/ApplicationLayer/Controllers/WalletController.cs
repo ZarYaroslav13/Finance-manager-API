@@ -12,7 +12,7 @@ public class WalletController : BaseController
 {
     private readonly IWalletService _service;
 
-    public WalletController(IWalletService service, IMapper mapper, ILogger<BaseController> logger) : base(mapper, logger)
+    public WalletController(IWalletService service, IMapper mapper, ILogger<WalletController> logger) : base(mapper, logger)
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }

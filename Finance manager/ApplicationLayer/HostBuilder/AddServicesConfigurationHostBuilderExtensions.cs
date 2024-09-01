@@ -8,6 +8,7 @@ using DomainLayer.Services.Finances;
 using DomainLayer.Services.Wallets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
@@ -20,7 +21,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
         const string connectionString = "DbConnection";
         var services = builder.Services;
         var configuration = builder.Configuration as IConfiguration;
-
+        
         services.AddDbContext<AppDbContext>(option =>
             option.
                 UseSqlServer(
@@ -30,15 +31,15 @@ public static class AddServicesConfigurationHostBuilderExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-        services.AddJwtAuthentication();
-
-        services.AddPoliticalAuthorization(configuration);
-
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IWalletService, WalletService>();
         services.AddScoped<IFinanceService, FinanceService>();
         services.AddScoped<ITokenManager, TokenManager>();
+
+        services.AddJwtAuthentication();
+
+        services.AddPoliticalAuthorization(configuration);
 
         return builder;
     }
@@ -69,12 +70,15 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
     private static IServiceCollection AddPoliticalAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
+        var serviceProvider = services.BuildServiceProvider();
+
+        var adminService = serviceProvider.GetRequiredService<IAdminService>();
+
         services.AddAuthorization(opt =>
         {
             opt.AddPolicy("OnlyForAdmins", policy =>
             {
-                var adminEmails = configuration.GetSection("Admins").Get<string[]>() ?? Array.Empty<string>();
-                policy.RequireClaim(ClaimTypes.Name, adminEmails);
+                policy.RequireClaim(ClaimTypes.Name, adminService.Admins.Select(a => a.Email));
             });
         });
 

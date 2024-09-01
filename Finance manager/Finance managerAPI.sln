@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainLayerTests", "DomainL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationLayerTests", "ApplicationLayerTests\ApplicationLayerTests.csproj", "{CB4B5F79-1BAB-4D26-93A6-1B1DF340AB1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationLayer", "ApplicationLayer\ApplicationLayer.csproj", "{DBF7D5D3-CFD9-4E40-AD75-E95DE608D05D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationLayer", "ApplicationLayer\ApplicationLayer.csproj", "{DBF7D5D3-CFD9-4E40-AD75-E95DE608D05D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{66CA2C5C-094C-46F6-8944-577EAE50F02F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{07ACD54E-B0A1-4A70-A10D-30F4D17CD0BC} = {66CA2C5C-094C-46F6-8944-577EAE50F02F}
+		{C3C497CC-6611-462D-8C60-E74B05DF11C7} = {66CA2C5C-094C-46F6-8944-577EAE50F02F}
+		{CB4B5F79-1BAB-4D26-93A6-1B1DF340AB1C} = {66CA2C5C-094C-46F6-8944-577EAE50F02F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {64154683-B59B-40DA-9128-5E92B9080E10}

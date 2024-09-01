@@ -75,7 +75,7 @@ public class AccountServiceTests
 
         A.CallTo(() => _adminService.IsItAdmin(adminEmail)).Returns(true);
 
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
                 A<Func<IQueryable<Account>,
                  IOrderedQueryable<Account>>>._,
                  A<Expression<Func<Account, bool>>>._,
@@ -92,7 +92,7 @@ public class AccountServiceTests
 
         Assert.AreEqual(accounts.Count, result.Count);
 
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
                 A<Func<IQueryable<Account>,
                  IOrderedQueryable<Account>>>._,
                  A<Expression<Func<Account, bool>>>._,
@@ -109,7 +109,7 @@ public class AccountServiceTests
 
         A.CallTo(() => _adminService.IsItAdmin(adminEmail)).Returns(true);
 
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
                 A<Func<IQueryable<Account>,
                  IOrderedQueryable<Account>>>._,
                  A<Expression<Func<Account, bool>>>._,
@@ -123,7 +123,7 @@ public class AccountServiceTests
 
         Assert.AreEqual(accounts.Count, result.Count);
 
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
                 A<Func<IQueryable<Account>,
                  IOrderedQueryable<Account>>>._,
                  A<Expression<Func<Account, bool>>>._,
@@ -210,7 +210,7 @@ public class AccountServiceTests
             Password = expectedAccountFromDb.Password
         };
 
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
             A<int>._, A<int>._,
@@ -227,7 +227,7 @@ public class AccountServiceTests
     [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInAccountWithEmailAndPasswordNotExistTestData), typeof(AccountServiceTestsDataProvider))]
     public void TryLogIn_AccountWithEmailAndPasswordNotExistInDatabase_AccountModel(List<Account> dbAccounts, string email, string password)
     {
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
             A<int>._, A<int>._,
@@ -258,7 +258,7 @@ public class AccountServiceTests
     [DynamicData(nameof(AccountServiceTestsDataProvider.CanTakeThisEmailReturnTrueTestData), typeof(AccountServiceTestsDataProvider))]
     public void CanTakeThisEmail_EmailIsValidAndNotExistInDatabase_True(List<Account> accounts, string email)
     {
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
             A<int>._, A<int>._,
@@ -279,7 +279,7 @@ public class AccountServiceTests
     [DynamicData(nameof(AccountServiceTestsDataProvider.CanTakeThisEmailThrowsArgumentExceptionTestData), typeof(AccountServiceTestsDataProvider))]
     public void CanTakeThisEmail_EmailExistInDatabase_ThrowsArgumentException(List<Account> accounts, string email)
     {
-        A.CallTo(() => _repository.GetAll(
+        A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
             A<Expression<Func<Account, bool>>>._,
             A<int>._, A<int>._,
