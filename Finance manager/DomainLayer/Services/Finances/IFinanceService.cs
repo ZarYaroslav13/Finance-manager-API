@@ -4,23 +4,23 @@ namespace DomainLayer.Services.Finances;
 
 public interface IFinanceService
 {
-    public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId);
+    public Task<List<FinanceOperationTypeModel>> GetAllFinanceOperationTypesOfWalletAsync(int walletId);
 
-    public FinanceOperationTypeModel AddFinanceOperationType(FinanceOperationTypeModel type);
+    public Task<FinanceOperationTypeModel> AddFinanceOperationTypeAsync(FinanceOperationTypeModel type);
 
-    public FinanceOperationTypeModel UpdateFinanceOperationType(FinanceOperationTypeModel type);
+    public Task<FinanceOperationTypeModel> UpdateFinanceOperationTypeAsync(FinanceOperationTypeModel type);
 
-    public void DeleteFinanceOperationType(int id);
+    public Task DeleteFinanceOperationTypeAsync(int id);
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int index = 0, int count = 0);
+    public Task<List<FinanceOperationModel>> GetAllFinanceOperationOfWalletAsync(int walletId, int index = 0, int count = 0);
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, DateTime startDate, DateTime endDate);
+    public Task<List<FinanceOperationModel>> GetAllFinanceOperationOfWalletAsync(int walletId, DateTime startDate, DateTime endDate);
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId);
+    public Task<List<FinanceOperationModel>> GetAllFinanceOperationOfTypeAsync(int TypeId);
 
-    public FinanceOperationModel AddFinanceOperation(FinanceOperationModel financeOperation);
+    public Task<FinanceOperationModel> AddFinanceOperationAsync(FinanceOperationModel financeOperation);
 
-    public FinanceOperationModel UpdateFinanceOperation(FinanceOperationModel financeOperation);
+    public Task<FinanceOperationModel> UpdateFinanceOperationAsync(FinanceOperationModel financeOperation);
 
-    public void DeleteFinanceOperation(int id);
+    public Task DeleteFinanceOperationAsync(int id);
 }

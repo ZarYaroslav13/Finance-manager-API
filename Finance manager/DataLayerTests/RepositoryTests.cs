@@ -40,14 +40,14 @@ public class RepositoryTests
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.GetAllIntArgumentsAreLessThenZeroTestData), typeof(RepositoryDataProvider))]
-    public async Task GetAll_IntArgumentsAreLessThenZero_ThrowException(int skip, int take)
+    public async Task GetAllAsync_IntArgumentsAreLessThenZero_ThrowException(int skip, int take)
     {
         await Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _repository.GetAllAsync(take: take, skip: skip));
     }
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.OrderedAccountListForGetAll), typeof(RepositoryDataProvider))]
-    public async Task GetAll_AccountsWithWalletListIsOrderedByLastName_OrderedAccountListWithWallets(List<Account> expectedOrderedAccountsList)
+    public async Task GetAllAsync_AccountsWithWalletListIsOrderedByLastName_OrderedAccountListWithWallets(List<Account> expectedOrderedAccountsList)
     {
         await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
         await _context.AddRangeAsync(EntitiesTestDataProvider.Wallets);
@@ -61,7 +61,7 @@ public class RepositoryTests
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.AccountsWithIdMoreThen3ListForGetAll), typeof(RepositoryDataProvider))]
-    public async Task GetAll_AccountListIsFilteredById_FilteredAccountList(List<Account> expectedFilteredAccountList)
+    public async Task GetAllAsync_AccountListIsFilteredById_FilteredAccountList(List<Account> expectedFilteredAccountList)
     {
         Expression<Func<Account, bool>> predicate = (ac) => ac.Id > 3;
 
@@ -79,7 +79,7 @@ public class RepositoryTests
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.GetAllWithSkipAndTakeTestData), typeof(RepositoryDataProvider))]
-    public async Task GetAll_WithSkipAndTake_ReceivedExpectedAccountList_AccountList(List<Account> accounts, List<Account> expectedAccountList, int skip, int take)
+    public async Task GetAllAsync_WithSkipAndTake_ReceivedExpectedAccountList_AccountList(List<Account> accounts, List<Account> expectedAccountList, int skip, int take)
     {
         await _context.AddRangeAsync(accounts);
         await _context.SaveChangesAsync();
@@ -109,7 +109,7 @@ public class RepositoryTests
     }
 
     [TestMethod]
-    public async Task Update_AccountAfterUpdatingIsChanged_UpdatedAccount()
+    public async Task UpdateAsync_AccountAfterUpdatingIsChanged_UpdatedAccount()
     {
         var account = new Account()
         {
@@ -149,7 +149,7 @@ public class RepositoryTests
 
     [TestMethod]
     [DynamicData(nameof(RepositoryDataProvider.AccountWithIdEqual2ForGetById), typeof(RepositoryDataProvider))]
-    public async Task GetById_GettedAccountWithNeededId_Account(Account expectedAccount)
+    public async Task GetByIdAsync_GettedAccountWithNeededId_Account(Account expectedAccount)
     {
         await _context.AddRangeAsync(EntitiesTestDataProvider.Accounts);
         await _context.SaveChangesAsync();

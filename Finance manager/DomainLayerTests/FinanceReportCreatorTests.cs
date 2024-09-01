@@ -26,42 +26,42 @@ public class FinanceReportCreatorTests
     }
 
     [TestMethod]
-    public void CreateFinanceReport_ArgumentValuesAreNull_ThrowsException()
+    public void CreateFinanceReportAsync_ArgumentValuesAreNull_ThrowsException()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => _creator.CreateFinanceReport(null, new DateTime(), new DateTime()));
+        Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _creator.CreateFinanceReportAsync(null, new DateTime(), new DateTime()));
     }
 
     [TestMethod]
-    public void CreateFinanceReport_StartDateIsLaterthenEndDate_ArgumentOutOfRangeException()
+    public void CreateFinanceReportAsync_StartDateIsLaterthenEndDate_ArgumentOutOfRangeException()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(()
-                => _creator.CreateFinanceReport(A.Dummy<WalletModel>(), DateTime.MaxValue, DateTime.MinValue));
+        Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(()
+                => _creator.CreateFinanceReportAsync(A.Dummy<WalletModel>(), DateTime.MaxValue, DateTime.MinValue));
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.CreateFinanceReportTestData), typeof(FinanceReportCreatorTestsDataProvider))]
-    public void CreateFinanceReport_GeneratedAndExpectedReportsAreEqual_FinanceReport(WalletModel wallet, FinanceReportModel expected)
+    public async Task CreateFinanceReportAsync_GeneratedAndExpectedReportsAreEqual_FinanceReport(WalletModel wallet, FinanceReportModel expected)
     {
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.EndDate)).Returns(expected.Operations);
+        A.CallTo(() => _service.GetAllFinanceOperationOfWalletAsync(wallet.Id, expected.Period.StartDate, expected.Period.EndDate)).Returns(expected.Operations);
 
-        var result = _creator.CreateFinanceReport(wallet, expected.Period.StartDate, expected.Period.EndDate);
+        var result = await _creator.CreateFinanceReportAsync(wallet, expected.Period.StartDate, expected.Period.EndDate);
         result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
 
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.EndDate)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _service.GetAllFinanceOperationOfWalletAsync(wallet.Id, expected.Period.StartDate, expected.Period.EndDate)).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(expected, result);
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceReportCreatorTestsDataProvider.CreateDailyFinanceReportTestData), typeof(FinanceReportCreatorTestsDataProvider))]
-    public void CreateDailyFinanceReport_GeneratedDailyReportISAsExpected_FinanceReport(WalletModel wallet, FinanceReportModel expected)
+    public async Task CreateDailyFinanceReport_GeneratedDailyReportISAsExpected_FinanceReport(WalletModel wallet, FinanceReportModel expected)
     {
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.StartDate)).Returns(expected.Operations);
+        A.CallTo(() => _service.GetAllFinanceOperationOfWalletAsync(wallet.Id, expected.Period.StartDate, expected.Period.StartDate)).Returns(expected.Operations);
 
-        var result = _creator.CreateFinanceReport(wallet, expected.Period.StartDate);
+        var result = await _creator.CreateFinanceReportAsync(wallet, expected.Period.StartDate);
         result.Operations = result.Operations.OrderBy(fo => fo.Id).ToList();
 
-        A.CallTo(() => _service.GetAllFinanceOperationOfWallet(wallet.Id, expected.Period.StartDate, expected.Period.StartDate)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _service.GetAllFinanceOperationOfWalletAsync(wallet.Id, expected.Period.StartDate, expected.Period.StartDate)).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(expected, result);
     }

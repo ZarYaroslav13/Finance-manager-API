@@ -4,15 +4,15 @@ namespace DomainLayer.Services.Wallets;
 
 public interface IWalletService
 {
-    public List<WalletModel> GetAllWalletsOfAccount(int accountId);
+    public Task<List<WalletModel>> GetAllWalletsOfAccountAsync(int accountId);
 
-    public WalletModel AddWallet(WalletModel wallet);
+    public Task<WalletModel> AddWalletAsync(WalletModel wallet);
 
-    public WalletModel UpdateWallet(WalletModel updatedWallet);
+    public Task<WalletModel> UpdateWalletAsync(WalletModel updatedWallet);
 
-    public void DeleteWalletById(int id);
+    public Task DeleteWalletByIdAsync(int id);
 
-    public WalletModel FindWallet(int id);
+    public Task<WalletModel> FindWalletAsync(int id);
 
-    public bool IsAccountOwnerWallet(int acoountId, int walletId);
+    public Task<bool> IsAccountOwnerWalletAsync(int acoountId, int walletId);
 }

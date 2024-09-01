@@ -23,9 +23,9 @@ public class AccountController : BaseController
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public IActionResult LogIn(string email, string password)
+    public async Task<IActionResult> LogInAsync(string email, string password)
     {
-        var identity = GetIdentity(email, password);
+        var identity = await GetIdentityAsync(email, password);
 
         if (identity == null)
         {
@@ -45,17 +45,17 @@ public class AccountController : BaseController
 
     [HttpPost("Create")]
     [AllowAnonymous]
-    public ActionResult<AccountDTO> Create(AccountDTO account)
+    public async Task<ActionResult<AccountDTO>> CreateAsync(AccountDTO account)
     {
         var newAccount = _mapper.Map<AccountDTO>(
-                   _accountService.AddAccount(
+                   await _accountService.AddAccountAsync(
                        _mapper.Map<AccountModel>(account)));
 
         return newAccount;
     }
 
     [HttpPut("Update")]
-    public AccountDTO Update(AccountDTO account)
+    public async Task<AccountDTO> UpdateAsync(AccountDTO account)
     {
         int id = GetUserId();
 
@@ -63,7 +63,7 @@ public class AccountController : BaseController
             throw new UnauthorizedAccessException(nameof(account));
 
         return _mapper.Map<AccountDTO>(
-                _accountService.UpdateAccount(
+                await _accountService.UpdateAccountAsync(
                     _mapper.Map<AccountModel>(account)));
     }
 
@@ -75,19 +75,19 @@ public class AccountController : BaseController
 
     [Authorize(Policy = _adminPolicy)]
     [HttpGet("Admin/GetAllAccounts")]
-    public List<AccountDTO> GetAll(int skip, int take)
+    public async Task<List<AccountDTO>> GetAllAsync(int skip, int take)
     {
-        return _accountService.GetAccounts(GetUserEmail(), skip, take)
+        return (await _accountService.GetAccountsAsync(GetUserEmail(), skip, take))
                 .Select(_mapper.Map<AccountDTO>)
                 .ToList();
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpPut("Admin/UpdateAccount")]
-    public AccountDTO AdminUpdateAccount(AccountDTO account)
+    public async Task<AccountDTO> AdminUpdateAccountAsync(AccountDTO account)
     {
         return _mapper.Map<AccountDTO>(
-                _accountService.UpdateAccount(
+                await _accountService.UpdateAccountAsync(
                     _mapper.Map<AccountModel>(account)));
     }
 
@@ -98,9 +98,9 @@ public class AccountController : BaseController
         _accountService.DeleteAccountWithId(id);
     }
 
-    private ClaimsIdentity GetIdentity(string email, string password)
+    private async Task<ClaimsIdentity> GetIdentityAsync(string email, string password)
     {
-        AccountDTO account = _mapper.Map<AccountDTO>(_accountService.TryLogIn(email, password));
+        AccountDTO account = _mapper.Map<AccountDTO>((await _accountService.TryLogInAsync(email, password)));
 
         if (account == null)
             return null;

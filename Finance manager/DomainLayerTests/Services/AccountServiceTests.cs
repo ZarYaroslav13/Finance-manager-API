@@ -39,37 +39,37 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    public void AddAccount_InstanceIdNotEqualZero_Throwexception()
+    public void AddAccountAsync_InstanceIdNotEqualZero_Throwexception()
     {
         AccountModel account = new() { Id = 1 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.AddAccount(account));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.AddAccountAsync(account));
     }
 
     [TestMethod]
-    public void GetAccounts_IncorrectAdminEmail_ThrowsUnauthorizedAccessException()
+    public void GetAccountsAsync_IncorrectAdminEmail_ThrowsUnauthorizedAccessException()
     {
         string email = "incorrectEmail";
 
         A.CallTo(() => _adminService.IsItAdmin(email)).Returns(false);
 
-        Assert.ThrowsException<UnauthorizedAccessException>(() => _service.GetAccounts(email));
+        Assert.ThrowsExceptionAsync<UnauthorizedAccessException>(() => _service.GetAccountsAsync(email));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsSkipOrTakeNegativeTestData), typeof(AccountServiceTestsDataProvider))]
-    public void GetAccounts_WithNegativeSkipOrTake_ThrowsArgumentException(int skip, int take)
+    public void GetAccountsAsync_WithNegativeSkipOrTake_ThrowsArgumentException(int skip, int take)
     {
         string adminEmail = "email";
 
         A.CallTo(() => _adminService.IsItAdmin(adminEmail)).Returns(true);
 
-        Assert.ThrowsException<ArgumentException>(() => _service.GetAccounts(adminEmail, skip, take));
+        Assert.ThrowsExceptionAsync<ArgumentException>(async () => await _service.GetAccountsAsync(adminEmail, skip, take));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsValidInputsTestData), typeof(AccountServiceTestsDataProvider))]
-    public void GetAccounts_ValidInputs_ReturnsExpectedNumberMappedAccountModels(List<Account> accounts, int skip, int take)
+    public async Task GetAccountsAsync_ValidInputs_ReturnsExpectedNumberMappedAccountModels(List<Account> accounts, int skip, int take)
     {
         string adminEmail = "email";
 
@@ -87,7 +87,7 @@ public class AccountServiceTests
             .Returns(new());
 
 
-        var result = _service.GetAccounts(adminEmail, skip, take);
+        var result = await _service.GetAccountsAsync(adminEmail, skip, take);
 
 
         Assert.AreEqual(accounts.Count, result.Count);
@@ -103,7 +103,7 @@ public class AccountServiceTests
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.GetAccountsNoSkipOrTakeTestData), typeof(AccountServiceTestsDataProvider))]
-    public void GetAccounts_NoSkipOrTake_ReturnsAllMappedAccountModels(List<Account> accounts)
+    public async Task GetAccountsAsync_NoSkipOrTake_ReturnsAllMappedAccountModels(List<Account> accounts)
     {
         string adminEmail = "email";
 
@@ -118,7 +118,7 @@ public class AccountServiceTests
             .Returns(accounts);
 
 
-        var result = _service.GetAccounts(adminEmail);
+        var result = await _service.GetAccountsAsync(adminEmail);
 
 
         Assert.AreEqual(accounts.Count, result.Count);
@@ -134,40 +134,40 @@ public class AccountServiceTests
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.AddAccountTestData), typeof(AccountServiceTestsDataProvider))]
-    public void AddAccount_ServiceInvokeMethodInsertByRepository_AccountModel(AccountModel modelForAdding, Account accountForRepository)
+    public async Task AddAccount_ServiceInvokeMethodInsertByRepository_AccountModel(AccountModel modelForAdding, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForAdding)).Returns(accountForRepository);
         A.CallTo(() => _repository.Insert(accountForRepository)).Returns(accountForRepository);
         A.CallTo(() => _mapper.Map<AccountModel>(accountForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddAccount(modelForAdding);
+        var result = await _service.AddAccountAsync(modelForAdding);
 
         A.CallTo(() => _repository.Insert(accountForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
     }
 
     [TestMethod]
-    public void UpdateAccount_InstanceIdEqualZero_ThrowsException()
+    public async Task UpdateAccountAsync_InstanceIdEqualZero_ThrowsException()
     {
         AccountModel account = new() { Id = 0 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.UpdateAccount(account));
+        await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await _service.UpdateAccountAsync(account));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.UpdateAccountTestData), typeof(AccountServiceTestsDataProvider))]
-    public void UpdateAccount_ServiceInvokeMethodUpdateByRepository_AccountModel(AccountModel modelForUpdate, Account accountForRepository)
+    public async Task UpdateAccountAsync_ServiceInvokeMethodUpdateByRepository_AccountModel(AccountModel modelForUpdate, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForUpdate)).Returns(accountForRepository);
-        A.CallTo(() => _repository.Update(accountForRepository)).Returns(accountForRepository);
+        A.CallTo(() => _repository.UpdateAsync(accountForRepository)).Returns(accountForRepository);
         A.CallTo(() => _mapper.Map<AccountModel>(accountForRepository)).Returns(modelForUpdate);
 
-        var result = _service.UpdateAccount(modelForUpdate);
+        var result = await _service.UpdateAccountAsync(modelForUpdate);
 
-        A.CallTo(() => _repository.Update(accountForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _repository.UpdateAsync(accountForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForUpdate, result);
     }
@@ -180,26 +180,26 @@ public class AccountServiceTests
         _service.DeleteAccountWithId(idAccountForDelete);
 
         A.CallTo(() => _repository.Delete(idAccountForDelete)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInThrowsNullExceptionTestData), typeof(AccountServiceTestsDataProvider))]
     public void TryLogIn_ArgumentsAreNull_ThrowNullException(string email, string password)
     {
-        Assert.ThrowsException<ArgumentNullException>(() => _service.TryLogIn(email, password));
+        Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _service.TryLogInAsync(email, password));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInThrowsExceptionTestData), typeof(AccountServiceTestsDataProvider))]
     public void TryLogIn_ArgumentsAreWhiteSpace_ThrowException(string email, string password)
     {
-        Assert.ThrowsException<ArgumentException>(() => _service.TryLogIn(email, password));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.TryLogInAsync(email, password));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInAccountWithEmailAndPasswordExistTestData), typeof(AccountServiceTestsDataProvider))]
-    public void TryLogIn_AccountWithEmailAndPasswordExistInDatabase_AccountModel(List<Account> dbAccounts, Account expectedAccountFromDb, string password)
+    public async Task TryLogInAsync_AccountWithEmailAndPasswordExistInDatabase_AccountModel(List<Account> dbAccounts, Account expectedAccountFromDb, string password)
     {
         AccountModel accountModel = new()
         {
@@ -218,14 +218,14 @@ public class AccountServiceTests
             .Returns(dbAccounts);
         A.CallTo(() => _mapper.Map<AccountModel>(expectedAccountFromDb)).Returns(accountModel);
 
-        var result = _service.TryLogIn(expectedAccountFromDb.Email, password);
+        var result = await _service.TryLogInAsync(expectedAccountFromDb.Email, password);
 
         Assert.AreEqual(accountModel, result);
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInAccountWithEmailAndPasswordNotExistTestData), typeof(AccountServiceTestsDataProvider))]
-    public void TryLogIn_AccountWithEmailAndPasswordNotExistInDatabase_AccountModel(List<Account> dbAccounts, string email, string password)
+    public async Task TryLogIn_AccountWithEmailAndPasswordNotExistInDatabase_AccountModel(List<Account> dbAccounts, string email, string password)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
@@ -235,7 +235,7 @@ public class AccountServiceTests
             .Returns(dbAccounts);
         A.CallTo(() => _mapper.Map<AccountModel>(null)).Returns(null);
 
-        var result = _service.TryLogIn(email, password);
+        var result = await _service.TryLogInAsync(email, password);
 
         Assert.IsNull(result);
     }
@@ -256,7 +256,7 @@ public class AccountServiceTests
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.CanTakeThisEmailReturnTrueTestData), typeof(AccountServiceTestsDataProvider))]
-    public void CanTakeThisEmail_EmailIsValidAndNotExistInDatabase_True(List<Account> accounts, string email)
+    public async Task CanTakeThisEmailAsync_EmailIsValidAndNotExistInDatabase_True(List<Account> accounts, string email)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
@@ -265,19 +265,19 @@ public class AccountServiceTests
             A<string[]>._))
             .Returns(accounts);
 
-        Assert.IsTrue(_service.CanTakeThisEmail(email));
+        Assert.IsTrue(await _service.CanTakeThisEmailAsync(email));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.IsItEmailReturnFalseTestData), typeof(AccountServiceTestsDataProvider))]
-    public void CanTakeThisEmail_EmailIsNotValid_ThrowsFormatException(string email)
+    public void CanTakeThisEmailAsync_EmailIsNotValid_ThrowsFormatException(string email)
     {
-        Assert.ThrowsException<FormatException>(() => _service.CanTakeThisEmail(email));
+        Assert.ThrowsExceptionAsync<FormatException>(() => _service.CanTakeThisEmailAsync(email));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.CanTakeThisEmailThrowsArgumentExceptionTestData), typeof(AccountServiceTestsDataProvider))]
-    public void CanTakeThisEmail_EmailExistInDatabase_ThrowsArgumentException(List<Account> accounts, string email)
+    public void CanTakeThisEmailAsync_EmailExistInDatabase_ThrowsArgumentException(List<Account> accounts, string email)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
@@ -286,6 +286,6 @@ public class AccountServiceTests
             A<string[]>._))
             .Returns(accounts);
 
-        Assert.ThrowsException<ArgumentException>(() => _service.CanTakeThisEmail(email));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.CanTakeThisEmailAsync(email));
     }
 }

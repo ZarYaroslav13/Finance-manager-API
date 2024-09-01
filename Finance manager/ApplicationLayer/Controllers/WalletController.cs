@@ -18,63 +18,63 @@ public class WalletController : BaseController
     }
 
     [HttpGet("GetWalletsOfAccount")]
-    public List<WalletDTO> GetWallets()
+    public async Task<List<WalletDTO>> GetWallets()
     {
-        return _service.GetAllWalletsOfAccount(GetUserId())
+        return (await _service.GetAllWalletsOfAccountAsync(GetUserId()))
                 .Select(_mapper.Map<WalletDTO>)
                 .ToList();
     }
 
     [HttpPost("CreateNewWallet")]
-    public WalletDTO Create(WalletDTO wallet)
+    public async Task<WalletDTO> CreateAsync(WalletDTO wallet)
     {
         wallet.AccountId = GetUserId();
 
         return _mapper.Map<WalletDTO>(
-                _service.AddWallet(
+                await _service.AddWalletAsync(
                     _mapper.Map<WalletModel>(wallet)));
     }
 
     [HttpPut("UpdateWallet")]
-    public WalletDTO Update(WalletDTO wallet)
+    public async Task<WalletDTO> UpdateAsync(WalletDTO wallet)
     {
         if (wallet.AccountId != GetUserId())
             throw new UnauthorizedAccessException(nameof(wallet.AccountId));
 
         return _mapper.Map<WalletDTO>(
-                _service.UpdateWallet(
+                await _service.UpdateWalletAsync(
                     _mapper.Map<WalletModel>(wallet)));
     }
 
     [HttpDelete("DeleteWallet{id}")]
-    public void Delete(int id)
+    public async Task DeleteAsync(int id)
     {
-        if (!_service.IsAccountOwnerWallet(GetUserId(), id))
+        if (!(await _service.IsAccountOwnerWalletAsync(GetUserId(), id)))
             throw new UnauthorizedAccessException(nameof(id));
 
-        _service.DeleteWalletById(id);
+        await _service.DeleteWalletByIdAsync(id);
     }
 
     [HttpGet("GetWalletOfAccount/{id}")]
-    public WalletDTO GetById(int id)
+    public async Task<WalletDTO> GetByIdAsync(int id)
     {
         return _mapper.Map<WalletDTO>(
-                _service.FindWallet(id));
+                await _service.FindWalletAsync(id));
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpGet("Admin/GetWalletsOfAccount/{accountId}")]
-    public List<WalletDTO> GetWalletsOfAccount(int accountId)
+    public async Task<List<WalletDTO>> GetWalletsOfAccountAsync(int accountId)
     {
-        return _service.GetAllWalletsOfAccount(accountId)
+        return (await _service.GetAllWalletsOfAccountAsync(accountId))
                 .Select(_mapper.Map<WalletDTO>)
                 .ToList();
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpDelete("Admin/DeleteWallet/{id}")]
-    public void DeleteWalletOfAccount(int id)
+    public async Task DeleteWalletOfAccountAsync(int id)
     {
-        _service.DeleteWalletById(id);
+        await _service.DeleteWalletByIdAsync(id);
     }
 }

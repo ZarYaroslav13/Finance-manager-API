@@ -19,15 +19,15 @@ public class FinanceService : BaseService, IFinanceService
 
     #region FinanceOperationTypeMethods
 
-    public List<FinanceOperationTypeModel> GetAllFinanceOperationTypesOfWallet(int walletId)
+    public async Task<List<FinanceOperationTypeModel>> GetAllFinanceOperationTypesOfWalletAsync(int walletId)
     {
-        return _financeOperationTypeRepository
-                .GetAllAsync(filter: fot => fot.WalletId == walletId)
+        return (await _financeOperationTypeRepository
+                .GetAllAsync(filter: fot => fot.WalletId == walletId))
                 .Select(_mapper.Map<FinanceOperationTypeModel>)
                 .ToList();
     }
 
-    public FinanceOperationTypeModel AddFinanceOperationType(FinanceOperationTypeModel type)
+    public async Task<FinanceOperationTypeModel> AddFinanceOperationTypeAsync(FinanceOperationTypeModel type)
     {
         ArgumentNullException.ThrowIfNull(type);
 
@@ -37,12 +37,12 @@ public class FinanceService : BaseService, IFinanceService
         var result = _mapper.Map<FinanceOperationTypeModel>(
                          _financeOperationTypeRepository.Insert(
                              _mapper.Map<FinanceOperationType>(type)));
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
 
         return result;
     }
 
-    public FinanceOperationTypeModel UpdateFinanceOperationType(FinanceOperationTypeModel type)
+    public async Task<FinanceOperationTypeModel> UpdateFinanceOperationTypeAsync(FinanceOperationTypeModel type)
     {
         ArgumentNullException.ThrowIfNull(type);
 
@@ -50,32 +50,32 @@ public class FinanceService : BaseService, IFinanceService
             throw new ArgumentException(nameof(type));
 
         var result = _mapper.Map<FinanceOperationTypeModel>(
-                         _financeOperationTypeRepository.Update(
-                            _mapper.Map<FinanceOperationType>(type)));
-        _unitOfWork.SaveChanges();
+                         (await _financeOperationTypeRepository.UpdateAsync(
+                            _mapper.Map<FinanceOperationType>(type))));
+        await _unitOfWork.SaveChangesAsync();
 
         return result;
     }
 
-    public void DeleteFinanceOperationType(int id)
+    public async Task DeleteFinanceOperationTypeAsync(int id)
     {
-        if (_financeOperationRepository.GetAllAsync(
+        if ((await _financeOperationRepository.GetAllAsync(
                 includeProperties: nameof(FinanceOperation.Type),
-                filter: fo => fo.Type.Id == id)
+                filter: fo => fo.Type.Id == id))
             .Any())
         {
             throw new InvalidOperationException();
         }
 
         _financeOperationTypeRepository.Delete(id);
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
     }
 
     #endregion
 
     #region FinanceOperationMethods
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, int index = 0, int count = 0)
+    public async Task<List<FinanceOperationModel>> GetAllFinanceOperationOfWalletAsync(int walletId, int index = 0, int count = 0)
     {
         if (walletId <= 0)
             throw new ArgumentOutOfRangeException(nameof(walletId));
@@ -86,48 +86,48 @@ public class FinanceService : BaseService, IFinanceService
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
 
-        List<FinanceOperationModel> result = _financeOperationRepository
+        List<FinanceOperationModel> result = (await _financeOperationRepository
                 .GetAllAsync(
                    includeProperties: nameof(FinanceOperation.Type),
                     filter: fo => fo.Type.WalletId == walletId,
                     orderBy: iQ => iQ.OrderBy(fo => fo.Date),
                     skip: count,
-                    take: index)
+                    take: index))
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
 
         return result;
     }
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfWallet(int walletId, DateTime startDate, DateTime endDate)
+    public async Task<List<FinanceOperationModel>> GetAllFinanceOperationOfWalletAsync(int walletId, DateTime startDate, DateTime endDate)
     {
         if (walletId <= 0)
             throw new ArgumentException(nameof(walletId));
 
         ArgumentOutOfRangeException.ThrowIfGreaterThan(startDate, endDate);
 
-        List<FinanceOperationModel> result = _financeOperationRepository
+        List<FinanceOperationModel> result = (await _financeOperationRepository
                 .GetAllAsync(
                 includeProperties: nameof(FinanceOperation.Type),
                 filter: fo =>
                        fo.Type.WalletId == walletId
                     && fo.Date <= endDate
-                    && fo.Date >= startDate)
+                    && fo.Date >= startDate))
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
 
         return result;
     }
 
-    public List<FinanceOperationModel> GetAllFinanceOperationOfType(int TypeId)
+    public async Task<List<FinanceOperationModel>> GetAllFinanceOperationOfTypeAsync(int TypeId)
     {
-        return _financeOperationRepository
-                .GetAllAsync(filter: fo => fo.TypeId == TypeId)
+        return (await _financeOperationRepository
+                .GetAllAsync(filter: fo => fo.TypeId == TypeId))
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
     }
 
-    public FinanceOperationModel AddFinanceOperation(FinanceOperationModel financeOperation)
+    public async Task<FinanceOperationModel> AddFinanceOperationAsync(FinanceOperationModel financeOperation)
     {
         ArgumentNullException.ThrowIfNull(financeOperation);
 
@@ -136,17 +136,18 @@ public class FinanceService : BaseService, IFinanceService
 
         var financeOperationForDb = _mapper.Map<FinanceOperation>(financeOperation);
 
-        if (_financeOperationRepository.GetAllAsync(filter: fo => fo == financeOperationForDb).Any())
+        if ((await _financeOperationRepository.GetAllAsync(filter: fo => fo == financeOperationForDb))
+                .Any())
             throw new InvalidOperationException();
 
         var result = _mapper.Map<FinanceOperationModel>(
                         _financeOperationRepository.Insert(financeOperationForDb));
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
 
         return result;
     }
 
-    public FinanceOperationModel UpdateFinanceOperation(FinanceOperationModel financeOperation)
+    public async Task<FinanceOperationModel> UpdateFinanceOperationAsync(FinanceOperationModel financeOperation)
     {
         ArgumentNullException.ThrowIfNull(financeOperation);
 
@@ -154,17 +155,17 @@ public class FinanceService : BaseService, IFinanceService
             throw new ArgumentException(nameof(financeOperation));
 
         var result = _mapper.Map<FinanceOperationModel>(
-                        _financeOperationRepository.Update(
+                        await _financeOperationRepository.UpdateAsync(
                             _mapper.Map<FinanceOperation>(financeOperation)));
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
 
         return result;
     }
 
-    public void DeleteFinanceOperation(int id)
+    public async Task DeleteFinanceOperationAsync(int id)
     {
         _financeOperationRepository.Delete(id);
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
     }
     #endregion
 }

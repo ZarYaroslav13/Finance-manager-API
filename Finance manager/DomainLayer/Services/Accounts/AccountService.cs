@@ -24,7 +24,7 @@ public class AccountService : BaseService, IAccountService
         _repository = _unitOfWork.GetRepository<Account>();
     }
 
-    public List<AccountModel> GetAccounts(string adminEmail, int skip = 0, int take = 0)
+    public async Task<List<AccountModel>> GetAccountsAsync(string adminEmail, int skip = 0, int take = 0)
     {
         if (!_adminService.IsItAdmin(adminEmail))
             throw new UnauthorizedAccessException();
@@ -32,19 +32,20 @@ public class AccountService : BaseService, IAccountService
         if (skip < 0 || take < 0)
             throw new ArgumentException("skip and take arguments cannot be less 0");
 
-        return _repository.GetAllAsync(skip: skip, take: take)
-                .Select(_mapper.Map<AccountModel>)
+        var accounts = await _repository.GetAllAsync(skip: skip, take: take);
+
+        return accounts.Select(_mapper.Map<AccountModel>)
                 .ToList();
     }
 
-    public AccountModel AddAccount(AccountModel account)
+    public async Task<AccountModel> AddAccountAsync(AccountModel account)
     {
         ArgumentNullException.ThrowIfNull(account);
 
         if (account.Id != 0)
             throw new ArgumentException(nameof(account));
 
-        CanTakeThisEmail(account.Email);
+        await CanTakeThisEmailAsync(account.Email);
 
         account.Password = _passwordCoder.ComputeSHA256Hash(account.Password);
 
@@ -52,24 +53,25 @@ public class AccountService : BaseService, IAccountService
             .Map<AccountModel>(
                 _repository
                     .Insert(_mapper.Map<Account>(account)));
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
 
         return result;
     }
 
-    public AccountModel UpdateAccount(AccountModel updatedAccount)
+    public async Task<AccountModel> UpdateAccountAsync(AccountModel updatedAccount)
     {
         ArgumentNullException.ThrowIfNull(updatedAccount);
 
         if (updatedAccount.Id == 0)
             throw new ArgumentException(nameof(updatedAccount));
 
-        CanTakeThisEmail(updatedAccount.Email);
+        await CanTakeThisEmailAsync(updatedAccount.Email);
 
-        var result = _mapper
-            .Map<AccountModel>(
-                _repository.Update(_mapper.Map<Account>(updatedAccount)));
-        _unitOfWork.SaveChanges();
+        var repoResult = await _repository.UpdateAsync(
+                _mapper.Map<Account>(updatedAccount));
+
+        var result = _mapper.Map<AccountModel>(repoResult);
+        await _unitOfWork.SaveChangesAsync();
 
         return result;
     }
@@ -78,22 +80,22 @@ public class AccountService : BaseService, IAccountService
     {
         _repository.Delete(id);
 
-        _unitOfWork.SaveChanges();
+        _unitOfWork.SaveChangesAsync();
     }
 
-    public AccountModel TryLogIn(string email, string password)
+    public async Task<AccountModel> TryLogInAsync(string email, string password)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(password);
 
         string encodedPassword = _passwordCoder.ComputeSHA256Hash(password);
 
-        var result = _mapper.Map<AccountModel>(
-           _repository
-               .GetAllAsync()
-               .FirstOrDefault(a =>
-                       a.Email == email
-                       && a.Password == encodedPassword)); ;
+        var account = (await _repository.GetAllAsync())
+                .FirstOrDefault(a =>
+                    a.Email == email
+                    && a.Password == encodedPassword);
+
+        var result = _mapper.Map<AccountModel>(account); ;
 
         return result;
     }
@@ -112,14 +114,16 @@ public class AccountService : BaseService, IAccountService
         }
     }
 
-    public bool CanTakeThisEmail(string emailAddress)
+    public async Task<bool> CanTakeThisEmailAsync(string emailAddress)
     {
         if (!IsItEmail(emailAddress))
         {
             throw new FormatException("Email format is incorrect!");
         }
 
-        if (_repository.GetAllAsync().Any(a => a.Email == emailAddress))
+        var async = await _repository.GetAllAsync();
+
+        if (async.Any(a => a.Email == emailAddress))
         {
             throw new ArgumentException("An account with this email already exist!");
         }

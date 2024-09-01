@@ -41,7 +41,7 @@ public class FinanceServiceTests
     #region FinanceOperationTypeTests
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationTypesOfWalletTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void GetAllFinanceOperationTypesOfWallet_ReceivedExpectedNumberFinanceOperationTypes_FinanceOperationTypesList(List<FinanceOperationType> financeOperationTypes, int walletId)
+    public async Task GetAllFinanceOperationTypesOfWalletAsync_ReceivedExpectedNumberFinanceOperationTypes_FinanceOperationTypesList(List<FinanceOperationType> financeOperationTypes, int walletId)
     {
         A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(
             A<Func<IQueryable<FinanceOperationType>,
@@ -53,7 +53,7 @@ public class FinanceServiceTests
             .Returns(financeOperationTypes);
 
 
-        var result = _service.GetAllFinanceOperationTypesOfWallet(walletId);
+        var result = await _service.GetAllFinanceOperationTypesOfWalletAsync(walletId);
 
 
         A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(
@@ -72,56 +72,56 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    public void AddFinanceOperationType_InstanceIdNotEqualZero_ThrowsExeption()
+    public void AddFinanceOperationTypeAsync_InstanceIdNotEqualZero_ThrowsExeption()
     {
         FinanceOperationTypeModel type = new() { Id = 1 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.AddFinanceOperationType(type));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.AddFinanceOperationTypeAsync(type));
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.AddFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void AddFinanceOperationType_ServiceInvokeMethodInsertByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
+    public async Task AddFinanceOperationTypeAsync_ServiceInvokeMethodInsertByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
         A.CallTo(() => _financeOperationTypesRepository.Insert(typeForRepository)).Returns(typeForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationTypeModel>(typeForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddFinanceOperationType(modelForAdding);
+        var result = await _service.AddFinanceOperationTypeAsync(modelForAdding);
 
         A.CallTo(() => _financeOperationTypesRepository.Insert(typeForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
     }
 
     [TestMethod]
-    public void UpdateFinanceOperationType_InstanceIdEqualZero_ThrowsExeption()
+    public void UpdateFinanceOperationTypeAsync_InstanceIdEqualZero_ThrowsExeption()
     {
         FinanceOperationTypeModel type = new() { Id = 0 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.UpdateFinanceOperationType(type));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.UpdateFinanceOperationTypeAsync(type));
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.UpdateFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void UpdateFinanceOperationType_ServiceInvokeMethodUpdateByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
+    public async Task UpdateFinanceOperationTypeAsync_ServiceInvokeMethodUpdateByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
-        A.CallTo(() => _financeOperationTypesRepository.Update(typeForRepository)).Returns(typeForRepository);
+        A.CallTo(() => _financeOperationTypesRepository.UpdateAsync(typeForRepository)).Returns(typeForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationTypeModel>(typeForRepository)).Returns(modelForAdding);
 
-        var result = _service.UpdateFinanceOperationType(modelForAdding);
+        var result = await _service.UpdateFinanceOperationTypeAsync(modelForAdding);
 
-        A.CallTo(() => _financeOperationTypesRepository.Update(typeForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationTypesRepository.UpdateAsync(typeForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.DeleteFinanceOperationTypeTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void DeleteFinanceOperationType_SomeFinanceOperationsHaveReferenceToType_ThrowsException(int typeId, List<FinanceOperation> financeOperations)
+    public void DeleteFinanceOperationTypeAsync_SomeFinanceOperationsHaveReferenceToType_ThrowsException(int typeId, List<FinanceOperation> financeOperations)
     {
         A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                            A<Expression<Func<FinanceOperation, bool>>>._,
@@ -129,18 +129,18 @@ public class FinanceServiceTests
                                            A<string[]>._))
        .Returns(financeOperations);
 
-        Assert.ThrowsException<InvalidOperationException>(() => _service.DeleteFinanceOperationType(typeId));
+        Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _service.DeleteFinanceOperationTypeAsync(typeId));
     }
 
     [TestMethod]
-    public void DeleteFinanceOperationType_ServiceInvokeMethodDeleteTypeByRepository_Void()
+    public async Task DeleteFinanceOperationTypeAsync_ServiceInvokeMethodDeleteTypeByRepository_Void()
     {
         const int idFinanceOperationTypeForDelete = 2;
 
-        _service.DeleteFinanceOperationType(idFinanceOperationTypeForDelete);
+        await _service.DeleteFinanceOperationTypeAsync(idFinanceOperationTypeForDelete);
 
         A.CallTo(() => _financeOperationTypesRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
     }
     #endregion
 
@@ -150,14 +150,14 @@ public class FinanceServiceTests
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationOfWalletArgumentsAreLessThenZeroTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void GetAllFinanceOperationOfWallet_ArgumentsAreLessThenZero_ThrowsArgumentException(int walletId, int count, int index)
+    public void GetAllFinanceOperationOfWalletAsync_ArgumentsAreLessThenZero_ThrowsArgumentException(int walletId, int count, int index)
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => _service.GetAllFinanceOperationOfWallet(walletId, count, index));
+        Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _service.GetAllFinanceOperationOfWalletAsync(walletId, count, index));
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationOfWalletWithCountAndIndexTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void GetAllFinanceOperationOfWallet_WithCountAndIndex_GetAllWasInvokedAndReceivedExpectedList_ListFinanceOperationModels(List<FinanceOperation> operations, int walletId, int index, int count)
+    public async Task GetAllFinanceOperationOfWalletAsync_WithCountAndIndex_GetAllWasInvokedAndReceivedExpectedList_ListFinanceOperationModels(List<FinanceOperation> operations, int walletId, int index, int count)
     {
         A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
@@ -165,7 +165,7 @@ public class FinanceServiceTests
                                                              index, count,
                                                             A<string[]>._)).Returns(operations);
 
-        var result = _service.GetAllFinanceOperationOfWallet(walletId, count, index);
+        var result = await _service.GetAllFinanceOperationOfWalletAsync(walletId, count, index);
 
         A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
@@ -181,21 +181,19 @@ public class FinanceServiceTests
     #region Tests for GetAllFinanceOperationOfWallet(int walletId, DateTime startDate, DateTime endDate)
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void GetAllFinanceOperationOfWallet_DateRange_WalletIdIsLessThanOrEqualToZero_ThrowsArgumentException()
+    public void GetAllFinanceOperationOfWalletAsync_DateRange_WalletIdIsLessThanOrEqualToZero_ThrowsArgumentException()
     {
-        _service.GetAllFinanceOperationOfWallet(0, DateTime.Now.AddDays(-1), DateTime.Now);
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.GetAllFinanceOperationOfWalletAsync(0, DateTime.Now.AddDays(-1), DateTime.Now));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentOutOfRangeException))]
-    public void GetAllFinanceOperationOfWallet_DateRange_StartDateIsGreaterThanEndDate_ThrowsArgumentOutOfRangeException()
+    public void GetAllFinanceOperationOfWalletAsync_DateRange_StartDateIsGreaterThanEndDate_ThrowsArgumentOutOfRangeException()
     {
-        _service.GetAllFinanceOperationOfWallet(1, DateTime.Now, DateTime.Now.AddDays(-1));
+        Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _service.GetAllFinanceOperationOfWalletAsync(1, DateTime.Now, DateTime.Now.AddDays(-1)));
     }
 
     [TestMethod]
-    public void GetAllFinanceOperationOfWallet_DateRange_ReturnsOperationsWithinRange()
+    public async Task GetAllFinanceOperationOfWalletAsync_DateRange_ReturnsOperationsWithinRange()
     {
         var financeOperations = new List<FinanceOperation>
         {
@@ -222,7 +220,7 @@ public class FinanceServiceTests
 
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(A<FinanceOperation>._)).Returns(new IncomeModel(new() { EntryType = EntryType.Income }));
 
-        var result = _service.GetAllFinanceOperationOfWallet(walletId, startDate, endDate);
+        var result = await _service.GetAllFinanceOperationOfWalletAsync(walletId, startDate, endDate);
 
         Assert.AreEqual(financeOperations.Count, result.Count);
     }
@@ -231,7 +229,7 @@ public class FinanceServiceTests
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationsOfTypeTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void GetAllFinanceOperationOfType_ReceivedExpectedNumberFinanceOperations_FinanceOperationsList(List<FinanceOperation> financeOperations, int typeId)
+    public async Task GetAllFinanceOperationOfTypeAsync_ReceivedExpectedNumberFinanceOperations_FinanceOperationsList(List<FinanceOperation> financeOperations, int typeId)
     {
         A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
                                                             A<Expression<Func<FinanceOperation, bool>>>.That.Matches(filter =>
@@ -241,7 +239,7 @@ public class FinanceServiceTests
             .Returns(financeOperations);
 
 
-        var result = _service.GetAllFinanceOperationOfType(typeId);
+        var result = await _service.GetAllFinanceOperationOfTypeAsync(typeId);
 
 
         A.CallTo(() => _financeOperationsRepository.GetAllAsync(A<Func<IQueryable<FinanceOperation>, IOrderedQueryable<FinanceOperation>>>._,
@@ -258,62 +256,62 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    public void AddFinanceOperation_InstanceIdNotEqualZero_ThrowsExeption()
+    public void AddFinanceOperationAsync_InstanceIdNotEqualZero_ThrowsExeption()
     {
         IncomeModel operation = new(new()) { Id = 1 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.AddFinanceOperation(operation));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.AddFinanceOperationAsync(operation));
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.AddFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void AddFinanceOperation_ServiceInvokeMethodInsertByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
+    public async Task AddFinanceOperationAsync_ServiceInvokeMethodInsertByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperation>(modelForAdding)).Returns(financeOperationForRepository);
         A.CallTo(() => _financeOperationsRepository.Insert(financeOperationForRepository)).Returns(financeOperationForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(financeOperationForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddFinanceOperation(modelForAdding);
+        var result = await _service.AddFinanceOperationAsync(modelForAdding);
 
         A.CallTo(() => _financeOperationsRepository.Insert(financeOperationForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
     }
 
     [TestMethod]
-    public void UpdateFinanceOperation_InstanceIdEqualZero_ThrowsExeption()
+    public void UpdateFinanceOperationAsync_InstanceIdEqualZero_ThrowsExeption()
     {
         IncomeModel operation = new(new()) { Id = 0 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.UpdateFinanceOperation(operation));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.UpdateFinanceOperationAsync(operation));
     }
 
     [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.UpdateFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
-    public void UpdateFinanceOperation_ServiceInvokeMethodUpdateByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
+    public async Task UpdateFinanceOperationAsync_ServiceInvokeMethodUpdateByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperation>(modelForAdding)).Returns(financeOperationForRepository);
-        A.CallTo(() => _financeOperationsRepository.Update(financeOperationForRepository)).Returns(financeOperationForRepository);
+        A.CallTo(() => _financeOperationsRepository.UpdateAsync(financeOperationForRepository)).Returns(financeOperationForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(financeOperationForRepository)).Returns(modelForAdding);
 
-        var result = _service.UpdateFinanceOperation(modelForAdding);
+        var result = await _service.UpdateFinanceOperationAsync(modelForAdding);
 
-        A.CallTo(() => _financeOperationsRepository.Update(financeOperationForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationsRepository.UpdateAsync(financeOperationForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
     }
 
     [TestMethod]
-    public void DeleteFinanceOperation_ServiceInvokeMethodDeleteByRepository_Void()
+    public async Task DeleteFinanceOperationAsync_ServiceInvokeMethodDeleteByRepository_Void()
     {
         const int idFinanceOperationTypeForDelete = 2;
 
-        _service.DeleteFinanceOperation(idFinanceOperationTypeForDelete);
+        await _service.DeleteFinanceOperationAsync(idFinanceOperationTypeForDelete);
 
         A.CallTo(() => _financeOperationsRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
     }
     #endregion
 }

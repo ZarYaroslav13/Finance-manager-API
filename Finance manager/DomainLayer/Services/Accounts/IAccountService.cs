@@ -4,17 +4,17 @@ namespace DomainLayer.Services.Accounts;
 
 public interface IAccountService
 {
-    public List<AccountModel> GetAccounts(string adminEmail, int skip = 0, int take = 0);
+    public Task<List<AccountModel>> GetAccountsAsync(string adminEmail, int skip = 0, int take = 0);
 
-    public AccountModel AddAccount(AccountModel account);
+    public Task<AccountModel> AddAccountAsync(AccountModel account);
 
-    public AccountModel UpdateAccount(AccountModel updatedAccount);
+    public Task<AccountModel> UpdateAccountAsync(AccountModel updatedAccount);
 
     public void DeleteAccountWithId(int id);
 
-    public AccountModel TryLogIn(string email, string password);
+    public Task<AccountModel> TryLogInAsync(string email, string password);
 
     public bool IsItEmail(string emailAddress);
 
-    public bool CanTakeThisEmail(string emailAddress);
+    public Task<bool> CanTakeThisEmailAsync(string emailAddress);
 }

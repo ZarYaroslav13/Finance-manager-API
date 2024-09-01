@@ -31,7 +31,7 @@ public class WalletServiceTests
 
     [TestMethod]
     [DynamicData(nameof(WalletServiceTestsDataProvider.GetAllWalletsOfAccountTestData), typeof(WalletServiceTestsDataProvider))]
-    public void GetAllWalletsOfAccount_ReceivedExpectedNumberWallets_WalletModelList(List<Wallet> wallets, int accountId)
+    public async Task GetAllWalletsOfAccountAsync_ReceivedExpectedNumberWallets_WalletModelList(List<Wallet> wallets, int accountId)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
@@ -41,7 +41,7 @@ public class WalletServiceTests
             A<string[]>._))
             .Returns(wallets);
 
-        var result = _service.GetAllWalletsOfAccount(accountId);
+        var result = await _service.GetAllWalletsOfAccountAsync(accountId);
 
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
@@ -58,76 +58,76 @@ public class WalletServiceTests
     }
 
     [TestMethod]
-    public void AddWallet_InstanceIdNotEqualZero_ThrowsException()
+    public void AddWalletAsync_InstanceIdNotEqualZero_ThrowsException()
     {
         WalletModel wallet = new() { Id = 1 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.AddWallet(wallet));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.AddWalletAsync(wallet));
     }
 
     [TestMethod]
     [DynamicData(nameof(WalletServiceTestsDataProvider.AddWalletTestData), typeof(WalletServiceTestsDataProvider))]
-    public void AddWallet_ServiceInvokeMethodInsertByRepository_WalletModel(WalletModel modelForAdding, Wallet walletForRepository)
+    public async Task AddWalletAsync_ServiceInvokeMethodInsertByRepository_WalletModel(WalletModel modelForAdding, Wallet walletForRepository)
     {
         A.CallTo(() => _mapper.Map<Wallet>(modelForAdding)).Returns(walletForRepository);
         A.CallTo(() => _repository.Insert(walletForRepository)).Returns(walletForRepository);
         A.CallTo(() => _mapper.Map<WalletModel>(walletForRepository)).Returns(modelForAdding);
 
-        var result = _service.AddWallet(modelForAdding);
+        var result = await _service.AddWalletAsync(modelForAdding);
 
         A.CallTo(() => _repository.Insert(walletForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
     }
 
     [TestMethod]
-    public void UpdateWallet_InstanceIdEqualZero_ThrowsException()
+    public void UpdateWalletAsync_InstanceIdEqualZero_ThrowsException()
     {
         WalletModel wallet = new() { Id = 0 };
 
-        Assert.ThrowsException<ArgumentException>(() => _service.UpdateWallet(wallet));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.UpdateWalletAsync(wallet));
     }
 
     [TestMethod]
     [DynamicData(nameof(WalletServiceTestsDataProvider.UpdateWalletTestData), typeof(WalletServiceTestsDataProvider))]
-    public void UpdateWallet_ServiceInvokeMethodUpdateByRepository_WalletModel(WalletModel modelForUpdate, Wallet walletForRepository)
+    public async Task UpdateWalletAsync_ServiceInvokeMethodUpdateByRepository_WalletModel(WalletModel modelForUpdate, Wallet walletForRepository)
     {
         A.CallTo(() => _mapper.Map<Wallet>(modelForUpdate)).Returns(walletForRepository);
-        A.CallTo(() => _repository.Update(walletForRepository)).Returns(walletForRepository);
+        A.CallTo(() => _repository.UpdateAsync(walletForRepository)).Returns(walletForRepository);
         A.CallTo(() => _mapper.Map<WalletModel>(walletForRepository)).Returns(modelForUpdate);
 
-        var result = _service.UpdateWallet(modelForUpdate);
+        var result = await _service.UpdateWalletAsync(modelForUpdate);
 
-        A.CallTo(() => _repository.Update(walletForRepository)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _repository.UpdateAsync(walletForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForUpdate, result);
     }
 
     [TestMethod]
-    public void DeleteWalletWithId_ServiceInvokeMethodDeleteByRepository_Void()
+    public async Task DeleteWalletWithIdAsync_ServiceInvokeMethodDeleteByRepository_Void()
     {
         const int idWalletForDelete = 2;
 
-        _service.DeleteWalletById(idWalletForDelete);
+        await _service.DeleteWalletByIdAsync(idWalletForDelete);
 
         A.CallTo(() => _repository.Delete(idWalletForDelete)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _unitOfWork.SaveChanges()).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
     }
 
     [TestMethod]
-    public void FindWallet_ServiceInvokeMethodGetByIdByRepository_WalletModel()
+    public async Task FindWalletAsync_ServiceInvokeMethodGetByIdByRepository_WalletModel()
     {
         const int idWalletForSearch = 2;
 
         Wallet wallet = new();
 
-        A.CallTo(() => _repository.GetById(idWalletForSearch)).Returns(wallet);
+        A.CallTo(() => _repository.GetByIdAsync(idWalletForSearch)).Returns(wallet);
 
-        _service.FindWallet(idWalletForSearch);
+        await _service.FindWalletAsync(idWalletForSearch);
 
-        A.CallTo(() => _repository.GetById(idWalletForSearch)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _repository.GetByIdAsync(idWalletForSearch)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _mapper.Map<WalletModel>(wallet)).MustHaveHappenedOnceExactly();
     }
 }
