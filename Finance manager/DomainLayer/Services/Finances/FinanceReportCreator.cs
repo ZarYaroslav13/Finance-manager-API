@@ -1,7 +1,6 @@
 ﻿using DomainLayer.Models;
-using DomainLayer.Services.Finances;
 
-namespace DomainLayer;
+namespace DomainLayer.Services.Finances;
 
 public class FinanceReportCreator
 {
@@ -27,8 +26,8 @@ public class FinanceReportCreator
         return report;
     }
 
-    public Task<FinanceReportModel> CreateFinanceReportAsync(WalletModel wallet, DateTime day)
+    public async Task<FinanceReportModel> CreateFinanceReportAsync(WalletModel wallet, DateTime day)
     {
-        return CreateFinanceReportAsync(wallet, day, day);
+        return await CreateFinanceReportAsync(wallet, day, day);
     }
 }
