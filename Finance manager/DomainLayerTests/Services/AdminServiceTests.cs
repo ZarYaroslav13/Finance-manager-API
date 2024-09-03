@@ -1,12 +1,6 @@
 ﻿using DataLayer;
-using DataLayer.Models;
 using DomainLayer.Services.Admins;
 using DomainLayerTests.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DomainLayerTests.Services;
 
@@ -28,7 +22,7 @@ public class AdminServiceTests
         var adminEmail = FillerBbData.Accounts[5].Email; // Using the email of the admin
 
         var result = _service.IsItAdmin(adminEmail);
-        
+
         Assert.IsTrue(result);
     }
 

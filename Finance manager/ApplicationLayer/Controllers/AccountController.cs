@@ -6,7 +6,6 @@ using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace ApplicationLayer.Controllers;
 
@@ -25,7 +24,7 @@ public class AccountController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> LogInAsync(string email, string password)
     {
-        var identity = await GetIdentityAsync(email, password);
+        var identity = await _tokenManager.GetIdentityAsync(email, password);
 
         if (identity == null)
         {
@@ -96,24 +95,5 @@ public class AccountController : BaseController
     public void DeleteById(int id)
     {
         _accountService.DeleteAccountWithId(id);
-    }
-
-    private async Task<ClaimsIdentity> GetIdentityAsync(string email, string password)
-    {
-        AccountDTO account = _mapper.Map<AccountDTO>((await _accountService.TryLogInAsync(email, password)));
-
-        if (account == null)
-            return null;
-
-        var claims = new List<Claim>()
-        {
-            new(nameof(AccountDTO.Id), account.Id.ToString()),
-            new(ClaimsIdentity.DefaultNameClaimType, account.Email),
-        };
-
-        ClaimsIdentity identity = new(claims, "Token",
-            ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-
-        return identity;
     }
 }

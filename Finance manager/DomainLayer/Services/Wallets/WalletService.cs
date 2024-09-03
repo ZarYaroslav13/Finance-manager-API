@@ -74,8 +74,8 @@ public class WalletService : BaseService, IWalletService
         if (acoountId <= 0 || walletId <= 0)
             throw new ArgumentOutOfRangeException("account id and wallet id cannot be less or equal 0");
 
-        return (await _repository.GetAllAsync( 
-                filter: 
+        return (await _repository.GetAllAsync(
+                filter:
                     w => w.Id == walletId && w.AccountId == acoountId)) == null;
     }
 }

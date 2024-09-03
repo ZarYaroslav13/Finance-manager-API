@@ -20,7 +20,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
         const string connectionString = "DbConnection";
         var services = builder.Services;
         var configuration = builder.Configuration as IConfiguration;
-        
+
         services.AddDbContext<AppDbContext>(option =>
             option.
                 UseSqlServer(
