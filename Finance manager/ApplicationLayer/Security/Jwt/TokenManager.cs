@@ -9,8 +9,8 @@ namespace ApplicationLayer.Security.Jwt;
 
 public class TokenManager : ITokenManager
 {
-    private readonly IMapper _mapper;
     private readonly IAccountService _accountService;
+    private readonly IMapper _mapper;
 
     public TokenManager(IAccountService accountService, IMapper mapper)
     {

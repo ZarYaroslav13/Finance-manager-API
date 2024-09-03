@@ -44,7 +44,7 @@ public class AccountController : BaseController
 
     [HttpPost("Create")]
     [AllowAnonymous]
-    public async Task<ActionResult<AccountDTO>> CreateAsync(AccountDTO account)
+    public async Task<ActionResult<AccountDTO>> CreateAsync([FromBody] AccountDTO account)
     {
         var newAccount = _mapper.Map<AccountDTO>(
                    await _accountService.AddAccountAsync(
@@ -54,7 +54,7 @@ public class AccountController : BaseController
     }
 
     [HttpPut("Update")]
-    public async Task<AccountDTO> UpdateAsync(AccountDTO account)
+    public async Task<AccountDTO> UpdateAsync([FromBody] AccountDTO account)
     {
         int id = GetUserId();
 
@@ -83,7 +83,7 @@ public class AccountController : BaseController
 
     [Authorize(Policy = _adminPolicy)]
     [HttpPut("Admin/UpdateAccount")]
-    public async Task<AccountDTO> AdminUpdateAccountAsync(AccountDTO account)
+    public async Task<AccountDTO> AdminUpdateAccountAsync([FromBody] AccountDTO account)
     {
         return _mapper.Map<AccountDTO>(
                 await _accountService.UpdateAccountAsync(

@@ -26,7 +26,7 @@ public class WalletController : BaseController
     }
 
     [HttpPost("CreateNewWallet")]
-    public async Task<WalletDTO> CreateAsync(WalletDTO wallet)
+    public async Task<WalletDTO> CreateAsync([FromBody] WalletDTO wallet)
     {
         wallet.AccountId = GetUserId();
 
@@ -36,7 +36,7 @@ public class WalletController : BaseController
     }
 
     [HttpPut("UpdateWallet")]
-    public async Task<WalletDTO> UpdateAsync(WalletDTO wallet)
+    public async Task<WalletDTO> UpdateAsync([FromBody] WalletDTO wallet)
     {
         if (wallet.AccountId != GetUserId())
             throw new UnauthorizedAccessException(nameof(wallet.AccountId));
