@@ -4,9 +4,11 @@ public static class AddConfigurationHostBuilderExtensions
 {
     public static IHostApplicationBuilder Configure(this IHostApplicationBuilder hostBuilder)
     {
+        const string environmentNameVariable = "ASPNETCORE_ENVIRONMENT";
+
         var location = AppContext.BaseDirectory;
         var configuration = hostBuilder.Configuration;
-        string environmentName = Environment.GetEnvironmentVariable("CORE_ENVIRONMENT") ?? "Development";
+        string environmentName = Environment.GetEnvironmentVariable(environmentNameVariable) ?? "Development";
         Environment.SetEnvironmentVariable("BASEDIR", location);
 
         configuration.SetBasePath(location);
