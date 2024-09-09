@@ -17,7 +17,7 @@ public class WalletController : BaseController
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
-    [HttpGet("GetWalletsOfAccount")]
+    [HttpGet("wallets")]
     public async Task<List<WalletDTO>> GetWallets()
     {
         return (await _service.GetAllWalletsOfAccountAsync(GetUserId()))
@@ -25,7 +25,7 @@ public class WalletController : BaseController
                 .ToList();
     }
 
-    [HttpPost("CreateNewWallet")]
+    [HttpPost("create")]
     public async Task<WalletDTO> CreateAsync([FromBody] WalletDTO wallet)
     {
         wallet.AccountId = GetUserId();
@@ -35,7 +35,7 @@ public class WalletController : BaseController
                     _mapper.Map<WalletModel>(wallet)));
     }
 
-    [HttpPut("UpdateWallet")]
+    [HttpPut("update")]
     public async Task<WalletDTO> UpdateAsync([FromBody] WalletDTO wallet)
     {
         if (wallet.AccountId != GetUserId())
@@ -46,7 +46,7 @@ public class WalletController : BaseController
                     _mapper.Map<WalletModel>(wallet)));
     }
 
-    [HttpDelete("DeleteWallet{id}")]
+    [HttpDelete("remove/{id}")]
     public async Task DeleteAsync(int id)
     {
         if (!(await _service.IsAccountOwnerWalletAsync(GetUserId(), id)))
@@ -55,7 +55,7 @@ public class WalletController : BaseController
         await _service.DeleteWalletByIdAsync(id);
     }
 
-    [HttpGet("GetWalletOfAccount/{id}")]
+    [HttpGet("wallets/{id}")]
     public async Task<WalletDTO> GetByIdAsync(int id)
     {
         return _mapper.Map<WalletDTO>(
@@ -63,7 +63,7 @@ public class WalletController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpGet("Admin/GetWalletsOfAccount/{accountId}")]
+    [HttpGet("wallets/account/{accountId}/admin")]
     public async Task<List<WalletDTO>> GetWalletsOfAccountAsync(int accountId)
     {
         return (await _service.GetAllWalletsOfAccountAsync(accountId))
@@ -72,7 +72,7 @@ public class WalletController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpDelete("Admin/DeleteWallet/{id}")]
+    [HttpDelete("remove/{id}/admin")]
     public async Task DeleteWalletOfAccountAsync(int id)
     {
         await _service.DeleteWalletByIdAsync(id);

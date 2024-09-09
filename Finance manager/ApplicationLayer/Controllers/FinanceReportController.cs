@@ -18,7 +18,7 @@ public class FinanceReportController : BaseController
         _walletService = walletService ?? throw new ArgumentNullException(nameof(walletService));
     }
 
-    [HttpPost("CreateDaily")]
+    [HttpPost("create/daily")]
     public async Task<FinanceReportDTO> CreateReportAsync(int walletId, DateTime date)
     {
         var wallet = await _walletService.FindWalletAsync(walletId);
@@ -27,7 +27,7 @@ public class FinanceReportController : BaseController
                 await _creator.CreateFinanceReportAsync(wallet, date));
     }
 
-    [HttpPost("CreatePeriodReport")]
+    [HttpPost("create/period")]
     public async Task<FinanceReportDTO> CreateReportAsync(int walletId, DateTime startDate, DateTime endDate)
     {
         var wallet = await _walletService.FindWalletAsync(walletId);

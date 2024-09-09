@@ -16,7 +16,7 @@ public class FinanceOperationController : BaseController
         _financeService = financeService ?? throw new ArgumentNullException(nameof(financeService));
     }
 
-    [HttpGet("GetAllOfWallet/{walletId}")]
+    [HttpGet("operations/wallet/{walletId}")]
     public async Task<List<FinanceOperationDTO>> GetAllOfWalletAsync(int walletId, int index = 0, int count = 0)
     {
         return (await _financeService.GetAllFinanceOperationOfWalletAsync(walletId, index, count))
@@ -24,7 +24,7 @@ public class FinanceOperationController : BaseController
             .ToList();
     }
 
-    [HttpGet("GetAllOfType/{typeId}")]
+    [HttpGet("operations/type/{typeId}")]
     public async Task<List<FinanceOperationDTO>> GetAllOfTypeAsync(int typeId)
     {
         return (await _financeService.GetAllFinanceOperationOfTypeAsync(typeId))
@@ -32,7 +32,7 @@ public class FinanceOperationController : BaseController
             .ToList();
     }
 
-    [HttpPost("Create")]
+    [HttpPost("create")]
     public async Task<FinanceOperationDTO> AddAsync([FromBody] FinanceOperationDTO dto)
     {
         return _mapper.Map<FinanceOperationDTO>(
@@ -40,7 +40,7 @@ public class FinanceOperationController : BaseController
                         _mapper.Map<FinanceOperationModel>(dto)));
     }
 
-    [HttpPut("Update/{id}")]
+    [HttpPut("update/{id}")]
     public async Task<FinanceOperationDTO> UpdateAsync([FromBody] FinanceOperationDTO dto)
     {
         return _mapper.Map<FinanceOperationDTO>(
@@ -48,7 +48,7 @@ public class FinanceOperationController : BaseController
                         _mapper.Map<FinanceOperationModel>(dto)));
     }
 
-    [HttpDelete("Delate/{id}")]
+    [HttpDelete("remove/{id}")]
     public async Task DeleteAsync(int id)
     {
         await _financeService.DeleteFinanceOperationAsync(id);

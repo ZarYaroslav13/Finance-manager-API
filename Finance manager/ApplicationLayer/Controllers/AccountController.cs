@@ -25,7 +25,6 @@ public class AccountController : BaseController
     public async Task<IActionResult> LogInAsync(string email, string password)
     {
         var identity = await _tokenManager.GetIdentityAsync(email, password);
-
         if (identity == null)
         {
             return BadRequest(new { errorText = "Invalid email or username" });
@@ -38,11 +37,12 @@ public class AccountController : BaseController
             access_token = encodedJwt,
             email = identity.Name
         };
+        _logger.LogInformation("Mr with email {@Email} logged in ", identity.Name);
 
         return new JsonResult(response);
     }
 
-    [HttpPost("Create")]
+    [HttpPost("create")]
     [AllowAnonymous]
     public async Task<ActionResult<AccountDTO>> CreateAsync([FromBody] AccountDTO account)
     {
@@ -53,7 +53,7 @@ public class AccountController : BaseController
         return newAccount;
     }
 
-    [HttpPut("Update")]
+    [HttpPut("update")]
     public async Task<AccountDTO> UpdateAsync([FromBody] AccountDTO account)
     {
         int id = GetUserId();
@@ -66,14 +66,14 @@ public class AccountController : BaseController
                     _mapper.Map<AccountModel>(account)));
     }
 
-    [HttpDelete("Delete")]
+    [HttpDelete("remove")]
     public void Delete()
     {
         _accountService.DeleteAccountWithId(GetUserId());
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpGet("Admin/GetAllAccounts")]
+    [HttpGet("accounts/admin")]
     public async Task<List<AccountDTO>> GetAllAsync(int skip, int take)
     {
         return (await _accountService.GetAccountsAsync(GetUserEmail(), skip, take))
@@ -82,7 +82,7 @@ public class AccountController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpPut("Admin/UpdateAccount")]
+    [HttpPut("update/admin")]
     public async Task<AccountDTO> AdminUpdateAccountAsync([FromBody] AccountDTO account)
     {
         return _mapper.Map<AccountDTO>(
@@ -91,7 +91,7 @@ public class AccountController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpDelete("Admin/DeleteAccount/{id}")]
+    [HttpDelete("remove/{id}/admin")]
     public void DeleteById(int id)
     {
         _accountService.DeleteAccountWithId(id);
