@@ -1,18 +1,37 @@
 ﻿using DataLayer.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationLayer.Models;
 
 public class FinanceOperationTypeDTO : Base.ModelDTO
 {
-    public string Name { get; set; } = String.Empty;
+    [Required]
+    [Length(2, 50)]
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value.Trim(); }
+    }
 
     public string Description { get; set; } = String.Empty;
 
+    [Required]
     public EntryType EntryType { get; set; }
 
+    [Required]
+    [Range(1, int.MaxValue)]
     public int WalletId { get; set; }
 
-    public string WalletName { get; set; } = String.Empty;
+    [Required]
+    [Length(2, 50)]
+    public string WalletName
+    {
+        get { return _walletName; }
+        set { _walletName = value.Trim(); }
+    }
+
+    private string _name = string.Empty;
+    private string _walletName = string.Empty;
 
     public override bool Equals(object? obj)
     {

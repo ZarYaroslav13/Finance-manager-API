@@ -1,11 +1,16 @@
-﻿namespace ApplicationLayer.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ApplicationLayer.Models;
 
 public abstract class FinanceOperationDTO : Base.ModelDTO
 {
+    [Range(0, int.MaxValue)]
     public int Amount { get; set; }
 
+    [Required]
     public DateTime Date { get; set; }
 
+    [Required]
     public FinanceOperationTypeDTO Type { get; private set; } = new();
 
     public FinanceOperationDTO(FinanceOperationTypeDTO type)

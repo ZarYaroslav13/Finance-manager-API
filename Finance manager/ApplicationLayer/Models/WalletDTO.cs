@@ -1,10 +1,17 @@
-﻿namespace ApplicationLayer.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ApplicationLayer.Models;
 
 public class WalletDTO : Base.ModelDTO
 {
-    public string Name { get; set; } = String.Empty;
+    [Required]
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value.Trim(); }
+    }
 
-    public int Balance { get; set; }
+    public int Balance { get; set; } = 0;
 
     public List<FinanceOperationTypeDTO> FinanceOperationTypes { get; set; } = default!;
 
@@ -12,7 +19,11 @@ public class WalletDTO : Base.ModelDTO
 
     public List<ExpenseDTO> Expenses { get; set; } = default!;
 
+    [Required]
+    [Range(1, int.MaxValue)]
     public int AccountId { get; set; }
+
+    private string _name = string.Empty;
 
     public override bool Equals(object? obj)
     {
