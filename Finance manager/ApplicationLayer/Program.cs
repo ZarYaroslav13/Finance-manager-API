@@ -1,10 +1,15 @@
 using ApplicationLayer.HostBuilder;
 using ApplicationLayer.Middleware;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 builder.Configure();
 builder.AddServices();
 
@@ -51,6 +56,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 }
 
 app.UseApplicationMiddleware();
+
+app.UseSerilogRequestLogging();
+
 app.UseRouting();
 app.UseHttpsRedirection();
 
