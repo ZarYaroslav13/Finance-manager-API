@@ -130,4 +130,45 @@ public class WalletServiceTests
         A.CallTo(() => _repository.GetByIdAsync(idWalletForSearch)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _mapper.Map<WalletModel>(wallet)).MustHaveHappenedOnceExactly();
     }
+
+    [TestMethod]
+    [DynamicData(
+        nameof(WalletServiceTestsDataProvider.IsAccountOwnerWalletAsyncInvalidAccountIdOrWalletIdThrowsArgumentOutOfRangeExceptionTestData),
+        typeof(WalletServiceTestsDataProvider))]
+    public void IsAccountOwnerWalletAsync_InvalidAccountIdOrWalletId_ThrowsArgumentOutOfRangeException(int accountId, int walletId)
+    {
+        Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _service.IsAccountOwnerWalletAsync(accountId, walletId));
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(WalletServiceTestsDataProvider.IsAccountOwnerWalletAsyncValidAccountIdAndWalletIdReturnsTrueTestData), typeof(WalletServiceTestsDataProvider))]
+    public async Task IsAccountOwnerWalletAsync_ValidAccountIdAndWalletId_ReturnsTrue(List<Wallet> wallets, int accountId)
+    {
+        A.CallTo(() => _repository.GetAllAsync(
+            A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
+            A<Expression<Func<Wallet, bool>>>._,
+            A<int>._, A<int>._,
+            A<string[]>._))
+            .Returns(wallets);
+
+        var result = await _service.IsAccountOwnerWalletAsync(accountId, wallets[0].Id);
+
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(WalletServiceTestsDataProvider.IsAccountOwnerWalletAsyncWalletNotOwnedByAccountReturnsFalseTestData), typeof(WalletServiceTestsDataProvider))]
+    public async Task IsAccountOwnerWalletAsync_WalletNotOwnedByAccount_ReturnsFalse(List<Wallet> wallets, int accountId, int walletId)
+    {
+        A.CallTo(() => _repository.GetAllAsync(
+            A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
+            A<Expression<Func<Wallet, bool>>>._,
+            A<int>._, A<int>._,
+            A<string[]>._))
+            .Returns(wallets);
+
+        var result = await _service.IsAccountOwnerWalletAsync(accountId, walletId);
+
+        Assert.IsFalse(result);
+    }
 }

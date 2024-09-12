@@ -60,7 +60,7 @@ public class FinanceReportModel : Model
 
         var financeReport = (FinanceReportModel)obj;
 
-        return  WalletId == financeReport.WalletId
+        return WalletId == financeReport.WalletId
             && WalletName == financeReport.WalletName
             && TotalIncome == financeReport.TotalIncome
             && TotalExpense == financeReport.TotalExpense
@@ -70,6 +70,6 @@ public class FinanceReportModel : Model
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), WalletId, WalletName, TotalIncome, TotalExpense, Operations);
+        return HashCode.Combine(base.GetHashCode(), WalletId, WalletName, TotalIncome, TotalExpense, GetHashCodeOfList(Operations));
     }
 }

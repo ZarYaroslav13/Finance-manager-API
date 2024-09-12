@@ -39,7 +39,7 @@ public class Wallet : Entity
 
         var wallet = (Wallet)obj;
 
-        return  Name == wallet.Name
+        return Name == wallet.Name
                 && Balance == wallet.Balance
                 && AccountId == wallet.AccountId
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
@@ -48,6 +48,6 @@ public class Wallet : Entity
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), Name, Balance, FinanceOperationTypes, AccountId, Account);
+        return HashCode.Combine(base.GetHashCode(), Name, Balance, GetHashCodeOfList(FinanceOperationTypes), AccountId, Account);
     }
 }

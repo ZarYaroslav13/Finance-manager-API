@@ -19,4 +19,14 @@ public class WalletTests
     {
         Assert.AreNotEqual(w1, w2);
     }
+
+    [TestMethod]
+    [DynamicData(nameof(WalletDataProvider.MethodEqualsResultTrueData), typeof(WalletDataProvider))]
+    public void GetHashCode_SameProperties_ReturnsSameHashCode(Wallet w1, Wallet w2)
+    {
+        var hashCode1 = w1.GetHashCode();
+        var hashCode2 = w2.GetHashCode();
+
+        Assert.AreEqual(hashCode1, hashCode2);
+    }
 }

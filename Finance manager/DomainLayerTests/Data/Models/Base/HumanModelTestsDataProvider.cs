@@ -1,14 +1,15 @@
-﻿using DataLayer.Models.Base;
+﻿using DomainLayer.Models;
+using DomainLayer.Models.Base;
 
-namespace DataLayerTests.Data.Models.Base;
+namespace DomainLayerTests.Data.Models.Base;
 
-public static class HumanTestDataProvider
+public static class HumanModelTestsDataProvider
 {
-    public static IEnumerable<object[]> EqualsSamePropertiesReturnsTrueTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> EqualsSameValuesReturnsTrueTestData { get; } = new List<object[]>
     {
         new object[]
         {
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -16,7 +17,7 @@ public static class HumanTestDataProvider
                 Email = "john.doe@example.com",
                 Password = "password123"
             },
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -27,11 +28,11 @@ public static class HumanTestDataProvider
         }
     };
 
-    public static IEnumerable<object[]> EqualsDifferentPropertiesReturnsFalseTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> EqualsDifferentValuesReturnsFalseTestData { get; } = new List<object[]>
     {
         new object[]
         {
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -39,7 +40,7 @@ public static class HumanTestDataProvider
                 Email = "john.doe@example.com",
                 Password = "password123"
             },
-            new Human
+            new HumanModel
             {
                 Id = 2,
                 FirstName = "John",
@@ -50,7 +51,7 @@ public static class HumanTestDataProvider
         },
         new object[]
         {
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -58,7 +59,7 @@ public static class HumanTestDataProvider
                 Email = "john.doe@example.com",
                 Password = "password123"
             },
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "Jane",
@@ -69,7 +70,7 @@ public static class HumanTestDataProvider
         },
         new object[]
         {
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -77,7 +78,7 @@ public static class HumanTestDataProvider
                 Email = "john.doe@example.com",
                 Password = "password123"
             },
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -88,7 +89,7 @@ public static class HumanTestDataProvider
         },
         new object[]
         {
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -96,18 +97,18 @@ public static class HumanTestDataProvider
                 Email = "john.doe@example.com",
                 Password = "password123"
             },
-            new Human
+            new HumanModel
             {
                 Id = 1,
-                FirstName = "John",
+                FirstName = "Jane",
                 LastName = "Doe",
-                Email = "jane.doe@example.com",
+                Email = "jane.smith@example.com",
                 Password = "password123"
             }
         },
         new object[]
         {
-            new Human
+            new HumanModel
             {
                 Id = 1,
                 FirstName = "John",
@@ -115,7 +116,38 @@ public static class HumanTestDataProvider
                 Email = "john.doe@example.com",
                 Password = "password123"
             },
-            new Human
+            new HumanModel
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                Password = "password456"
+            }
+        },
+        new object[]
+        {
+            new HumanModel
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                Password = "password123"
+            },
+            null
+        },
+        new object[]
+        {
+            new HumanModel
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                Password = "password123"
+            },
+            new AccountModel
             {
                 Id = 1,
                 FirstName = "John",

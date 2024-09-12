@@ -25,7 +25,7 @@ public abstract class FinanceOperationModel : Base.Model
 
         var financeOperation = (FinanceOperationModel)obj;
 
-        return  Amount == financeOperation.Amount
+        return Amount == financeOperation.Amount
             && Date == financeOperation.Date
             && Type == financeOperation.Type;
     }

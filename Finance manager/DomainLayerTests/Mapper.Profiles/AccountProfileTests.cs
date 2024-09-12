@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataLayer.Models;
 using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;
@@ -27,7 +28,7 @@ public class AccountProfileTests
     [TestMethod]
     public void Map_AccountDataMappedCorrectly_AccountModels()
     {
-        var dbAccount = new DataLayer.Models.Account()
+        var dbAccount = new Account()
         {
             Id = 2,
             LastName = "LastName",
@@ -45,7 +46,7 @@ public class AccountProfileTests
     [TestMethod]
     public void Map_AccountDataAreNotLostAfterMapping_Account()
     {
-        var dbAccount = new DataLayer.Models.Account()
+        var dbAccount = new Account()
         {
             Id = 2,
             LastName = "LastName",
@@ -56,7 +57,7 @@ public class AccountProfileTests
         };
 
         var mappedDbAccount = _mapper
-            .Map<DataLayer.Models.Account>(
+            .Map<Account>(
                 _mapper
                     .Map<AccountModel>(dbAccount));
 

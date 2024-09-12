@@ -18,6 +18,6 @@ public class Account : Human
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), Wallets);
+        return HashCode.Combine(base.GetHashCode(), GetHashCodeOfList(Wallets));
     }
 }

@@ -21,7 +21,7 @@ public class WalletModel : Base.Model
 
         WalletModel wallet = (WalletModel)obj;
 
-        return  Name == wallet.Name
+        return Name == wallet.Name
                 && Balance == wallet.Balance
                 && AccountId == wallet.AccountId
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
@@ -31,6 +31,10 @@ public class WalletModel : Base.Model
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), Name, Balance, AccountId, FinanceOperationTypes, Incomes, Expenses);
+        var financeOperationTypesHashValue = GetHashCodeOfList(FinanceOperationTypes);
+        var incomesHashValue = GetHashCodeOfList(Incomes);
+        var expensesHashValue = GetHashCodeOfList(Expenses);
+
+        return HashCode.Combine(base.GetHashCode(), Name, Balance, AccountId, financeOperationTypesHashValue, incomesHashValue, expensesHashValue);
     }
 }

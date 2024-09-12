@@ -100,7 +100,7 @@ public class AdminServiceTests
 
     [TestMethod]
     [DynamicData(nameof(AdminServiceTestsDataProvider.IsItAdminWithAdminEmailShouldReturnTrueTestData), typeof(AdminServiceTestsDataProvider))]
-    public  void IsItAdmin_WithCorrectAdminEmail_ShouldReturnTrue(List<Admin> admins, string email)
+    public void IsItAdmin_WithCorrectAdminEmail_ShouldReturnTrue(List<Admin> admins, string email)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Admin>,

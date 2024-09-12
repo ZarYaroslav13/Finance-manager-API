@@ -19,7 +19,7 @@ public class FinanceOperation : Entity
 
         var financeOperation = (FinanceOperation)obj;
 
-        return  Amount == financeOperation.Amount
+        return Amount == financeOperation.Amount
                 && Date == financeOperation.Date
                 && TypeId == financeOperation.TypeId
                 && Type == financeOperation.Type;

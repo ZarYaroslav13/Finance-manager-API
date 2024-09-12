@@ -19,5 +19,15 @@ namespace DomainLayerTests.Models
         {
             Assert.AreNotEqual(fot1, fot2);
         }
+
+        [TestMethod]
+        [DynamicData(nameof(FinanceOperationTypeDataProvider.MethodEqualsResultTrueData), typeof(FinanceOperationTypeDataProvider))]
+        public void GetHashCode_SameValues_ReturnsSameHashCode(FinanceOperationTypeModel type1, FinanceOperationTypeModel type2)
+        {
+            var hash1 = type1.GetHashCode();
+            var hash2 = type2.GetHashCode();
+
+            Assert.AreEqual(hash1, hash2);
+        }
     }
 }

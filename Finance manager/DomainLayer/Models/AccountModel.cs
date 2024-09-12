@@ -18,6 +18,6 @@ public class AccountModel : HumanModel
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), FirstName, LastName, Email, Password, Wallets);
+        return HashCode.Combine(base.GetHashCode(), GetHashCodeOfList(Wallets));
     }
 }

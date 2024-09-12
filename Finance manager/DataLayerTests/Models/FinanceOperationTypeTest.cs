@@ -19,4 +19,14 @@ public class FinanceOperationTypeTest
     {
         Assert.AreNotEqual(fot1, fot2);
     }
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceOperationTypeDataProvider.MethodEqualsResultTrueData), typeof(FinanceOperationTypeDataProvider))]
+    public void GetHashCode_SameProperties_ReturnsSameHashCode(FinanceOperationType fot1, FinanceOperationType fot2)
+    {
+        var hashCode1 = fot1.GetHashCode();
+        var hashCode2 = fot2.GetHashCode();
+
+        Assert.AreEqual(hashCode1, hashCode2);
+    }
 }

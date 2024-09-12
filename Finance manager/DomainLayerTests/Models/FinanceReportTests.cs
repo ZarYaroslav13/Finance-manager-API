@@ -61,4 +61,15 @@ public class FinanceReportTests
     {
         Assert.AreNotEqual(fr1, fr2);
     }
+
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceReportTestsDataProvider.MethodEqualsResultTrueData), typeof(FinanceReportTestsDataProvider))]
+    public void GetHashCode_SameValues_ReturnsSameHashCode(FinanceReportModel fr1, FinanceReportModel fr2)
+    {
+        var hash1 = fr1.GetHashCode();
+        var hash2 = fr2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
+    }
 }

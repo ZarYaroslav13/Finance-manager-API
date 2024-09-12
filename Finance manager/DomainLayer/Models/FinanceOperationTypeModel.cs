@@ -21,7 +21,7 @@ public class FinanceOperationTypeModel : Base.Model
 
         var financeOperationType = (FinanceOperationTypeModel)obj;
 
-        return  Name == financeOperationType.Name
+        return Name == financeOperationType.Name
             && Description == financeOperationType.Description
             && EntryType == financeOperationType.EntryType
             && WalletId == financeOperationType.WalletId

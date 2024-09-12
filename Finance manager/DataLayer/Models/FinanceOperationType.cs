@@ -21,7 +21,7 @@ public class FinanceOperationType : Base.Entity
 
         var financeOperationType = (FinanceOperationType)obj;
 
-        return  Name == financeOperationType.Name
+        return Name == financeOperationType.Name
                 && Description == financeOperationType.Description
                 && EntryType == financeOperationType.EntryType
                 && WalletId == financeOperationType.WalletId
@@ -30,6 +30,6 @@ public class FinanceOperationType : Base.Entity
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), Name, Description, EntryType, WalletId, Wallet, FinanceOperations);
+        return HashCode.Combine(base.GetHashCode(), Name, Description, EntryType, WalletId, Wallet, GetHashCodeOfList(FinanceOperations));
     }
 }

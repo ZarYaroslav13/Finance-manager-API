@@ -76,6 +76,6 @@ public class WalletService : BaseService, IWalletService
 
         return (await _repository.GetAllAsync(
                 filter:
-                    w => w.Id == walletId && w.AccountId == acoountId)) == null;
+                    w => w.Id == walletId && w.AccountId == acoountId)).Count() == 1;
     }
 }

@@ -59,4 +59,33 @@ public static class WalletServiceTestsDataProvider
             }
         }
     };
+
+    public static IEnumerable<object[]> IsAccountOwnerWalletAsyncInvalidAccountIdOrWalletIdThrowsArgumentOutOfRangeExceptionTestData { get; } = new List<object[]>
+    {
+        new object[] { -1, -1},
+        new object[] { -1, 0},
+        new object[] { 0, -1},
+        new object[] { 1, 0},
+        new object[] { 0, 1},
+        new object[] { 0, 0},
+    };
+
+    public static IEnumerable<object[]> IsAccountOwnerWalletAsyncValidAccountIdAndWalletIdReturnsTrueTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            new List<Wallet>() { new () { Id = 1, AccountId = 1} },
+            1
+        }
+    };
+
+    public static IEnumerable<object[]> IsAccountOwnerWalletAsyncWalletNotOwnedByAccountReturnsFalseTestData { get; } = new List<object[]>
+    {
+        new object[]
+        {
+            new List<Wallet>() { },
+            1,
+            1
+        }
+    };
 }

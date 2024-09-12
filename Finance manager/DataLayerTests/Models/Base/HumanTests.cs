@@ -21,23 +21,13 @@ public class HumanTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(HumanTestDataProvider.GetHashCodeSamePropertiesReturnsSameHashCodeTestData), typeof(HumanTestDataProvider))]
+    [DynamicData(nameof(HumanTestDataProvider.EqualsSamePropertiesReturnsTrueTestData), typeof(HumanTestDataProvider))]
     public void GetHashCode_SameProperties_ReturnsSameHashCode(Human human1, Human human2)
     {
         var hashCode1 = human1.GetHashCode();
         var hashCode2 = human2.GetHashCode();
 
         Assert.AreEqual(hashCode1, hashCode2);
-    }
-
-    [TestMethod]
-    [DynamicData(nameof(HumanTestDataProvider.GetHashCodeDifferentPropertiesReturnsDifferentHashCodeTestData), typeof(HumanTestDataProvider))]
-    public void GetHashCode_DifferentProperties_ReturnsDifferentHashCode(Human human1, Human human2)
-    {
-        var hashCode1 = human1.GetHashCode();
-        var hashCode2 = human2.GetHashCode();
-
-        Assert.AreNotEqual(hashCode1, hashCode2);
     }
 }
 

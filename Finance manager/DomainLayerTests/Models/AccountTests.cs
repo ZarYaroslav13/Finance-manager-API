@@ -19,4 +19,14 @@ public class AccountTests
     {
         Assert.AreNotEqual(ac1, ac2);
     }
+
+    [TestMethod]
+    [DynamicData(nameof(AccountDataProvider.MethodEqualsResultTrueData), typeof(AccountDataProvider))]
+    public void GetHashCode_SameValues_ReturnsSameHashCode(AccountModel account1, AccountModel account2)
+    {
+        var hash1 = account1.GetHashCode();
+        var hash2 = account2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
+    }
 }

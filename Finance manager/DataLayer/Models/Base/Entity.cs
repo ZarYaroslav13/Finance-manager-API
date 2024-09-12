@@ -38,4 +38,19 @@ public abstract class Entity
     {
         return HashCode.Combine(Id);
     }
+
+    protected int GetHashCodeOfList<T>(List<T>? list) where T : class
+    {
+        if (list == null || list.Count == 0)
+            return 0;
+
+        int hashCode = 0;
+
+        foreach (var item in list)
+        {
+            hashCode += item.GetHashCode();
+        }
+
+        return hashCode;
+    }
 }

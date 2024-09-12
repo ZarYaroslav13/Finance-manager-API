@@ -1,5 +1,7 @@
 ﻿using DataLayer.Models;
+using DataLayer.Models.Base;
 using DomainLayer.Models;
+using DomainLayer.Models.Base;
 
 namespace DomainLayerTests.TestHelpers;
 
@@ -11,6 +13,14 @@ public static class AssertDataLayerDomainModelsCompareExtension
         ArgumentNullException.ThrowIfNull(nameof(domainAccount));
 
         Assert.IsTrue(AreEqual(dbAccount, domainAccount));
+    }
+
+    public static void AreEqual(this Assert assert, Admin dbAdmin, AdminModel domainAdmin)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(dbAdmin));
+        ArgumentNullException.ThrowIfNull(nameof(domainAdmin));
+
+        Assert.IsTrue(AreEqual(dbAdmin, domainAdmin));
     }
 
     public static void AreEqual(this Assert assert, Wallet dbWallet, WalletModel domainWallet)
@@ -39,12 +49,22 @@ public static class AssertDataLayerDomainModelsCompareExtension
 
     private static bool AreEqual(Account dbAccount, AccountModel domainAccount)
     {
-        return (dbAccount.Id == domainAccount.Id)
-       && (dbAccount.LastName == domainAccount.LastName)
-       && (dbAccount.FirstName == domainAccount.FirstName)
-       && (dbAccount.Email == domainAccount.Email)
-       && (dbAccount.Password == domainAccount.Password)
+        return AreEqual((Human)dbAccount, domainAccount)
        && AreEqualAccountWallets(dbAccount, domainAccount);
+    }
+
+    private static bool AreEqual(Admin dbAdmin, AdminModel domainAdmin)
+    {
+        return AreEqual((Human)dbAdmin, domainAdmin);
+    }
+
+    private static bool AreEqual(Human dbHuman, HumanModel domainHuman)
+    {
+        return (dbHuman.Id == domainHuman.Id)
+       && (dbHuman.LastName == domainHuman.LastName)
+       && (dbHuman.FirstName == domainHuman.FirstName)
+       && (dbHuman.Email == domainHuman.Email)
+       && (dbHuman.Password == domainHuman.Password);
     }
 
     private static bool AreEqual(Wallet dbWallet, WalletModel domainWallet)
