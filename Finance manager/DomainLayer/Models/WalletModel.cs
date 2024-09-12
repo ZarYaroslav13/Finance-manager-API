@@ -16,13 +16,12 @@ public class WalletModel : Base.Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || GetType() != obj.GetType())
+        if (!base.Equals(obj))
             return false;
 
         WalletModel wallet = (WalletModel)obj;
 
-        return Id == wallet.Id
-                && Name == wallet.Name
+        return  Name == wallet.Name
                 && Balance == wallet.Balance
                 && AccountId == wallet.AccountId
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
@@ -32,6 +31,6 @@ public class WalletModel : Base.Model
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, Balance, AccountId, FinanceOperationTypes, Incomes, Expenses);
+        return HashCode.Combine(base.GetHashCode(), Name, Balance, AccountId, FinanceOperationTypes, Incomes, Expenses);
     }
 }

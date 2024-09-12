@@ -16,13 +16,12 @@ public class FinanceOperationType : Base.Entity
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(FinanceOperationType))
+        if (!base.Equals(obj))
             return false;
 
         var financeOperationType = (FinanceOperationType)obj;
 
-        return Id == financeOperationType.Id
-                && Name == financeOperationType.Name
+        return  Name == financeOperationType.Name
                 && Description == financeOperationType.Description
                 && EntryType == financeOperationType.EntryType
                 && WalletId == financeOperationType.WalletId
@@ -31,6 +30,6 @@ public class FinanceOperationType : Base.Entity
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, Description, EntryType, WalletId, Wallet, FinanceOperations);
+        return HashCode.Combine(base.GetHashCode(), Name, Description, EntryType, WalletId, Wallet, FinanceOperations);
     }
 }

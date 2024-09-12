@@ -13,6 +13,8 @@ public class FillerBbData
 
     public static List<FinanceOperation> FinanceOperations { get { return _fnanceOperations; } }
 
+    public static List<Admin> Admins { get { return _admins; } }
+
     private static PasswordCoder _passwordCoder = new();
 
     private static List<Account> _accounts = new()
@@ -56,14 +58,6 @@ public class FillerBbData
             LastName = "Brown",
             Email = "chris.brown@example.com",
             Password = _passwordCoder.ComputeSHA256Hash("saferPassword102"),
-        },
-        new Account()
-        {
-            Id = 6,
-            LastName = "Your best",
-            FirstName = "Admin",
-            Email = "mr.admin.number1@gmail.com",
-            Password= _passwordCoder.ComputeSHA256Hash("saferAdminParol124")
         }
     };
 
@@ -470,5 +464,17 @@ public class FillerBbData
         new FinanceOperation() { Id = 102, Amount = 2000, Date = new DateTime(2024, 4, 11, second: 53, minute: 02, hour: 11), TypeId = 1 },
         new FinanceOperation() { Id = 103, Amount = 300, Date = new DateTime(2024, 4, 11, second: 37, minute: 27, hour: 7), TypeId = 1 }
 
+    };
+
+    private static List<Admin> _admins = new()
+    {
+        new()
+        {
+            Id = 1,
+            LastName = "Your best",
+            FirstName = "Admin",
+            Email = "mr.admin.number1@gmail.com",
+            Password= _passwordCoder.ComputeSHA256Hash("saferAdminParol124")
+        }
     };
 }

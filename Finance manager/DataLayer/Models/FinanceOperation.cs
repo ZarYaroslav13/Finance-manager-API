@@ -14,13 +14,12 @@ public class FinanceOperation : Entity
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(FinanceOperation))
+        if (!base.Equals(obj))
             return false;
 
         var financeOperation = (FinanceOperation)obj;
 
-        return Id == financeOperation.Id
-                && Amount == financeOperation.Amount
+        return  Amount == financeOperation.Amount
                 && Date == financeOperation.Date
                 && TypeId == financeOperation.TypeId
                 && Type == financeOperation.Type;
@@ -28,6 +27,6 @@ public class FinanceOperation : Entity
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Amount, Date, TypeId, Type);
+        return HashCode.Combine(base.GetHashCode(), Amount, Date, TypeId, Type);
     }
 }

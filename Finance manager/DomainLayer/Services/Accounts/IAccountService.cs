@@ -12,7 +12,7 @@ public interface IAccountService
 
     public void DeleteAccountWithId(int id);
 
-    public Task<AccountModel> TryLogInAsync(string email, string password);
+    public Task<AccountModel> TrySignInAsync(string email, string password);
 
     public bool IsItEmail(string emailAddress);
 

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace DataLayer.Security;
 
-public class PasswordCoder
+public class PasswordCoder : IPasswordCoder
 {
     public string ComputeSHA256Hash(string input)
     {

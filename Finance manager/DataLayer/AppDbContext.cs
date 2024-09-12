@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
     public virtual DbSet<Wallet> Wallets { get; set; } = default!;
     public virtual DbSet<FinanceOperation> FinanceOperations { get; set; } = default!;
     public virtual DbSet<FinanceOperationType> FinanceOperationTypes { get; set; } = default!;
+    public virtual DbSet<Admin> Admins { get; set; } = default!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -18,10 +19,5 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
-
-        //modelBuilder.ApplyConfiguration(new AccountConfiguration());
-        //modelBuilder.ApplyConfiguration(new WalletConfiguration());
-        //modelBuilder.ApplyConfiguration(new FinanceOperationConfiguration());
-        //modelBuilder.ApplyConfiguration(new FinanceOperationTypeConfiguration());
     }
 }

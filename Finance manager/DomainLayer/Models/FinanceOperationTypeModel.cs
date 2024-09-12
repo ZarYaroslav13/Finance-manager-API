@@ -16,13 +16,12 @@ public class FinanceOperationTypeModel : Base.Model
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || GetType() != obj.GetType())
+        if (!base.Equals(obj))
             return false;
 
         var financeOperationType = (FinanceOperationTypeModel)obj;
 
-        return Id == financeOperationType.Id
-            && Name == financeOperationType.Name
+        return  Name == financeOperationType.Name
             && Description == financeOperationType.Description
             && EntryType == financeOperationType.EntryType
             && WalletId == financeOperationType.WalletId
@@ -31,6 +30,6 @@ public class FinanceOperationTypeModel : Base.Model
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, Description, EntryType, WalletId, WalletName);
+        return HashCode.Combine(base.GetHashCode(), Name, Description, EntryType, WalletId, WalletName);
     }
 }

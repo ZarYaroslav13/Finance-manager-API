@@ -1,6 +1,8 @@
 ﻿using DataLayer.Models;
 using DataLayer.Security;
 using DomainLayer.Models;
+using DomainLayer.Services.Admins;
+using FakeItEasy;
 
 namespace DomainLayerTests.Data.Services;
 
@@ -14,7 +16,7 @@ public static class AccountServiceTestsDataProvider
             FirstName = "John",
             LastName = "Doe",
             Email = "john.doe@example.com",
-            Password = new PasswordCoder().ComputeSHA256Hash("password123"),
+            Password = "password123",
         },
         new Account()
         {
@@ -22,7 +24,7 @@ public static class AccountServiceTestsDataProvider
             FirstName = "Jane",
             LastName = "Smith",
             Email = "jane.smith@example.com",
-            Password = new PasswordCoder().ComputeSHA256Hash("password456"),
+            Password = "password456",
         },
         new Account()
         {
@@ -30,7 +32,7 @@ public static class AccountServiceTestsDataProvider
             FirstName = "Michael",
             LastName = "Johnson",
             Email = "michael.johnson@example.com",
-            Password = new PasswordCoder().ComputeSHA256Hash("password789"),
+            Password = "password789",
         }
     };
 
@@ -51,6 +53,13 @@ public static class AccountServiceTestsDataProvider
             ).ToList();
         }
     }
+
+    public static IEnumerable<object[]> ConstructorAdminServiceNullThrowsExceptionTestData { get; } = new List<object[]>
+    {
+        new object[] { A.Fake<IAdminService>(), null },
+        new object[] { null, A.Fake<IPasswordCoder>() },
+        new object[] { null, null }
+    };
 
     public static IEnumerable<object[]> GetAccountsNoSkipOrTakeTestData { get; } = new List<object[]>
     {
@@ -122,33 +131,33 @@ public static class AccountServiceTestsDataProvider
         }
     };
 
-    public static IEnumerable<object[]> TryLogInThrowsNullExceptionTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> TrySignInAsyncThrowsNullExceptionTestData { get; } = new List<object[]>
     {
         new object[] { "Fake", null },
         new object[] { null, "Fake" },
         new object[] { null, null }
     };
 
-    public static IEnumerable<object[]> TryLogInThrowsExceptionTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> TrySignInAsyncThrowsExceptionTestData { get; } = new List<object[]>
     {
         new object[] { "", "Fake" },
         new object[] { "Fake", "" },
         new object[] { "", "" }
     };
 
-    public static IEnumerable<object[]> TryLogInAccountWithEmailAndPasswordExistTestData { get; } = new List<object[]>
+    public static IEnumerable<object[]> TrySignInAsyncAccountWithEmailAndPasswordExistTestData { get; } = new List<object[]>
     {
         new object[]
         {
-            _accounts, _accounts[0], "password123"
+            _accounts, _accounts[0]
         },
         new object[]
         {
-            _accounts, _accounts[1], "password456"
+            _accounts, _accounts[1]
         },
         new object[]
         {
-            _accounts, _accounts[2], "password789"
+            _accounts, _accounts[2]
         },
     };
 

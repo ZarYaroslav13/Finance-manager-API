@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataLayer.Models;
+using DataLayer.Security;
 using DataLayer.UnitOfWork;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
@@ -13,9 +14,9 @@ public class BaseServiceTests
     [TestMethod]
     public void Constructor_ArgumentsAreNull_ThrowException()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(A.Dummy<IAdminService>(), A.Dummy<IUnitOfWork>(), null));
-        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(A.Dummy<IAdminService>(), null, A.Dummy<IMapper>()));
-        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(A.Dummy<IAdminService>(), null, null));
+        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(A.Dummy<IAdminService>(), A.Dummy<IPasswordCoder>(), A.Dummy<IUnitOfWork>(), null));
+        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(A.Dummy<IAdminService>(), A.Dummy<IPasswordCoder>(), null, A.Dummy<IMapper>()));
+        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(A.Dummy<IAdminService>(), A.Dummy<IPasswordCoder>(), null, null));
     }
 
     [TestMethod]
@@ -23,7 +24,7 @@ public class BaseServiceTests
     {
         var unitOfWork = A.Fake<IUnitOfWork>();
 
-        var service = new AccountService(A.Dummy<IAdminService>(), unitOfWork, A.Dummy<IMapper>());
+        var service = new AccountService(A.Dummy<IAdminService>(), A.Dummy<IPasswordCoder>(), unitOfWork, A.Dummy<IMapper>());
 
         A.CallTo(() => unitOfWork.GetRepository<Account>()).MustHaveHappenedOnceExactly();
     }

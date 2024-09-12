@@ -25,4 +25,17 @@ public class ModelDTO
     {
         return !(left == right);
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+            return false;
+
+        return Id == ((ModelDTO)obj).Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Id);
+    }
 }

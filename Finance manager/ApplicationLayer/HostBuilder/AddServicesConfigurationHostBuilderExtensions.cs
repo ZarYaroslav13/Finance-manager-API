@@ -1,6 +1,7 @@
 ﻿using ApplicationLayer.Security;
 using ApplicationLayer.Security.Jwt;
 using DataLayer;
+using DataLayer.Security;
 using DataLayer.UnitOfWork;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
@@ -17,17 +18,13 @@ public static class AddServicesConfigurationHostBuilderExtensions
 {
     public static IHostApplicationBuilder AddServices(this IHostApplicationBuilder builder)
     {
-        const string connectionString = "DbConnection";
         var services = builder.Services;
         var configuration = builder.Configuration as IConfiguration;
 
-        services.AddDbContext<AppDbContext>(option =>
-            option.
-                UseSqlServer(
-                    configuration.
-                        GetConnectionString(connectionString)));
+        services.AddSingleton<IPasswordCoder, PasswordCoder>();
 
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddDbConnection(configuration);
+
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddScoped<IAdminService, AdminService>();
@@ -41,6 +38,21 @@ public static class AddServicesConfigurationHostBuilderExtensions
         services.AddPoliticalAuthorization(configuration);
 
         return builder;
+    }
+
+    private static IServiceCollection AddDbConnection(this IServiceCollection services, IConfiguration configuration)
+    {
+        const string connectionString = "DbConnection";
+
+        services.AddDbContext<AppDbContext>(option =>
+            option.
+                UseSqlServer(
+                    configuration.
+                        GetConnectionString(connectionString)));
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        return services;
     }
 
     private static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
@@ -75,9 +87,9 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
         services.AddAuthorization(opt =>
         {
-            opt.AddPolicy("OnlyForAdmins", policy =>
+            opt.AddPolicy("OnlyForAdmins", async policy =>
             {
-                policy.RequireClaim(ClaimTypes.Name, adminService.Admins.Select(a => a.Email));
+                policy.RequireClaim(ClaimTypes.Name, adminService.GetAdmins().Select(a => a.Email));
             });
         });
 

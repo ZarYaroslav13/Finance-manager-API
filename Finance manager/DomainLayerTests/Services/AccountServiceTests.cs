@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataLayer.Models;
 using DataLayer.Repository;
+using DataLayer.Security;
 using DataLayer.UnitOfWork;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
@@ -15,10 +16,11 @@ namespace DomainLayerTests.Services;
 public class AccountServiceTests
 {
     private readonly IAccountService _service;
-    public readonly IAdminService _adminService;
+    private readonly IAdminService _adminService;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRepository<Account> _repository;
     private readonly IMapper _mapper;
+    private readonly IPasswordCoder _passwordCoder;
 
     public AccountServiceTests()
     {
@@ -26,16 +28,18 @@ public class AccountServiceTests
         _repository = A.Fake<IRepository<Account>>();
         _unitOfWork = A.Fake<IUnitOfWork>();
         _mapper = A.Fake<IMapper>();
+        _passwordCoder = A.Fake<IPasswordCoder>();
 
         A.CallTo(() => _unitOfWork.GetRepository<Account>()).Returns(_repository);
 
-        _service = new AccountService(_adminService, _unitOfWork, _mapper);
+        _service = new AccountService(_adminService, _passwordCoder, _unitOfWork, _mapper);
     }
 
     [TestMethod]
-    public void Constructor_AdminServiceNull_ThrowsException()
+    [DynamicData(nameof(AccountServiceTestsDataProvider.ConstructorAdminServiceNullThrowsExceptionTestData), typeof(AccountServiceTestsDataProvider))]
+    public void Constructor_AdminServiceNull_ThrowsException(IAdminService adminService, IPasswordCoder coder)
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(null, _unitOfWork, _mapper));
+        Assert.ThrowsException<ArgumentNullException>(() => new AccountService(adminService, coder, _unitOfWork, _mapper));
     }
 
     [TestMethod]
@@ -83,7 +87,7 @@ public class AccountServiceTests
                  A<string[]>._))
             .Returns(accounts);
 
-        A.CallTo(() => _mapper.Map<AccountModel>(A<Account>.Ignored))
+        A.CallTo(() => _mapper.Map<AccountModel>(A<Account>._))
             .Returns(new());
 
 
@@ -184,30 +188,30 @@ public class AccountServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInThrowsNullExceptionTestData), typeof(AccountServiceTestsDataProvider))]
-    public void TryLogIn_ArgumentsAreNull_ThrowNullException(string email, string password)
+    [DynamicData(nameof(AccountServiceTestsDataProvider.TrySignInAsyncThrowsNullExceptionTestData), typeof(AccountServiceTestsDataProvider))]
+    public void TrySignInAsync_ArgumentsAreNull_ThrowNullException(string email, string password)
     {
-        Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _service.TryLogInAsync(email, password));
+        Assert.ThrowsExceptionAsync<ArgumentNullException>(() => _service.TrySignInAsync(email, password));
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInThrowsExceptionTestData), typeof(AccountServiceTestsDataProvider))]
-    public void TryLogIn_ArgumentsAreWhiteSpace_ThrowException(string email, string password)
+    [DynamicData(nameof(AccountServiceTestsDataProvider.TrySignInAsyncThrowsExceptionTestData), typeof(AccountServiceTestsDataProvider))]
+    public void TrySignInAsync_ArgumentsAreWhiteSpace_ThrowException(string email, string password)
     {
-        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.TryLogInAsync(email, password));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.TrySignInAsync(email, password));
     }
 
     [TestMethod]
-    [DynamicData(nameof(AccountServiceTestsDataProvider.TryLogInAccountWithEmailAndPasswordExistTestData), typeof(AccountServiceTestsDataProvider))]
-    public async Task TryLogInAsync_AccountWithEmailAndPasswordExistInDatabase_AccountModel(List<Account> dbAccounts, Account expectedAccountFromDb, string password)
+    [DynamicData(nameof(AccountServiceTestsDataProvider.TrySignInAsyncAccountWithEmailAndPasswordExistTestData), typeof(AccountServiceTestsDataProvider))]
+    public async Task TrySignInAsync_AccountWithEmailAndPasswordExistInDatabase_AccountModel(List<Account> dbAccounts, Account expectedFromBdAccount)
     {
-        AccountModel accountModel = new()
+        var accountModel = new AccountModel()
         {
-            Id = expectedAccountFromDb.Id,
-            LastName = expectedAccountFromDb.LastName,
-            FirstName = expectedAccountFromDb.FirstName,
-            Email = expectedAccountFromDb.Email,
-            Password = expectedAccountFromDb.Password
+            Id = expectedFromBdAccount.Id,
+            LastName = expectedFromBdAccount.LastName,
+            FirstName = expectedFromBdAccount.FirstName,
+            Email = expectedFromBdAccount.Email,
+            Password = expectedFromBdAccount.Password
         };
 
         A.CallTo(() => _repository.GetAllAsync(
@@ -216,9 +220,10 @@ public class AccountServiceTests
             A<int>._, A<int>._,
             A<string[]>._))
             .Returns(dbAccounts);
-        A.CallTo(() => _mapper.Map<AccountModel>(expectedAccountFromDb)).Returns(accountModel);
+        A.CallTo(() => _mapper.Map<AccountModel>(expectedFromBdAccount)).Returns(accountModel);
+        A.CallTo(() => _passwordCoder.ComputeSHA256Hash(expectedFromBdAccount.Password)).Returns(expectedFromBdAccount.Password);
 
-        var result = await _service.TryLogInAsync(expectedAccountFromDb.Email, password);
+        var result = await _service.TrySignInAsync(expectedFromBdAccount.Email, expectedFromBdAccount.Password);
 
         Assert.AreEqual(accountModel, result);
     }
@@ -235,7 +240,7 @@ public class AccountServiceTests
             .Returns(dbAccounts);
         A.CallTo(() => _mapper.Map<AccountModel>(null)).Returns(null);
 
-        var result = await _service.TryLogInAsync(email, password);
+        var result = await _service.TrySignInAsync(email, password);
 
         Assert.IsNull(result);
     }

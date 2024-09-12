@@ -11,22 +11,22 @@ namespace DomainLayer.Services.Accounts;
 
 public class AccountService : BaseService, IAccountService
 {
-    private readonly PasswordCoder _passwordCoder;
+    private readonly IPasswordCoder _passwordCoder;
     private readonly IRepository<Account> _repository;
     private readonly IAdminService _adminService;
 
-    public AccountService(IAdminService adminService, IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+    public AccountService(IAdminService adminService, IPasswordCoder passwordCoder, IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
     {
         _adminService = adminService ?? throw new ArgumentNullException(nameof(adminService));
 
-        _passwordCoder = new PasswordCoder();
+        _passwordCoder = passwordCoder ?? throw new ArgumentNullException(nameof(passwordCoder));
 
         _repository = _unitOfWork.GetRepository<Account>();
     }
 
     public async Task<List<AccountModel>> GetAccountsAsync(string adminEmail, int skip = 0, int take = 0)
     {
-        if (!_adminService.IsItAdmin(adminEmail))
+        if (! _adminService.IsItAdmin(adminEmail))
             throw new UnauthorizedAccessException();
 
         if (skip < 0 || take < 0)
@@ -83,7 +83,7 @@ public class AccountService : BaseService, IAccountService
         _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<AccountModel> TryLogInAsync(string email, string password)
+    public async Task<AccountModel> TrySignInAsync(string email, string password)
     {
         ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
         ArgumentNullException.ThrowIfNullOrWhiteSpace(password);

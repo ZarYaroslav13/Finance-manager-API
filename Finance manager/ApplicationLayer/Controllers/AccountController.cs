@@ -1,6 +1,5 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
-using ApplicationLayer.Security.Jwt;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
@@ -12,53 +11,10 @@ namespace ApplicationLayer.Controllers;
 public class AccountController : BaseController
 {
     private readonly IAccountService _accountService;
-    private readonly ITokenManager _tokenManager;
 
-    public AccountController(IAccountService service, IMapper mapper, ITokenManager tokenManager, ILogger<AccountController> logger) : base(mapper, logger)
+    public AccountController(IAccountService service, IMapper mapper, ILogger<AccountController> logger) : base(mapper, logger)
     {
         _accountService = service ?? throw new ArgumentNullException(nameof(service));
-        _tokenManager = tokenManager ?? throw new ArgumentNullException(nameof(tokenManager));
-    }
-
-    [HttpPost("login")]
-    [AllowAnonymous]
-    public async Task<IActionResult> LogInAsync(string email, string password)
-    {
-        _logger.LogInformation("LogInAsync called with email: {Email}", email);
-
-        var identity = await _tokenManager.GetIdentityAsync(email, password);
-        if (identity == null)
-        {
-            _logger.LogWarning("Login failed for email: {Email}. Invalid credentials.", email);
-            return BadRequest(new { errorText = "Invalid email or username" });
-        }
-
-        var encodedJwt = _tokenManager.CreateToken(identity);
-
-        _logger.LogInformation("Login successful for email: {Email}", email);
-
-        var response = new
-        {
-            access_token = encodedJwt,
-            email = identity.Name
-        };
-
-        return new JsonResult(response);
-    }
-
-    [HttpPost("create")]
-    [AllowAnonymous]
-    public async Task<ActionResult<AccountDTO>> CreateAsync([FromBody] AccountDTO account)
-    {
-        _logger.LogInformation("CreateAsync called to create a new account with email: {Email}", account.Email);
-
-        var newAccount = _mapper.Map<AccountDTO>(
-                       await _accountService.AddAccountAsync(
-                           _mapper.Map<AccountModel>(account)));
-
-        _logger.LogInformation("Account created successfully with email: {Email} and Id: {Id}", newAccount.Email, newAccount.Id);
-
-        return newAccount;
     }
 
     [HttpPut("update")]

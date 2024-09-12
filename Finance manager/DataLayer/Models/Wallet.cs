@@ -34,13 +34,12 @@ public class Wallet : Entity
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || obj.GetType() != typeof(Wallet))
+        if (!base.Equals(obj))
             return false;
 
         var wallet = (Wallet)obj;
 
-        return Id == wallet.Id
-                && Name == wallet.Name
+        return  Name == wallet.Name
                 && Balance == wallet.Balance
                 && AccountId == wallet.AccountId
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
@@ -49,6 +48,6 @@ public class Wallet : Entity
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, Balance, FinanceOperationTypes, AccountId, Account);
+        return HashCode.Combine(base.GetHashCode(), Name, Balance, FinanceOperationTypes, AccountId, Account);
     }
 }
