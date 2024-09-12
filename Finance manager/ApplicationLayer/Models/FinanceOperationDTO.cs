@@ -25,19 +25,18 @@ public abstract class FinanceOperationDTO : Base.ModelDTO
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || GetType() != obj.GetType())
+        if (!base.Equals(obj))
             return false;
 
         var financeOperation = (FinanceOperationDTO)obj;
 
-        return Id == financeOperation.Id
-            && Amount == financeOperation.Amount
+        return  Amount == financeOperation.Amount
             && Date == financeOperation.Date
             && Type == financeOperation.Type;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Amount, Date, Type);
+        return HashCode.Combine(base.GetHashCode(), Amount, Date, Type);
     }
 }

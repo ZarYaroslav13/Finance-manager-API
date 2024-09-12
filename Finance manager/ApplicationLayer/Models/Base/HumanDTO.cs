@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DomainLayer.Models.Base;
+using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationLayer.Models.Base;
 
@@ -39,4 +40,22 @@ public class HumanDTO : ModelDTO
     private string _firstName = string.Empty;
     private string _email = string.Empty;
     private string _password = string.Empty;
+
+    public override bool Equals(object? obj)
+    {
+        if (!base.Equals(obj))
+            return false;
+
+        HumanDTO human = (HumanDTO)obj;
+
+        return _firstName == human.FirstName
+               && _lastName == human.LastName
+               && _email == human.Email
+               && _password == human.Password;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(base.GetHashCode(), _firstName, _lastName, _email, _password);
+    }
 }

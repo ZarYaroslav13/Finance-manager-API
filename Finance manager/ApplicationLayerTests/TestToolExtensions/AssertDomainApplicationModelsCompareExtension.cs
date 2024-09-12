@@ -1,5 +1,7 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Models.Base;
 using DomainLayer.Models;
+using DomainLayer.Models.Base;
 
 namespace ApplicationLayerTests.TestToolExtensions;
 
@@ -12,6 +14,14 @@ public static class AssertappApplicationModelsCompareExtension
         ArgumentNullException.ThrowIfNull(nameof(appAccount));
 
         Assert.IsTrue(AreEqual(domainAccount, appAccount));
+    }
+
+    public static void AreEqual(this Assert assert, AdminModel domainAdmin, AdminDTO appAdmin)
+    {
+        ArgumentNullException.ThrowIfNull(nameof(appAdmin));
+        ArgumentNullException.ThrowIfNull(nameof(appAdmin));
+
+        Assert.IsTrue(AreEqual(domainAdmin, appAdmin));
     }
 
     public static void AreEqual(this Assert assert, WalletModel domainWallet, WalletDTO appWallet)
@@ -53,6 +63,15 @@ public static class AssertappApplicationModelsCompareExtension
        && (domainAccount.FirstName == appAccount.FirstName)
        && (domainAccount.Email == appAccount.Email)
        && (domainAccount.Password == appAccount.Password);
+    }
+
+    private static bool AreEqual(HumanModel domainHuman, HumanDTO appHuman)
+    {
+        return (domainHuman.Id == appHuman.Id)
+       && (domainHuman.LastName == appHuman.LastName)
+       && (domainHuman.FirstName == appHuman.FirstName)
+       && (domainHuman.Email == appHuman.Email)
+       && (domainHuman.Password == appHuman.Password);
     }
 
     private static bool AreEqual(WalletModel domainWallet, WalletDTO appWallet)

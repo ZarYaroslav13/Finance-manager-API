@@ -1,4 +1,5 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Models.Base;
 using ApplicationLayerTests.Data.Models;
 using DomainLayer.Models;
 using FakeItEasy;
@@ -47,5 +48,15 @@ public class FinanceReportDTOTests
     public void Equals_FinanceReportsAreNotEqual_False(FinanceReportDTO fr1, object fr2)
     {
         Assert.AreNotEqual(fr1, fr2);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceReportDTOTestsDataProvider.MethodEqualsResultTrueData), typeof(FinanceReportDTOTestsDataProvider))]
+    public void GetHashCode_SameValues_ReturnsSameHashCode(FinanceReportDTO fr1, FinanceReportDTO fr2)
+    {
+        var hash1 = fr1.GetHashCode();
+        var hash2 = fr2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
     }
 }

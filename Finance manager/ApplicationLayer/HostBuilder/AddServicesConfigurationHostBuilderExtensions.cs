@@ -87,7 +87,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
         services.AddAuthorization(opt =>
         {
-            opt.AddPolicy("OnlyForAdmins", async policy =>
+            opt.AddPolicy("OnlyForAdmins", policy =>
             {
                 policy.RequireClaim(ClaimTypes.Name, adminService.GetAdmins().Select(a => a.Email));
             });

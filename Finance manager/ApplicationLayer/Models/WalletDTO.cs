@@ -27,13 +27,12 @@ public class WalletDTO : Base.ModelDTO
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || GetType() != obj.GetType())
+        if (!base.Equals(obj))
             return false;
 
         WalletDTO wallet = (WalletDTO)obj;
 
-        return Id == wallet.Id
-                && Name == wallet.Name
+        return Name == wallet.Name
                 && Balance == wallet.Balance
                 && AccountId == wallet.AccountId
                 && AreEqualLists(FinanceOperationTypes, wallet.FinanceOperationTypes)
@@ -43,6 +42,10 @@ public class WalletDTO : Base.ModelDTO
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, Name, Balance, AccountId, FinanceOperationTypes, Incomes, Expenses);
+        var financeOperationTypesHashValue = GetHashCodeOfList(FinanceOperationTypes);
+        var incomesHashValue = GetHashCodeOfList(Incomes);
+        var expensesHashValue = GetHashCodeOfList(Expenses);
+
+        return HashCode.Combine(base.GetHashCode(), Name, Balance, AccountId, financeOperationTypesHashValue, incomesHashValue, expensesHashValue);
     }
 }

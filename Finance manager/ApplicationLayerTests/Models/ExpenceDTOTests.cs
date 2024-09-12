@@ -1,4 +1,6 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Models.Base;
+using ApplicationLayerTests.Data.Models;
 using DataLayer.Models;
 
 namespace ApplicationLayerTests.Models;
@@ -44,5 +46,17 @@ public class ExpenceDTOTests
         var expenseDTO = new ExpenseDTO(initialType);
 
         Assert.ThrowsException<ArgumentException>(() => expenseDTO.ChangeFinanceOperationType(newType));
+    }
+
+    [TestMethod]
+    public void GetHashCode_SameValues_ReturnsSameHashCode()
+    {
+        var expense1 = new ExpenseDTO(new() { EntryType = EntryType.Expense });
+        var expense2 = new ExpenseDTO(new() { EntryType = EntryType.Expense });
+
+        var hash1 = expense1.GetHashCode();
+        var hash2 = expense2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
     }
 }

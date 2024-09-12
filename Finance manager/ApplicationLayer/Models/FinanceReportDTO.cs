@@ -29,13 +29,12 @@ public class FinanceReportDTO : Base.ModelDTO
 
     public override bool Equals(object? obj)
     {
-        if (obj == null || GetType() != obj.GetType())
+        if (!base.Equals(obj))
             return false;
 
         var financeReport = (FinanceReportDTO)obj;
 
-        return Id == financeReport.Id
-            && WalletId == financeReport.WalletId
+        return WalletId == financeReport.WalletId
             && WalletName == financeReport.WalletName
             && TotalIncome == financeReport.TotalIncome
             && TotalExpense == financeReport.TotalExpense
@@ -45,6 +44,8 @@ public class FinanceReportDTO : Base.ModelDTO
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Id, WalletId, WalletName, TotalIncome, TotalExpense, Period, Operations);
+        int operationHashCode = GetHashCodeOfList(Operations);
+
+        return HashCode.Combine(base.GetHashCode(), WalletId, WalletName, TotalIncome, TotalExpense, Period, operationHashCode);
     }
 }

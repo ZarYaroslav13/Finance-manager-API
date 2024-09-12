@@ -1,4 +1,5 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Models.Base;
 using ApplicationLayerTests.Data.Models;
 
 namespace ApplicationLayerTests.Models;
@@ -18,5 +19,15 @@ public class WalletDTOTests
     public void Equals_WalletDTOsAreEqual_False(WalletDTO w1, object w2)
     {
         Assert.AreNotEqual(w1, w2);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(WalletDTOTestDataProvider.MethodEqualsResultTrueData), typeof(WalletDTOTestDataProvider))]
+    public void GetHashCode_SameValues_ReturnsSameHashCode(WalletDTO w1, WalletDTO w2)
+    {
+        var hash1 = w1.GetHashCode();
+        var hash2 = w2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
     }
 }

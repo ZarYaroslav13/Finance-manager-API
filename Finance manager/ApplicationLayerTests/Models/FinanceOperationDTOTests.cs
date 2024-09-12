@@ -1,4 +1,5 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Models.Base;
 using ApplicationLayerTests.Data.Models;
 
 namespace ApplicationLayerTests.Models;
@@ -18,5 +19,15 @@ public class FinanceOperationDTOTests
     public void Equals_FinanceOperationDTOsAreNotEqual_False(FinanceOperationDTO fo1, object fo2)
     {
         Assert.AreNotEqual(fo1, fo2);
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceOperationDTOTestDataProvider.MethodEqualsResultTrueData), typeof(FinanceOperationDTOTestDataProvider))]
+    public void GetHashCode_SameValues_ReturnsSameHashCode(FinanceOperationDTO fo1, FinanceOperationDTO fo2)
+    {
+        var hash1 = fo1.GetHashCode();
+        var hash2 = fo2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
     }
 }

@@ -45,4 +45,16 @@ public class IncomeDTOTests
 
         Assert.ThrowsException<ArgumentException>(() => incomeDTO.ChangeFinanceOperationType(newType));
     }
+
+    [TestMethod]
+    public void GetHashCode_SameValues_ReturnsSameHashCode()
+    {
+        var income1 = new IncomeDTO(new() { EntryType = EntryType.Income });
+        var income2 = new IncomeDTO(new() { EntryType = EntryType.Income });
+
+        var hash1 = income1.GetHashCode();
+        var hash2 = income2.GetHashCode();
+
+        Assert.AreEqual(hash1, hash2);
+    }
 }
