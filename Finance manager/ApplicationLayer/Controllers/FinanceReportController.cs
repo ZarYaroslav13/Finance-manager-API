@@ -12,16 +12,20 @@ public class FinanceReportController : BaseController
     private readonly IFinanceReportCreator _creator;
     private readonly IWalletService _walletService;
 
-    public FinanceReportController(IFinanceReportCreator financeReportCreator, IWalletService walletService, IMapper mapper, ILogger<BaseController> logger) : base(mapper, logger)
+    public FinanceReportController(IFinanceReportCreator financeReportCreator, IWalletService walletService, IMapper mapper, ILogger<FinanceReportController> logger) : base(mapper, logger)
     {
         _creator = financeReportCreator ?? throw new ArgumentNullException(nameof(financeReportCreator));
         _walletService = walletService ?? throw new ArgumentNullException(nameof(walletService));
     }
 
     [HttpPost("create/daily")]
-    public async Task<FinanceReportDTO> CreateReportAsync(int walletId, DateTime date)
+    public async Task<IActionResult> CreateReportAsync(int walletId, DateTime date)
     {
-        _logger.LogInformation("CreateReportAsync (daily) called to create finance report for wallet Id: {WalletId} on date: {Date}", walletId, date);
+        int userId = GetUserId();
+        _logger.LogInformation("CreateReportAsync (daily) called by user with Id: {UserId} to create finance report for wallet Id: {WalletId} on date: {Date}", userId, walletId, date);
+
+        if (!(await _walletService.IsAccountOwnerWalletAsync(userId, walletId)))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet information with Id: {walletId} for user Id: {userId}");
 
         var wallet = await _walletService.FindWalletAsync(walletId);
 
@@ -30,13 +34,17 @@ public class FinanceReportController : BaseController
 
         _logger.LogInformation("Finance report (daily) created successfully for wallet Id: {WalletId} on date: {Date}", walletId, date);
 
-        return report;
+        return Ok(report);
     }
 
     [HttpPost("create/period")]
-    public async Task<FinanceReportDTO> CreateReportAsync(int walletId, DateTime startDate, DateTime endDate)
+    public async Task<IActionResult> CreateReportAsync(int walletId, DateTime startDate, DateTime endDate)
     {
+        int userId = GetUserId();
         _logger.LogInformation("CreateReportAsync (period) called to create finance report for wallet Id: {WalletId} from {StartDate} to {EndDate}", walletId, startDate, endDate);
+
+        if (!(await _walletService.IsAccountOwnerWalletAsync(userId, walletId)))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet information with Id: {walletId} for user Id: {userId}");
 
         var wallet = await _walletService.FindWalletAsync(walletId);
 
@@ -45,6 +53,6 @@ public class FinanceReportController : BaseController
 
         _logger.LogInformation("Finance report (period) created successfully for wallet Id: {WalletId} from {StartDate} to {EndDate}", walletId, startDate, endDate);
 
-        return report;
+        return Ok(report);
     }
 }

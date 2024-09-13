@@ -55,7 +55,7 @@ public class WalletController : BaseController
 
         if (wallet.AccountId != userId)
         {
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet Id: {wallet.Id} for user Id: {userId}");
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {wallet.Id} for user Id: {userId}");
         }
 
         var updatedWallet = _mapper.Map<WalletDTO>(
