@@ -18,7 +18,7 @@ public class AccountController : BaseController
     }
 
     [HttpPut("update")]
-    public async Task<AccountDTO> UpdateAsync([FromBody] AccountDTO account)
+    public async Task<IActionResult> UpdateAsync([FromBody] AccountDTO account)
     {
         int id = GetUserId();
         _logger.LogInformation("UpdateAsync called to update account with Id: {Id}", id);
@@ -34,11 +34,11 @@ public class AccountController : BaseController
 
         _logger.LogInformation("Account with Id: {Id} updated successfully", updatedAccount.Id);
 
-        return updatedAccount;
+        return Ok(updatedAccount);
     }
 
     [HttpDelete("remove")]
-    public void Delete()
+    public IActionResult Delete()
     {
         int id = GetUserId();
         _logger.LogInformation("Delete called to remove account with Id: {Id}", id);
@@ -46,11 +46,13 @@ public class AccountController : BaseController
         _accountService.DeleteAccountWithId(id);
 
         _logger.LogInformation("Account with Id: {Id} deleted successfully", id);
+
+        return Ok();
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpGet("accounts/admin")]
-    public async Task<List<AccountDTO>> GetAllAsync(int skip, int take)
+    public async Task<IActionResult> GetAllAsync(int skip, int take)
     {
         _logger.LogInformation("GetAllAsync called by admin with skip: {Skip}, take: {Take}", skip, take);
 
@@ -60,12 +62,12 @@ public class AccountController : BaseController
 
         _logger.LogInformation("{Count} accounts retrieved successfully", accounts.Count);
 
-        return accounts;
+        return Ok(accounts);
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpPut("update/admin")]
-    public async Task<AccountDTO> AdminUpdateAccountAsync([FromBody] AccountDTO account)
+    public async Task<IActionResult> AdminUpdateAccountAsync([FromBody] AccountDTO account)
     {
         _logger.LogInformation("AdminUpdateAccountAsync called to update account with Id: {Id}", account.Id);
 
@@ -75,17 +77,19 @@ public class AccountController : BaseController
 
         _logger.LogInformation("Admin updated account with Id: {Id} successfully", updatedAccount.Id);
 
-        return updatedAccount;
+        return Ok(updatedAccount);
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpDelete("remove/{id}/admin")]
-    public void DeleteById(int id)
+    public IActionResult DeleteById(int id)
     {
         _logger.LogInformation("DeleteById called by admin to remove account with Id: {Id}", id);
 
         _accountService.DeleteAccountWithId(id);
 
         _logger.LogInformation("Admin deleted account with Id: {Id} successfully", id);
+
+        return Ok();
     }
 }
