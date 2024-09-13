@@ -1,5 +1,4 @@
 ﻿using ApplicationLayer.Models;
-using ApplicationLayer.Models.Base;
 using ApplicationLayerTests.Data.Models;
 using DomainLayer.Models;
 using FakeItEasy;

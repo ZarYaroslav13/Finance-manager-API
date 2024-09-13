@@ -1,6 +1,4 @@
 ﻿using ApplicationLayer.Models;
-using ApplicationLayer.Models.Base;
-using ApplicationLayerTests.Data.Models;
 using DataLayer.Models;
 
 namespace ApplicationLayerTests.Models;

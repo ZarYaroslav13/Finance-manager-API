@@ -40,7 +40,7 @@ public class FinanceOperationTypeDTO : Base.ModelDTO
 
         var financeOperationType = (FinanceOperationTypeDTO)obj;
 
-        return  Name == financeOperationType.Name
+        return Name == financeOperationType.Name
             && Description == financeOperationType.Description
             && EntryType == financeOperationType.EntryType
             && WalletId == financeOperationType.WalletId

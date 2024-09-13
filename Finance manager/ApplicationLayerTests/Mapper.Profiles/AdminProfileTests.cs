@@ -1,14 +1,9 @@
 ﻿using ApplicationLayer.Mapper.Profiles;
 using ApplicationLayer.Models;
 using ApplicationLayerTests.Data.Mapper.Profiles;
+using ApplicationLayerTests.TestToolExtensions;
 using AutoMapper;
 using DomainLayer.Models;
-using ApplicationLayerTests.TestToolExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationLayerTests.Mapper.Profiles;
 

@@ -41,7 +41,7 @@ public class TokenManager : ITokenManager
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentNullException(nameof(email) + "or" + nameof(password));
 
-        AccountDTO account = _mapper.Map<AccountDTO>((await _accountService.TrySignInAsync(email, password)));
+        AccountDTO account = _mapper.Map<AccountDTO>(await _accountService.TrySignInAsync(email, password));
 
         if (account == null)
             return null;
@@ -63,7 +63,7 @@ public class TokenManager : ITokenManager
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentNullException(nameof(email) + "or" + nameof(password));
 
-        AdminDTO account = _mapper.Map<AdminDTO>((await _adminService.TrySignInAsync(email, password)));
+        AdminDTO account = _mapper.Map<AdminDTO>(await _adminService.TrySignInAsync(email, password));
 
         if (account == null)
             return null;

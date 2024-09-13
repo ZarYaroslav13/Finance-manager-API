@@ -30,7 +30,7 @@ public abstract class FinanceOperationDTO : Base.ModelDTO
 
         var financeOperation = (FinanceOperationDTO)obj;
 
-        return  Amount == financeOperation.Amount
+        return Amount == financeOperation.Amount
             && Date == financeOperation.Date
             && Type == financeOperation.Type;
     }
