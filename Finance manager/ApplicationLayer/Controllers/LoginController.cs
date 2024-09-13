@@ -10,18 +10,19 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationLayer.Controllers;
 
-public class SigninController : BaseController
+[AllowAnonymous]
+public class LoginController : BaseController
 {
     private readonly IAccountService _accountService;
     private readonly IAdminService _adminService;
     private readonly ITokenManager _tokenManager;
 
-    public SigninController(
-        IAccountService accountService,
+    public LoginController(
         IAdminService adminService,
+        IAccountService accountService,
         ITokenManager tokenManager,
         IMapper mapper,
-        ILogger<BaseController> logger) : base(mapper, logger)
+        ILogger<LoginController> logger) : base(mapper, logger)
     {
         _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
         _adminService = adminService ?? throw new ArgumentNullException(nameof(adminService));
@@ -29,10 +30,15 @@ public class SigninController : BaseController
     }
 
     [HttpPost("sign-in")]
-    [AllowAnonymous]
     public async Task<IActionResult> SignInAsync(string email, string password)
     {
         _logger.LogInformation("SignInAsync called with email: {Email}", email);
+
+        if (String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(password))
+        {
+            _logger.LogWarning($"{nameof(email)}: {email} \n {nameof(password)}: {password}");
+            return BadRequest(new { errorText = "Email and password cannot be empty" });
+        }
 
         var identity = await _tokenManager.GetAccountIdentityAsync(email, password);
         if (identity == null)
@@ -51,20 +57,25 @@ public class SigninController : BaseController
             email = identity.Name
         };
 
-        return new JsonResult(response);
+        return Ok(response);
     }
 
     [HttpPost("sign-in/admin")]
-    [AllowAnonymous]
     public async Task<IActionResult> SignInAdminAsync(string email, string password)
     {
         _logger.LogInformation("SignInAdminAsync called with email: {Email}", email);
+
+        if (String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(password))
+        {
+            _logger.LogWarning($"{nameof(email)}: {email} \n {nameof(password)}: {password}");
+            return BadRequest(new { errorText = "Email and password cannot be empty" });
+        }
 
         var identity = await _tokenManager.GetAdminIdentityAsync(email, password);
         if (identity == null)
         {
             _logger.LogWarning("SignInAdmin failed for email: {Email}. Invalid credentials.", email);
-            return BadRequest(new { errorText = "Invalid email or username" });
+            return BadRequest(new { errorText = "Invalid email" });
         }
 
         var encodedJwt = _tokenManager.CreateToken(identity);
@@ -77,12 +88,11 @@ public class SigninController : BaseController
             email = identity.Name
         };
 
-        return new JsonResult(response);
+        return Ok(response);
     }
 
     [HttpPost("login")]
-    [AllowAnonymous]
-    public async Task<ActionResult<AccountDTO>> CreateAsync([FromBody] AccountDTO account)
+    public async Task<IActionResult> CreateAsync([FromBody] AccountDTO account)
     {
         _logger.LogInformation("CreateAsync called to create a new account with email: {Email}", account.Email);
 
@@ -92,6 +102,6 @@ public class SigninController : BaseController
 
         _logger.LogInformation("Account created successfully with email: {Email} and Id: {Id}", newAccount.Email, newAccount.Id);
 
-        return newAccount;
+        return Ok(newAccount);
     }
 }

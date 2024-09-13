@@ -9,7 +9,7 @@ namespace ApplicationLayer.Controllers.Base;
 [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class BaseController : ControllerBase
+public abstract class BaseController : ControllerBase
 {
     protected readonly ILogger<BaseController> _logger;
     protected readonly IMapper _mapper;

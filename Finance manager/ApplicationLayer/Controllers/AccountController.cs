@@ -88,5 +88,4 @@ public class AccountController : BaseController
 
         _logger.LogInformation("Admin deleted account with Id: {Id} successfully", id);
     }
-
 }
