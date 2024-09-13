@@ -22,7 +22,7 @@ public abstract class BaseController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public int GetUserId()
+    protected int GetUserId()
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;
 
@@ -39,7 +39,7 @@ public abstract class BaseController : ControllerBase
         return id;
     }
 
-    public string GetUserEmail()
+    protected string GetUserEmail()
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;
 

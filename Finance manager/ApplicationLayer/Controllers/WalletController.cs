@@ -18,7 +18,7 @@ public class WalletController : BaseController
     }
 
     [HttpGet("wallets")]
-    public async Task<List<WalletDTO>> GetWallets()
+    public async Task<IActionResult> GetWallets()
     {
         int userId = GetUserId();
         _logger.LogInformation("GetWallets called for user Id: {UserId}", userId);
@@ -29,11 +29,11 @@ public class WalletController : BaseController
 
         _logger.LogInformation("{Count} wallets retrieved for user Id: {UserId}", wallets.Count, userId);
 
-        return wallets;
+        return Ok(wallets);
     }
 
     [HttpPost("create")]
-    public async Task<WalletDTO> CreateAsync([FromBody] WalletDTO wallet)
+    public async Task<IActionResult> CreateAsync([FromBody] WalletDTO wallet)
     {
         wallet.AccountId = GetUserId();
         _logger.LogInformation("CreateAsync called to create wallet for account Id: {AccountId}", wallet.AccountId);
@@ -44,11 +44,11 @@ public class WalletController : BaseController
 
         _logger.LogInformation("Wallet created successfully with Id: {WalletId} for account Id: {AccountId}", newWallet.Id, wallet.AccountId);
 
-        return newWallet;
+        return Ok(newWallet);
     }
 
     [HttpPut("update")]
-    public async Task<WalletDTO> UpdateAsync([FromBody] WalletDTO wallet)
+    public async Task<IActionResult> UpdateAsync([FromBody] WalletDTO wallet)
     {
         int userId = GetUserId();
         _logger.LogInformation("UpdateAsync called to update wallet Id: {WalletId} for user Id: {UserId}", wallet.Id, userId);
@@ -64,11 +64,11 @@ public class WalletController : BaseController
 
         _logger.LogInformation("Wallet Id: {WalletId} updated successfully for user Id: {UserId}", updatedWallet.Id, userId);
 
-        return updatedWallet;
+        return Ok(updatedWallet);
     }
 
     [HttpDelete("remove/{id}")]
-    public async Task DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
         int userId = GetUserId();
         _logger.LogInformation("DeleteAsync called to remove wallet Id: {WalletId} for user Id: {UserId}", id, userId);
@@ -81,24 +81,33 @@ public class WalletController : BaseController
         await _service.DeleteWalletByIdAsync(id);
 
         _logger.LogInformation("Wallet Id: {WalletId} deleted successfully for user Id: {UserId}", id, userId);
+
+        return Ok();
     }
 
     [HttpGet("wallets/{id}")]
-    public async Task<WalletDTO> GetByIdAsync(int id)
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
         _logger.LogInformation("GetByIdAsync called to retrieve wallet Id: {WalletId}", id);
+
+        int userId = GetUserId();
+
+        if (!(await _service.IsAccountOwnerWalletAsync(userId, id)))
+        {
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet with Id: {id} by user Id: {userId}");
+        }
 
         var wallet = _mapper.Map<WalletDTO>(
                 await _service.FindWalletAsync(id));
 
         _logger.LogInformation("Wallet Id: {WalletId} retrieved successfully", id);
 
-        return wallet;
+        return Ok(wallet);
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpGet("wallets/account/{accountId}/admin")]
-    public async Task<List<WalletDTO>> GetWalletsOfAccountAsync(int accountId)
+    public async Task<IActionResult> GetWalletsOfAccountAsync(int accountId)
     {
         _logger.LogInformation("GetWalletsOfAccountAsync called by admin for account Id: {AccountId}", accountId);
 
@@ -108,17 +117,19 @@ public class WalletController : BaseController
 
         _logger.LogInformation("{Count} wallets retrieved for account Id: {AccountId} by admin", wallets.Count, accountId);
 
-        return wallets;
+        return Ok(wallets);
     }
 
     [Authorize(Policy = _adminPolicy)]
     [HttpDelete("remove/{id}/admin")]
-    public async Task DeleteWalletOfAccountAsync(int id)
+    public async Task<IActionResult> DeleteWalletOfAccountAsync(int id)
     {
         _logger.LogInformation("DeleteWalletOfAccountAsync called by admin to delete wallet Id: {WalletId}", id);
 
         await _service.DeleteWalletByIdAsync(id);
 
         _logger.LogInformation("Admin deleted wallet Id: {WalletId} successfully", id);
+
+        return Ok();
     }
 }
