@@ -1,7 +1,6 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
 using AutoMapper;
-using DataLayer.Models;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +23,7 @@ public class FinanceOperationTypeController : BaseController
 
         _logger.LogInformation("GetAllAsync called to retrieve finance operation types for wallet Id: {WalletId}", walletId);
 
-        if(!await _financeService.IsAccountOwnerOfWalletAsync(userId, walletId))
+        if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, walletId))
             throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {walletId} for user Id: {userId}");
 
         var operationTypes = (await _financeService.GetAllFinanceOperationTypesOfWalletAsync(walletId))
@@ -59,9 +58,6 @@ public class FinanceOperationTypeController : BaseController
     {
         var userId = GetUserId();
         _logger.LogInformation("UpdateAsync called to update finance operation type with Id: {Id}", dto.Id);
-
-        if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, dto.WalletId))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {dto.WalletId} for user Id: {userId}");
 
         if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, dto.Id))
             throw new UnauthorizedAccessException($"Unauthorized access attempt to update finance operation type with Id: {dto.Id} for user Id: {userId}");

@@ -87,7 +87,7 @@ public class FinanceOperationTypeControllerTests
 
         A.CallTo(() => _financeService.IsAccountOwnerOfWalletAsync(_userId, walletId)).Returns(false);
 
-         Assert.ThrowsExceptionAsync<UnauthorizedAccessException> (() => _controller.GetAllAsync(walletId));
+        Assert.ThrowsExceptionAsync<UnauthorizedAccessException>(() => _controller.GetAllAsync(walletId));
     }
 
     [TestMethod]
@@ -173,21 +173,6 @@ public class FinanceOperationTypeControllerTests
         var okResult = result as OkObjectResult;
         okResult.Value.Should().BeEquivalentTo(updatedOperationTypeDTO);
         okResult.StatusCode.Should().Be(200);
-    }
-
-    [TestMethod]
-    public void UpdateAsync_ShouldThrowUnauthorizedAccessException_WhenUserIsNotOwnerOfWallet()
-    {
-        var dto = new FinanceOperationTypeDTO
-        {
-            Id = 1,
-            Name = "Investment",
-            WalletId = 1
-        };
-
-        A.CallTo(() => _financeService.IsAccountOwnerOfWalletAsync(_userId, dto.WalletId)).Returns(false);
-
-        Assert.ThrowsExceptionAsync<UnauthorizedAccessException>(() => _controller.UpdateAsync(dto));
     }
 
     [TestMethod]

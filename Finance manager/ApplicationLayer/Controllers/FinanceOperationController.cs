@@ -17,9 +17,13 @@ public class FinanceOperationController : BaseController
     }
 
     [HttpGet("operations/wallet/{walletId}")]
-    public async Task<List<FinanceOperationDTO>> GetAllOfWalletAsync(int walletId, int index = 0, int count = 0)
+    public async Task<IActionResult> GetAllOfWalletAsync(int walletId, int index = 0, int count = 0)
     {
+        var userId = GetUserId();
         _logger.LogInformation("GetAllOfWalletAsync called to retrieve finance operations for wallet Id: {WalletId}, starting at index: {Index}, with count: {Count}", walletId, index, count);
+
+        if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, walletId))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet with Id: {walletId} information for user Id: {userId}");
 
         var operations = (await _financeService.GetAllFinanceOperationOfWalletAsync(walletId, index, count))
             .Select(_mapper.Map<FinanceOperationDTO>)
@@ -27,13 +31,17 @@ public class FinanceOperationController : BaseController
 
         _logger.LogInformation("{Count} finance operations retrieved for wallet Id: {WalletId}", operations.Count, walletId);
 
-        return operations;
+        return Ok(operations);
     }
 
     [HttpGet("operations/type/{typeId}")]
-    public async Task<List<FinanceOperationDTO>> GetAllOfTypeAsync(int typeId)
+    public async Task<IActionResult> GetAllOfTypeAsync(int typeId)
     {
+        var userId = GetUserId();
         _logger.LogInformation("GetAllOfTypeAsync called to retrieve finance operations of type Id: {TypeId}", typeId);
+
+        if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, typeId))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to get finance operation type with Id: {typeId} information for user Id: {userId}");
 
         var operations = (await _financeService.GetAllFinanceOperationOfTypeAsync(typeId))
             .Select(_mapper.Map<FinanceOperationDTO>)
@@ -41,13 +49,17 @@ public class FinanceOperationController : BaseController
 
         _logger.LogInformation("{Count} finance operations retrieved for type Id: {TypeId}", operations.Count, typeId);
 
-        return operations;
+        return Ok(operations);
     }
 
     [HttpPost("create")]
-    public async Task<FinanceOperationDTO> AddAsync([FromBody] FinanceOperationDTO dto)
+    public async Task<IActionResult> AddAsync([FromBody] FinanceOperationDTO dto)
     {
+        var userId = GetUserId();
         _logger.LogInformation("AddAsync called to add a new finance operation with type: {@Description}", dto.Type);
+
+        if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, dto.Type.WalletId))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to add finance operation  to wallet with Id: {dto.Type.WalletId} by user with Id: {userId}");
 
         var newOperation = _mapper.Map<FinanceOperationDTO>(
                 await _financeService.AddFinanceOperationAsync(
@@ -55,13 +67,17 @@ public class FinanceOperationController : BaseController
 
         _logger.LogInformation("Finance operation with Id: {Id} added successfully", newOperation.Id);
 
-        return newOperation;
+        return Ok(newOperation);
     }
 
     [HttpPut("update/{id}")]
-    public async Task<FinanceOperationDTO> UpdateAsync([FromBody] FinanceOperationDTO dto)
+    public async Task<IActionResult> UpdateAsync([FromBody] FinanceOperationDTO dto)
     {
+        var userId = GetUserId();
         _logger.LogInformation("UpdateAsync called to update finance operation with Id: {Id}", dto.Id);
+
+        if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, dto.Type.Id))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to update finance operation of type with Id: {dto.Type.Id} by user with Id: {userId}");
 
         var updatedOperation = _mapper.Map<FinanceOperationDTO>(
                 await _financeService.UpdateFinanceOperationAsync(
@@ -69,16 +85,22 @@ public class FinanceOperationController : BaseController
 
         _logger.LogInformation("Finance operation with Id: {Id} updated successfully", updatedOperation.Id);
 
-        return updatedOperation;
+        return Ok(updatedOperation);
     }
 
     [HttpDelete("remove/{id}")]
-    public async Task DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAsync(int id)
     {
+        var userId = GetUserId();
         _logger.LogInformation("DeleteAsync called to remove finance operation with Id: {Id}", id);
+
+        if (!await _financeService.IsAccountOwnerOfFinanceOperationAsync(userId, id))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to delete finance operation with Id: {id} by user with Id: {userId}");
 
         await _financeService.DeleteFinanceOperationAsync(id);
 
         _logger.LogInformation("Finance operation with Id: {Id} deleted successfully", id);
+
+        return Ok();
     }
 }
