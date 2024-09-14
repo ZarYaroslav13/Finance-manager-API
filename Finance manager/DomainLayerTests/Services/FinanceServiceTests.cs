@@ -142,6 +142,51 @@ public class FinanceServiceTests
         A.CallTo(() => _financeOperationTypesRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
     }
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.IsAccountOwnerOfFinanceOperationTypeAsyncArgumentsAreLessOrEqualZeroThrowsArgumentOutOfRangeExceptionTestData), typeof(FinanceServiceTestsDataProvider))]
+    public void IsAccountOwnerOfFinanceOperationTypeAsync_ArgumentsAreLessOrEqualZero_ThrowsArgumentOutOfRangeException(int accountid, int typeId)
+    {
+        Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _service.IsAccountOwnerOfFinanceOperationTypeAsync(accountid, typeId));
+    }
+
+    [TestMethod]
+    public async Task IsAccountOwnerOfFinanceOperationTypeAsync_AccountIsOwner_ReturnsTrue()
+    {
+        var walletRepository = A.Fake<IRepository<Wallet>>();
+        var wallet = new Wallet() { Id = 1, AccountId = 2 };
+        var type = new FinanceOperationType() { Id = 3, WalletId = wallet.Id };
+
+        A.CallTo(() => _unitOfWork.GetRepository<Wallet>())
+           .Returns(walletRepository);
+        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(type.Id))
+            .Returns(type);
+        A.CallTo(() => walletRepository.GetByIdAsync(wallet.Id))
+            .Returns(wallet);
+
+        bool result = await _service.IsAccountOwnerOfFinanceOperationTypeAsync(wallet.AccountId, type.Id);
+
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public async Task IsAccountOwnerOfFinanceOperationTypeAsync_AccountIsNotOwner_ReturnsFalse()
+    {
+        var walletRepository = A.Fake<IRepository<Wallet>>();
+        var wallet = new Wallet() { Id = 1, AccountId = 2 };
+        var type = new FinanceOperationType() { Id = 3, WalletId = wallet.Id };
+
+        A.CallTo(() => _unitOfWork.GetRepository<Wallet>())
+           .Returns(walletRepository);
+        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(type.Id))
+            .Returns(type);
+        A.CallTo(() => walletRepository.GetByIdAsync(wallet.Id))
+            .Returns(wallet);
+
+        bool result = await _service.IsAccountOwnerOfFinanceOperationTypeAsync(wallet.AccountId + 1, type.Id);
+
+        Assert.IsFalse(result);
+    }
     #endregion
 
     #region FinanceOperationTests
@@ -312,6 +357,49 @@ public class FinanceServiceTests
 
         A.CallTo(() => _financeOperationsRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
+    }
+
+    [TestMethod]
+    public async Task IsAccountOwnerOfFinanceOperationAsync_AccountIsOwner_ReturnsTrue()
+    {
+        var walletRepository = A.Fake<IRepository<Wallet>>();
+        var wallet = new Wallet() { Id = 1, AccountId = 2 };
+        var type = new FinanceOperationType() { Id = 3, WalletId = wallet.Id };
+        var operation = new FinanceOperation() { Id = 4, TypeId = type.Id };
+
+        A.CallTo(() => _unitOfWork.GetRepository<Wallet>())
+           .Returns(walletRepository);
+        A.CallTo(() => _financeOperationsRepository.GetByIdAsync(operation.Id))
+            .Returns(operation);
+        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(type.Id))
+            .Returns(type);
+        A.CallTo(() => walletRepository.GetByIdAsync(wallet.Id))
+            .Returns(wallet);
+
+        bool result = await _service.IsAccountOwnerOfFinanceOperationAsync(wallet.AccountId, operation.Id);
+
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
+    public async Task IsAccountOwnerOfFinanceOperationAsync_AccountIsNotOwner_ReturnsFalse()
+    {
+        var walletRepository = A.Fake<IRepository<Wallet>>();
+        var wallet = new Wallet() { Id = 1, AccountId = 2 };
+        var type = new FinanceOperationType() { Id = 3, WalletId = wallet.Id };
+        var operation = new FinanceOperation() { Id = 4, TypeId = type.Id };
+
+        A.CallTo(() => _unitOfWork.GetRepository<Wallet>())
+           .Returns(walletRepository);
+        A.CallTo(() => _financeOperationsRepository.GetByIdAsync(operation.Id))
+            .Returns(operation);
+        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(operation.TypeId))
+            .Returns(type);
+        A.CallTo(() => walletRepository.GetByIdAsync(type.WalletId)).Returns(wallet);
+
+        bool result = await _service.IsAccountOwnerOfFinanceOperationAsync(wallet.AccountId + 1, operation.Id);
+
+        Assert.IsFalse(result);
     }
     #endregion
 }

@@ -4,6 +4,8 @@ namespace DomainLayer.Services.Finances;
 
 public interface IFinanceService
 {
+    public Task<bool> IsAccountOwnerOfWalletAsync(int accountid, int typeId);
+
     public Task<List<FinanceOperationTypeModel>> GetAllFinanceOperationTypesOfWalletAsync(int walletId);
 
     public Task<FinanceOperationTypeModel> AddFinanceOperationTypeAsync(FinanceOperationTypeModel type);
@@ -11,6 +13,8 @@ public interface IFinanceService
     public Task<FinanceOperationTypeModel> UpdateFinanceOperationTypeAsync(FinanceOperationTypeModel type);
 
     public Task DeleteFinanceOperationTypeAsync(int id);
+
+    public Task<bool> IsAccountOwnerOfFinanceOperationTypeAsync(int accountid, int typeId);
 
     public Task<List<FinanceOperationModel>> GetAllFinanceOperationOfWalletAsync(int walletId, int index = 0, int count = 0);
 
@@ -23,4 +27,6 @@ public interface IFinanceService
     public Task<FinanceOperationModel> UpdateFinanceOperationAsync(FinanceOperationModel financeOperation);
 
     public Task DeleteFinanceOperationAsync(int id);
+
+    public Task<bool> IsAccountOwnerOfFinanceOperationAsync(int accountid, int typeId);
 }

@@ -17,6 +17,17 @@ public class FinanceService : BaseService, IFinanceService
         _financeOperationTypeRepository = _unitOfWork.GetRepository<FinanceOperationType>();
     }
 
+    public async Task<bool> IsAccountOwnerOfWalletAsync(int accountid, int typeId)
+    {
+        if (accountid <= 0 || typeId <= 0)
+            throw new ArgumentOutOfRangeException($"{nameof(accountid)} and {nameof(typeId)} must be above zero");
+
+        var type = await _financeOperationTypeRepository.GetByIdAsync(typeId);
+        var wallet = await _unitOfWork.GetRepository<Wallet>().GetByIdAsync(type.WalletId);
+
+        return wallet.AccountId == accountid;
+    }
+
     #region FinanceOperationTypeMethods
 
     public async Task<List<FinanceOperationTypeModel>> GetAllFinanceOperationTypesOfWalletAsync(int walletId)
@@ -69,6 +80,17 @@ public class FinanceService : BaseService, IFinanceService
 
         _financeOperationTypeRepository.Delete(id);
         await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsAccountOwnerOfFinanceOperationTypeAsync(int accountid, int typeId)
+    {
+        if (accountid <= 0 || typeId <= 0)
+            throw new ArgumentOutOfRangeException($"{nameof(accountid)} and {nameof(typeId)} must be above zero");
+
+        var type = await _financeOperationTypeRepository.GetByIdAsync(typeId);
+        var wallet = await _unitOfWork.GetRepository<Wallet>().GetByIdAsync(type.WalletId);
+
+        return wallet.AccountId == accountid;
     }
 
     #endregion
@@ -166,6 +188,18 @@ public class FinanceService : BaseService, IFinanceService
     {
         _financeOperationRepository.Delete(id);
         await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsAccountOwnerOfFinanceOperationAsync(int accountid, int operationId)
+    {
+        if (accountid <= 0 || operationId <= 0)
+            throw new ArgumentOutOfRangeException($"{nameof(accountid)} and {nameof(operationId)} must be above zero");
+
+        var operation = await _financeOperationRepository.GetByIdAsync(operationId);
+        var type = await _financeOperationTypeRepository.GetByIdAsync(operation.TypeId);
+        var wallet = await _unitOfWork.GetRepository<Wallet>().GetByIdAsync(type.WalletId);
+
+        return wallet.AccountId == accountid;
     }
     #endregion
 }

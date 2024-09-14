@@ -141,33 +141,27 @@ public class WalletServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(WalletServiceTestsDataProvider.IsAccountOwnerWalletAsyncValidAccountIdAndWalletIdReturnsTrueTestData), typeof(WalletServiceTestsDataProvider))]
-    public async Task IsAccountOwnerWalletAsync_ValidAccountIdAndWalletId_ReturnsTrue(List<Wallet> wallets, int accountId)
+    public async Task IsAccountOwnerWalletAsync_ValidAccountIdAndWalletId_ReturnsTrue()
     {
-        A.CallTo(() => _repository.GetAllAsync(
-            A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
-            A<Expression<Func<Wallet, bool>>>._,
-            A<int>._, A<int>._,
-            A<string[]>._))
-            .Returns(wallets);
+        Wallet wallet = new() { Id = 1, AccountId = 2 };
 
-        var result = await _service.IsAccountOwnerWalletAsync(accountId, wallets[0].Id);
+        A.CallTo(() => _repository.GetByIdAsync(wallet.Id))
+            .Returns(wallet);
+
+        var result = await _service.IsAccountOwnerWalletAsync(wallet.AccountId, wallet.Id);
 
         Assert.IsTrue(result);
     }
 
     [TestMethod]
-    [DynamicData(nameof(WalletServiceTestsDataProvider.IsAccountOwnerWalletAsyncWalletNotOwnedByAccountReturnsFalseTestData), typeof(WalletServiceTestsDataProvider))]
-    public async Task IsAccountOwnerWalletAsync_WalletNotOwnedByAccount_ReturnsFalse(List<Wallet> wallets, int accountId, int walletId)
+    public async Task IsAccountOwnerWalletAsync_WalletNotOwnedByAccount_ReturnsFalse()
     {
-        A.CallTo(() => _repository.GetAllAsync(
-            A<Func<IQueryable<Wallet>, IOrderedQueryable<Wallet>>>._,
-            A<Expression<Func<Wallet, bool>>>._,
-            A<int>._, A<int>._,
-            A<string[]>._))
-            .Returns(wallets);
+        Wallet wallet = new() { Id = 1, AccountId = 2 };
 
-        var result = await _service.IsAccountOwnerWalletAsync(accountId, walletId);
+        A.CallTo(() => _repository.GetByIdAsync(wallet.Id))
+            .Returns(wallet);
+
+        var result = await _service.IsAccountOwnerWalletAsync(wallet.AccountId + 1, wallet.Id);
 
         Assert.IsFalse(result);
     }

@@ -237,4 +237,16 @@ public static class FinanceServiceTestsDataProvider
             2, 3
         },
     };
+
+    public static IEnumerable<object[]> IsAccountOwnerOfFinanceOperationTypeAsyncArgumentsAreLessOrEqualZeroThrowsArgumentOutOfRangeExceptionTestData { get; } = new List<object[]>
+    {
+        new object[]{ -1, -1 },
+        new object[]{ -1, 1 },
+        new object[]{ 1, -1 },
+        new object[]{ 0, 0 },
+        new object[]{ 1, 0 },
+        new object[]{ 0, 1 },
+        new object[]{ -1, 0 },
+        new object[]{ 0, -1 },
+    };
 }
