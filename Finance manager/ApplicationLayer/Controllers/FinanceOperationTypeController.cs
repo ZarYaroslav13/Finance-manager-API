@@ -1,6 +1,7 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
 using AutoMapper;
+using DataLayer.Models;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,12 @@ public class FinanceOperationTypeController : BaseController
     [HttpGet("types/wallet/{walletId}")]
     public async Task<IActionResult> GetAllAsync(int walletId)
     {
+        var userId = GetUserId();
+
         _logger.LogInformation("GetAllAsync called to retrieve finance operation types for wallet Id: {WalletId}", walletId);
+
+        if(!await _financeService.IsAccountOwnerOfWalletAsync(userId, walletId))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {walletId} for user Id: {userId}");
 
         var operationTypes = (await _financeService.GetAllFinanceOperationTypesOfWalletAsync(walletId))
             .Select(_mapper.Map<FinanceOperationTypeDTO>)
@@ -33,7 +39,11 @@ public class FinanceOperationTypeController : BaseController
     [HttpPost("create")]
     public async Task<IActionResult> AddAsync([FromBody] FinanceOperationTypeDTO dto)
     {
+        var userId = GetUserId();
         _logger.LogInformation("AddAsync called to add a new finance operation type with name: {Name}", dto.Name);
+
+        if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, dto.WalletId))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {dto.WalletId} for user Id: {userId}");
 
         var newOperationType = _mapper.Map<FinanceOperationTypeDTO>(
                 await _financeService.AddFinanceOperationTypeAsync(
@@ -47,7 +57,14 @@ public class FinanceOperationTypeController : BaseController
     [HttpPut("update")]
     public async Task<IActionResult> UpdateAsync([FromBody] FinanceOperationTypeDTO dto)
     {
+        var userId = GetUserId();
         _logger.LogInformation("UpdateAsync called to update finance operation type with Id: {Id}", dto.Id);
+
+        if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, dto.WalletId))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {dto.WalletId} for user Id: {userId}");
+
+        if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, dto.Id))
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to update finance operation type with Id: {dto.Id} for user Id: {userId}");
 
         var updatedOperationType = _mapper.Map<FinanceOperationTypeDTO>(
                 await _financeService.UpdateFinanceOperationTypeAsync(
@@ -72,5 +89,4 @@ public class FinanceOperationTypeController : BaseController
 
         return Ok();
     }
-
 }

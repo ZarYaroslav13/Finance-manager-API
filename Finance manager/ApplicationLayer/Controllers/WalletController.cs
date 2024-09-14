@@ -54,9 +54,7 @@ public class WalletController : BaseController
         _logger.LogInformation("UpdateAsync called to update wallet Id: {WalletId} for user Id: {UserId}", wallet.Id, userId);
 
         if (wallet.AccountId != userId)
-        {
             throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {wallet.Id} for user Id: {userId}");
-        }
 
         var updatedWallet = _mapper.Map<WalletDTO>(
                 await _service.UpdateWalletAsync(

@@ -113,7 +113,7 @@ public class FinanceReportControllerTests
     }
 
     [TestMethod]
-    public async Task CreateReportAsync_Period_ShouldThrowUnauthorizedAccessException_WhenCalledByNonOwner()
+    public void CreateReportAsync_Period_ShouldThrowUnauthorizedAccessException_WhenCalledByNonOwner()
     {
         int walletId = 1;
         A.CallTo(() => _walletService.IsAccountOwnerWalletAsync(_userId, walletId)).Returns(false);

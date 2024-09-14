@@ -4,7 +4,7 @@ namespace DomainLayer.Services.Finances;
 
 public interface IFinanceService
 {
-    public Task<bool> IsAccountOwnerOfWalletAsync(int accountid, int typeId);
+    public Task<bool> IsAccountOwnerOfWalletAsync(int accountid, int walletId);
 
     public Task<List<FinanceOperationTypeModel>> GetAllFinanceOperationTypesOfWalletAsync(int walletId);
 
