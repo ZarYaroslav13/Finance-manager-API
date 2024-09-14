@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace ApplicationLayer.Controllers.Base;
 
 [Authorize]
-[Route("api/[controller]s")]
+[Route("finance-manager/[controller]s")]
 [ApiController]
 public abstract class BaseController : ControllerBase
 {

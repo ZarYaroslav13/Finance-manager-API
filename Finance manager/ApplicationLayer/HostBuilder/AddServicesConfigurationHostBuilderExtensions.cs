@@ -1,4 +1,5 @@
-﻿using ApplicationLayer.Security;
+﻿using ApplicationLayer.Routing;
+using ApplicationLayer.Security;
 using ApplicationLayer.Security.Jwt;
 using DataLayer;
 using DataLayer.Security;
@@ -8,6 +9,7 @@ using DomainLayer.Services.Admins;
 using DomainLayer.Services.Finances;
 using DomainLayer.Services.Wallets;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -36,6 +38,11 @@ public static class AddServicesConfigurationHostBuilderExtensions
         services.AddJwtAuthentication();
 
         services.AddPoliticalAuthorization(configuration);
+
+        services.AddControllers(options =>
+            options.Conventions
+                .Add(new RouteTokenTransformerConvention(
+                        new SlugifyParameterTransformer())));
 
         return builder;
     }

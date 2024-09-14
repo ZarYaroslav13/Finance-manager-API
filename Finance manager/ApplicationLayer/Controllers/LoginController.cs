@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApplicationLayer.Controllers;
 
 [AllowAnonymous]
+[Route("finance-manager")]
 public class LoginController : BaseController
 {
     private readonly IAccountService _accountService;
@@ -60,7 +61,7 @@ public class LoginController : BaseController
         return Ok(response);
     }
 
-    [HttpPost("sign-in/admin")]
+    [HttpPost("sign-in/for-admins")]
     public async Task<IActionResult> SignInAdminAsync(string email, string password)
     {
         _logger.LogInformation("SignInAdminAsync called with email: {Email}", email);

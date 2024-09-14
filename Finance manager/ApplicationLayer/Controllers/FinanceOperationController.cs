@@ -16,7 +16,7 @@ public class FinanceOperationController : BaseController
         _financeService = financeService ?? throw new ArgumentNullException(nameof(financeService));
     }
 
-    [HttpGet("operations/wallet/{walletId}")]
+    [HttpGet("wallet/{walletId}")]
     public async Task<IActionResult> GetAllOfWalletAsync(int walletId, int index = 0, int count = 0)
     {
         var userId = GetUserId();
@@ -34,7 +34,7 @@ public class FinanceOperationController : BaseController
         return Ok(operations);
     }
 
-    [HttpGet("operations/type/{typeId}")]
+    [HttpGet("type/{typeId}")]
     public async Task<IActionResult> GetAllOfTypeAsync(int typeId)
     {
         var userId = GetUserId();
@@ -52,7 +52,7 @@ public class FinanceOperationController : BaseController
         return Ok(operations);
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> AddAsync([FromBody] FinanceOperationDTO dto)
     {
         var userId = GetUserId();
@@ -70,8 +70,8 @@ public class FinanceOperationController : BaseController
         return Ok(newOperation);
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateAsync([FromBody] FinanceOperationDTO dto)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] FinanceOperationDTO dto)
     {
         var userId = GetUserId();
         _logger.LogInformation("UpdateAsync called to update finance operation with Id: {Id}", dto.Id);
@@ -88,7 +88,7 @@ public class FinanceOperationController : BaseController
         return Ok(updatedOperation);
     }
 
-    [HttpDelete("remove/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var userId = GetUserId();

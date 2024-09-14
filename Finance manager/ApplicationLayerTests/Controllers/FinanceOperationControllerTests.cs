@@ -1,7 +1,6 @@
 ﻿using ApplicationLayer.Controllers;
 using ApplicationLayer.Models;
 using AutoMapper;
-using DataLayer.Models;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using FakeItEasy;
@@ -9,7 +8,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Security.Claims;
 
 namespace ApplicationLayerTests.Controllers;
@@ -149,7 +147,7 @@ public class FinanceOperationControllerTests
     public void AddAsync_ShouldThrowUnauthorizedAccessException_WhenUserIsNotOwnerOfWallet()
     {
         var walletId = 1;
-        var dto = new IncomeDTO(new() { WalletId = walletId}) { Id = 1 };
+        var dto = new IncomeDTO(new() { WalletId = walletId }) { Id = 1 };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfWalletAsync(_userId, walletId)).Returns(false);
 

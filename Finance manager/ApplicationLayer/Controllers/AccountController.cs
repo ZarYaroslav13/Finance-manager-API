@@ -17,7 +17,7 @@ public class AccountController : BaseController
         _accountService = service ?? throw new ArgumentNullException(nameof(service));
     }
 
-    [HttpPut("update")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAsync([FromBody] AccountDTO account)
     {
         int id = GetUserId();
@@ -37,7 +37,7 @@ public class AccountController : BaseController
         return Ok(updatedAccount);
     }
 
-    [HttpDelete("remove")]
+    [HttpDelete]
     public IActionResult Delete()
     {
         int id = GetUserId();
@@ -51,7 +51,7 @@ public class AccountController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpGet("accounts/admin")]
+    [HttpGet("for-admins")]
     public async Task<IActionResult> GetAllAsync(int skip, int take)
     {
         _logger.LogInformation("GetAllAsync called by admin with skip: {Skip}, take: {Take}", skip, take);
@@ -66,7 +66,7 @@ public class AccountController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpPut("update/admin")]
+    [HttpPut("for-admins")]
     public async Task<IActionResult> AdminUpdateAccountAsync([FromBody] AccountDTO account)
     {
         _logger.LogInformation("AdminUpdateAccountAsync called to update account with Id: {Id}", account.Id);
@@ -81,7 +81,7 @@ public class AccountController : BaseController
     }
 
     [Authorize(Policy = _adminPolicy)]
-    [HttpDelete("remove/{id}/admin")]
+    [HttpDelete("{id}/for-admins")]
     public IActionResult DeleteById(int id)
     {
         _logger.LogInformation("DeleteById called by admin to remove account with Id: {Id}", id);
