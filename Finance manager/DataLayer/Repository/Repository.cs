@@ -82,9 +82,15 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
 
     public T Update(T modifitedEntity)
     {
-        _dbSet.Entry(modifitedEntity).State = EntityState.Modified;
+        var entity = GetByIdAsync(modifitedEntity.Id)
+            .GetAwaiter()
+            .GetResult();
 
-        return modifitedEntity;
+        entity.Copy(modifitedEntity);
+
+        _dbSet.Entry(entity).State = EntityState.Modified;
+
+        return entity;
     }
 
     public void Delete(int id)

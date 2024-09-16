@@ -74,7 +74,7 @@ public class FinanceService : BaseService, IFinanceService
                 filter: fo => fo.Type.Id == id))
             .Any())
         {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Deleting type with Id: {id} is imposible through operations with this type exists");
         }
 
         _financeOperationTypeRepository.Delete(id);

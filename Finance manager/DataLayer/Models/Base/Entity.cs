@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Models.Base;
+﻿using System.Reflection;
+
+namespace DataLayer.Models.Base;
 
 public abstract class Entity
 {
@@ -24,6 +26,20 @@ public abstract class Entity
     public static bool operator !=(Entity? left, Entity? right)
     {
         return !(left == right);
+    }
+
+    public void Copy<T>(T source) where T : Entity
+    {
+        foreach (PropertyInfo property in GetType().GetProperties())
+        {
+            PropertyInfo myProperty = GetType().GetProperty(property.Name);
+
+            if (myProperty != null && myProperty.CanWrite)
+            {
+                object value = property.GetValue(source);
+                myProperty.SetValue(this, value);
+            }
+        }
     }
 
     public override bool Equals(object? obj)
