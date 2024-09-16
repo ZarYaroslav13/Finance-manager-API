@@ -108,12 +108,12 @@ public class FinanceServiceTests
     public async Task UpdateFinanceOperationTypeAsync_ServiceInvokeMethodUpdateByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
-        A.CallTo(() => _financeOperationTypesRepository.UpdateAsync(typeForRepository)).Returns(typeForRepository);
+        A.CallTo(() => _financeOperationTypesRepository.Update(typeForRepository)).Returns(typeForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationTypeModel>(typeForRepository)).Returns(modelForAdding);
 
         var result = await _service.UpdateFinanceOperationTypeAsync(modelForAdding);
 
-        A.CallTo(() => _financeOperationTypesRepository.UpdateAsync(typeForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationTypesRepository.Update(typeForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
@@ -337,12 +337,12 @@ public class FinanceServiceTests
     public async Task UpdateFinanceOperationAsync_ServiceInvokeMethodUpdateByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperation>(modelForAdding)).Returns(financeOperationForRepository);
-        A.CallTo(() => _financeOperationsRepository.UpdateAsync(financeOperationForRepository)).Returns(financeOperationForRepository);
+        A.CallTo(() => _financeOperationsRepository.Update(financeOperationForRepository)).Returns(financeOperationForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(financeOperationForRepository)).Returns(modelForAdding);
 
         var result = await _service.UpdateFinanceOperationAsync(modelForAdding);
 
-        A.CallTo(() => _financeOperationsRepository.UpdateAsync(financeOperationForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationsRepository.Update(financeOperationForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);

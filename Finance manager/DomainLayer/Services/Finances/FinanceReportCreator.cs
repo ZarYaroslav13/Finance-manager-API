@@ -2,7 +2,7 @@
 
 namespace DomainLayer.Services.Finances;
 
-public class FinanceReportCreator
+public class FinanceReportCreator : IFinanceReportCreator
 {
     protected readonly IFinanceService _service;
 

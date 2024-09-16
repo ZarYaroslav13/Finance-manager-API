@@ -172,7 +172,7 @@ public class FinanceOperationControllerTests
         A.CallTo(() => _financeService.UpdateFinanceOperationAsync(financeOperationModel)).Returns(financeOperationModel);
         A.CallTo(() => _mapper.Map<FinanceOperationDTO>(financeOperationModel)).Returns(updatedOperation);
 
-        var result = await _controller.UpdateAsync(dto);
+        var result = await _controller.UpdateAsync(dto.Id, dto);
 
         A.CallTo(() => _financeService.UpdateFinanceOperationAsync(A<FinanceOperationModel>._)).MustHaveHappenedOnceExactly();
         result.Should().NotBeNull();
@@ -193,7 +193,7 @@ public class FinanceOperationControllerTests
 
         A.CallTo(() => _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(_userId, operationTypeId)).Returns(false);
 
-        Assert.ThrowsExceptionAsync<UnauthorizedAccessException>(() => _controller.UpdateAsync(dto));
+        Assert.ThrowsExceptionAsync<UnauthorizedAccessException>(() => _controller.UpdateAsync(dto.Id, dto));
 
         A.CallTo(() => _financeService.UpdateFinanceOperationAsync(A<FinanceOperationModel>._)).MustNotHaveHappened();
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace DataLayer.Repository;
@@ -64,7 +65,12 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
 
     public async Task<T> GetByIdAsync(int id)
     {
-        return await _dbSet.FindAsync(id);
+        var entity = await _dbSet.FindAsync(id);
+
+        if (entity == null)
+            throw new ArgumentException("Entity with id: " + id + " don`t exist in table of " + _dbSet.EntityType + "s");
+
+        return entity;
     }
 
     public T Insert(T entity)
@@ -74,23 +80,18 @@ public class Repository<T> : IRepository<T> where T : Models.Base.Entity
         return entity;
     }
 
-    public async Task<T> UpdateAsync(T entity)
+    public T Update(T modifitedEntity)
     {
-        var toUpdate = await _dbSet.FindAsync(entity.Id);
+        _dbSet.Entry(modifitedEntity).State = EntityState.Modified;
 
-        if (toUpdate != null)
-        {
-            toUpdate = entity;
-        }
-
-        _dbSet.Update(toUpdate);
-
-        return entity;
+        return modifitedEntity;
     }
 
     public void Delete(int id)
     {
-        var entity = _dbSet.Find(id);
+        var entity = GetByIdAsync(id)
+            .GetAwaiter()
+            .GetResult();
 
         _dbSet.Remove(entity);
     }

@@ -22,8 +22,6 @@ public class FinanceOperationTypeDTO : Base.ModelDTO
     [Range(1, int.MaxValue)]
     public int WalletId { get; set; }
 
-    [Required]
-    [Length(2, 50)]
     public string WalletName
     {
         get { return _walletName; }

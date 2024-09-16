@@ -55,7 +55,8 @@ public class LoginController : BaseController
         var response = new
         {
             access_token = encodedJwt,
-            email = identity.Name
+            email = identity.Name,
+            user_id = identity.FindFirst(nameof(AccountDTO.Id)).Value
         };
 
         return Ok(response);

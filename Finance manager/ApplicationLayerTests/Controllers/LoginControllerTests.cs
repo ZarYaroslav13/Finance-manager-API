@@ -108,7 +108,7 @@ public class LoginControllerTests
         var email = "test@example.com";
         var password = "validpassword";
         var token = "fake-jwt-token";
-        var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) });
+        var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email), new(nameof(AccountDTO.Id), "1") });
         A.CallTo(() => _tokenManager.GetAccountIdentityAsync(email, password))
             .Returns(Task.FromResult(identity));
         A.CallTo(() => _tokenManager.CreateToken(identity)).Returns(token);

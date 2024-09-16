@@ -94,12 +94,12 @@ public class WalletServiceTests
     public async Task UpdateWalletAsync_ServiceInvokeMethodUpdateByRepository_WalletModel(WalletModel modelForUpdate, Wallet walletForRepository)
     {
         A.CallTo(() => _mapper.Map<Wallet>(modelForUpdate)).Returns(walletForRepository);
-        A.CallTo(() => _repository.UpdateAsync(walletForRepository)).Returns(walletForRepository);
+        A.CallTo(() => _repository.Update(walletForRepository)).Returns(walletForRepository);
         A.CallTo(() => _mapper.Map<WalletModel>(walletForRepository)).Returns(modelForUpdate);
 
         var result = await _service.UpdateWalletAsync(modelForUpdate);
 
-        A.CallTo(() => _repository.UpdateAsync(walletForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _repository.Update(walletForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForUpdate, result);

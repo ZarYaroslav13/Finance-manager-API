@@ -17,13 +17,12 @@ public class FinanceService : BaseService, IFinanceService
         _financeOperationTypeRepository = _unitOfWork.GetRepository<FinanceOperationType>();
     }
 
-    public async Task<bool> IsAccountOwnerOfWalletAsync(int accountid, int typeId)
+    public async Task<bool> IsAccountOwnerOfWalletAsync(int accountid, int walletId)
     {
-        if (accountid <= 0 || typeId <= 0)
-            throw new ArgumentOutOfRangeException($"{nameof(accountid)} and {nameof(typeId)} must be above zero");
+        if (accountid <= 0 || walletId <= 0)
+            throw new ArgumentOutOfRangeException($"{nameof(accountid)} and {nameof(walletId)} must be above zero");
 
-        var type = await _financeOperationTypeRepository.GetByIdAsync(typeId);
-        var wallet = await _unitOfWork.GetRepository<Wallet>().GetByIdAsync(type.WalletId);
+        var wallet = await _unitOfWork.GetRepository<Wallet>().GetByIdAsync(walletId);
 
         return wallet.AccountId == accountid;
     }
@@ -61,7 +60,7 @@ public class FinanceService : BaseService, IFinanceService
             throw new ArgumentException(nameof(type));
 
         var result = _mapper.Map<FinanceOperationTypeModel>(
-                         (await _financeOperationTypeRepository.UpdateAsync(
+                         (_financeOperationTypeRepository.Update(
                             _mapper.Map<FinanceOperationType>(type))));
         await _unitOfWork.SaveChangesAsync();
 
@@ -177,7 +176,7 @@ public class FinanceService : BaseService, IFinanceService
             throw new ArgumentException(nameof(financeOperation));
 
         var result = _mapper.Map<FinanceOperationModel>(
-                        await _financeOperationRepository.UpdateAsync(
+                        _financeOperationRepository.Update(
                             _mapper.Map<FinanceOperation>(financeOperation)));
         await _unitOfWork.SaveChangesAsync();
 

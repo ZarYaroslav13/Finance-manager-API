@@ -18,7 +18,7 @@ public class FinanceReportController : BaseController
         _walletService = walletService ?? throw new ArgumentNullException(nameof(walletService));
     }
 
-    [HttpPost("daily/{walletId}")]
+    [HttpPost("daily")]
     public async Task<IActionResult> CreateReportAsync(int walletId, DateTime date)
     {
         int userId = GetUserId();
@@ -37,7 +37,7 @@ public class FinanceReportController : BaseController
         return Ok(report);
     }
 
-    [HttpPost("period/{walletId}")]
+    [HttpPost("period")]
     public async Task<IActionResult> CreateReportAsync(int walletId, DateTime startDate, DateTime endDate)
     {
         int userId = GetUserId();

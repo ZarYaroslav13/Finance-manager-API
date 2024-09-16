@@ -49,8 +49,8 @@ public class WalletService : BaseService, IWalletService
             throw new ArgumentException(nameof(updatedWallet));
 
         var result = _mapper.Map<WalletModel>(
-                        (await _repository.UpdateAsync(
-                            _mapper.Map<Wallet>(updatedWallet))));
+                        _repository.Update(
+                            _mapper.Map<Wallet>(updatedWallet)));
         await _unitOfWork.SaveChangesAsync();
 
         return result;
@@ -69,11 +69,13 @@ public class WalletService : BaseService, IWalletService
                await _repository.GetByIdAsync(id));
     }
 
-    public async Task<bool> IsAccountOwnerWalletAsync(int acoountId, int walletId)
+    public async Task<bool> IsAccountOwnerWalletAsync(int acountId, int walletId)
     {
-        if (acoountId <= 0 || walletId <= 0)
+        if (acountId <= 0 || walletId <= 0)
             throw new ArgumentOutOfRangeException("account id and wallet id cannot be less or equal 0");
 
-        return (await _repository.GetByIdAsync(walletId)).AccountId == acoountId;
+        var wallet = (await _repository.GetByIdAsync(walletId));
+
+        return wallet.AccountId == acountId;
     }
 }

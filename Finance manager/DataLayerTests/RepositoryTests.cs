@@ -123,7 +123,7 @@ public class RepositoryTests
         await _context.SaveChangesAsync();
 
         account.FirstName = "New FirstName";
-        await _repository.UpdateAsync(account);
+        _repository.Update(account);
         await _context.SaveChangesAsync();
 
         var updatedAccount = (await _repository.GetAllAsync()).LastOrDefault();
@@ -159,5 +159,13 @@ public class RepositoryTests
         foundAccount.Wallets = null;
 
         Assert.AreEqual(expectedAccount, foundAccount);
+    }
+
+    [TestMethod]
+    public void GetByIdAsync_AccountWithIdDontExist_ThrowsArgumentExceptin()
+    {
+        int id = 0;
+
+         Assert.ThrowsExceptionAsync<ArgumentException>(() => _repository.GetByIdAsync(id));
     }
 }

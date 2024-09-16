@@ -165,12 +165,12 @@ public class AccountServiceTests
     public async Task UpdateAccountAsync_ServiceInvokeMethodUpdateByRepository_AccountModel(AccountModel modelForUpdate, Account accountForRepository)
     {
         A.CallTo(() => _mapper.Map<Account>(modelForUpdate)).Returns(accountForRepository);
-        A.CallTo(() => _repository.UpdateAsync(accountForRepository)).Returns(accountForRepository);
+        A.CallTo(() => _repository.Update(accountForRepository)).Returns(accountForRepository);
         A.CallTo(() => _mapper.Map<AccountModel>(accountForRepository)).Returns(modelForUpdate);
 
         var result = await _service.UpdateAccountAsync(modelForUpdate);
 
-        A.CallTo(() => _repository.UpdateAsync(accountForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _repository.Update(accountForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForUpdate, result);
@@ -261,7 +261,7 @@ public class AccountServiceTests
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.CanTakeThisEmailReturnTrueTestData), typeof(AccountServiceTestsDataProvider))]
-    public async Task CanTakeThisEmailAsync_EmailIsValidAndNotExistInDatabase_True(List<Account> accounts, string email)
+    public async Task CanTakeThisEmailAsync_EmailIsValidAndNotExistInDatabase_True(List<Account> accounts, int accountId, string email)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
@@ -270,19 +270,20 @@ public class AccountServiceTests
             A<string[]>._))
             .Returns(accounts);
 
-        Assert.IsTrue(await _service.CanTakeThisEmailAsync(email));
+        Assert.IsTrue(await _service.CanTakeThisEmailAsync(accountId, email));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.IsItEmailReturnFalseTestData), typeof(AccountServiceTestsDataProvider))]
     public void CanTakeThisEmailAsync_EmailIsNotValid_ThrowsFormatException(string email)
     {
-        Assert.ThrowsExceptionAsync<FormatException>(() => _service.CanTakeThisEmailAsync(email));
+        int newAccountId = 0;
+        Assert.ThrowsExceptionAsync<FormatException>(() => _service.CanTakeThisEmailAsync(newAccountId, email));
     }
 
     [TestMethod]
     [DynamicData(nameof(AccountServiceTestsDataProvider.CanTakeThisEmailThrowsArgumentExceptionTestData), typeof(AccountServiceTestsDataProvider))]
-    public void CanTakeThisEmailAsync_EmailExistInDatabase_ThrowsArgumentException(List<Account> accounts, string email)
+    public void CanTakeThisEmailAsync_EmailExistInDatabase_ThrowsArgumentException(List<Account> accounts, int accountId, string email)
     {
         A.CallTo(() => _repository.GetAllAsync(
             A<Func<IQueryable<Account>, IOrderedQueryable<Account>>>._,
@@ -291,6 +292,6 @@ public class AccountServiceTests
             A<string[]>._))
             .Returns(accounts);
 
-        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.CanTakeThisEmailAsync(email));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _service.CanTakeThisEmailAsync(accountId, email));
     }
 }

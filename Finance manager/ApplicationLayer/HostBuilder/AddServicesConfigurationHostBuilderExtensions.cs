@@ -29,6 +29,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+        services.AddScoped<IFinanceReportCreator, FinanceReportCreator>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IWalletService, WalletService>();

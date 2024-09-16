@@ -197,14 +197,18 @@ public static class AccountServiceTestsDataProvider
 
     public static IEnumerable<object[]> CanTakeThisEmailReturnTrueTestData { get; } = new List<object[]>
     {
-        new object[]{ _accounts, "NewEmail@gmail.com"},
-        new object[]{ _accounts, "NewEmail1@gmail.com"}
+        new object[]{ _accounts, 0, "NewEmail@gmail.com"},
+        new object[]{ _accounts, 0, "NewEmail1@gmail.com"},
+        new object[]{ _accounts, _accounts[0].Id, _accounts[0].Email },
+        new object[]{ _accounts, _accounts[1].Id, _accounts[1].Email }
     };
 
     public static IEnumerable<object[]> CanTakeThisEmailThrowsArgumentExceptionTestData { get; } = new List<object[]>
     {
-        new object[]{ _accounts, _accounts[0].Email },
-        new object[]{ _accounts, _accounts[1].Email },
-        new object[]{ _accounts, _accounts[2].Email },
+        new object[]{ _accounts, 0, _accounts[0].Email },
+        new object[]{ _accounts, 0, _accounts[1].Email },
+        new object[]{ _accounts, 0, _accounts[2].Email },
+        new object[]{ _accounts, _accounts[1].Id, _accounts[0].Email },
+        new object[]{ _accounts, _accounts[0].Id, _accounts[2].Email },
     };
 }

@@ -5,6 +5,7 @@ namespace ApplicationLayer.Models;
 public class WalletDTO : Base.ModelDTO
 {
     [Required]
+    [Length(2, 50)]
     public string Name
     {
         get { return _name; }
@@ -17,10 +18,9 @@ public class WalletDTO : Base.ModelDTO
 
     public List<IncomeDTO> Incomes { get; set; } = default!;
 
+    
     public List<ExpenseDTO> Expenses { get; set; } = default!;
 
-    [Required]
-    [Range(1, int.MaxValue)]
     public int AccountId { get; set; }
 
     private string _name = string.Empty;

@@ -16,5 +16,5 @@ public interface IAccountService
 
     public bool IsItEmail(string emailAddress);
 
-    public Task<bool> CanTakeThisEmailAsync(string emailAddress);
+    public Task<bool> CanTakeThisEmailAsync(int id, string emailAddress);
 }

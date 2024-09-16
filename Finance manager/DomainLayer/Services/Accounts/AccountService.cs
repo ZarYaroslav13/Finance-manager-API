@@ -45,7 +45,7 @@ public class AccountService : BaseService, IAccountService
         if (account.Id != 0)
             throw new ArgumentException(nameof(account));
 
-        await CanTakeThisEmailAsync(account.Email);
+        await CanTakeThisEmailAsync(account.Id, account.Email);
 
         account.Password = _passwordCoder.ComputeSHA256Hash(account.Password);
 
@@ -65,9 +65,9 @@ public class AccountService : BaseService, IAccountService
         if (updatedAccount.Id == 0)
             throw new ArgumentException(nameof(updatedAccount));
 
-        await CanTakeThisEmailAsync(updatedAccount.Email);
+        await CanTakeThisEmailAsync(updatedAccount.Id, updatedAccount.Email);
 
-        var repoResult = await _repository.UpdateAsync(
+        var repoResult = _repository.Update(
                 _mapper.Map<Account>(updatedAccount));
 
         var result = _mapper.Map<AccountModel>(repoResult);
@@ -114,7 +114,7 @@ public class AccountService : BaseService, IAccountService
         }
     }
 
-    public async Task<bool> CanTakeThisEmailAsync(string emailAddress)
+    public async Task<bool> CanTakeThisEmailAsync(int id, string emailAddress)
     {
         if (!IsItEmail(emailAddress))
         {
@@ -123,7 +123,7 @@ public class AccountService : BaseService, IAccountService
 
         var async = await _repository.GetAllAsync();
 
-        if (async.Any(a => a.Email == emailAddress))
+        if (async.Any(a => a.Email == emailAddress && a.Id != id))
         {
             throw new ArgumentException("An account with this email already exist!");
         }

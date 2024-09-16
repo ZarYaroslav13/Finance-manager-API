@@ -17,7 +17,7 @@ public interface IRepository<T> where T : Entity
 
     T Insert(T entity);
 
-    Task<T> UpdateAsync(T entity);
+    T Update(T entity);
 
     void Delete(int id);
 }
