@@ -142,8 +142,14 @@ public class FinanceService : BaseService, IFinanceService
 
     public async Task<List<FinanceOperationModel>> GetAllFinanceOperationOfTypeAsync(int TypeId)
     {
+
+        string[] includedProperities =
+        {
+            nameof(FinanceOperation.Type)
+        };
+
         return (await _financeOperationRepository
-                .GetAllAsync(filter: fo => fo.TypeId == TypeId))
+                .GetAllAsync(filter: fo => fo.TypeId == TypeId, includeProperties: includedProperities))
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
     }

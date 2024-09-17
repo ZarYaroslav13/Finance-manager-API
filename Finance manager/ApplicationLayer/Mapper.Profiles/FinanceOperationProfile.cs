@@ -25,6 +25,23 @@ public class FinanceOperationProfile : Profile
                 }
             });
 
+        CreateMap< FinanceOperationDTO, FinanceOperationModel>()
+            .ConvertUsing((financeOperationDTO, financeOperationModel, context) =>
+            {
+                ArgumentNullException.ThrowIfNull(financeOperationDTO.Type);
+
+                switch (financeOperationDTO.Type.EntryType)
+                {
+                    case EntryType.Income:
+                        var f = context.Mapper.Map<IncomeModel>(financeOperationDTO);
+                        return context.Mapper.Map<IncomeModel>(financeOperationDTO);
+                    case EntryType.Expense:
+                        return context.Mapper.Map<ExpenseModel>(financeOperationDTO);
+                    default:
+                        throw new ArgumentException(nameof(financeOperationDTO.Type));
+                }
+            });
+
         CreateMap<IncomeModel, IncomeDTO>().ReverseMap();
         CreateMap<ExpenseModel, ExpenseDTO>().ReverseMap();
 
@@ -41,6 +58,22 @@ public class FinanceOperationProfile : Profile
             .ConvertUsing((expenseDTO, financeOperationModel, context) =>
             {
                 return context.Mapper.Map<ExpenseModel>(expenseDTO);
+            });
+
+
+        CreateMap<FinanceOperationDTO, IncomeModel>();
+        CreateMap<FinanceOperationDTO, ExpenseModel>();
+
+        CreateMap<IncomeModel, FinanceOperationDTO>()
+            .ConvertUsing((incomeModel, financeOperationDTO, context) =>
+            {
+                return context.Mapper.Map<IncomeDTO>(incomeModel);
+            });
+
+        CreateMap<ExpenseModel, FinanceOperationDTO>()
+            .ConvertUsing((expenseModel, financeOperationDTO, context) =>
+            {
+                return context.Mapper.Map<ExpenseDTO>(expenseModel);
             });
     }
 }

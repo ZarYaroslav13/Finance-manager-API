@@ -4,7 +4,7 @@ namespace ApplicationLayer.Models;
 
 public class IncomeDTO : FinanceOperationDTO
 {
-    public IncomeDTO(FinanceOperationTypeDTO type) : base(type)
+    public IncomeDTO()
     {
 
     }

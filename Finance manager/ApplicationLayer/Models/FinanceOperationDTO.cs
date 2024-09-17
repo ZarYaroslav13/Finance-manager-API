@@ -2,7 +2,7 @@
 
 namespace ApplicationLayer.Models;
 
-public abstract class FinanceOperationDTO : Base.ModelDTO
+public class FinanceOperationDTO : Base.ModelDTO
 {
     [Range(0, int.MaxValue)]
     public int Amount { get; set; }
@@ -11,12 +11,7 @@ public abstract class FinanceOperationDTO : Base.ModelDTO
     public DateTime Date { get; set; }
 
     [Required]
-    public FinanceOperationTypeDTO Type { get; private set; } = new();
-
-    public FinanceOperationDTO(FinanceOperationTypeDTO type)
-    {
-        ChangeFinanceOperationType(type);
-    }
+    public FinanceOperationTypeDTO Type { get; set; }
 
     public virtual void ChangeFinanceOperationType(FinanceOperationTypeDTO type)
     {

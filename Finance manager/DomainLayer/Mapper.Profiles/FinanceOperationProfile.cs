@@ -29,10 +29,16 @@ public class FinanceOperationProfile : Profile
 
         CreateMap<FinanceOperationModel, FinanceOperation>()
             .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.Type.Id))
+            .ForMember(dest => dest.Type, opt => opt.Ignore())
             .Include<IncomeModel, FinanceOperation>()
             .Include<ExpenseModel, FinanceOperation>();
 
         CreateMap<IncomeModel, FinanceOperation>();
         CreateMap<ExpenseModel, FinanceOperation>();
+    }
+
+    public class FinanceOperationTypeFormatter : IValueConverter<FinanceOperationTypeModel, FinanceOperationType>
+    {
+        public FinanceOperationType Convert(FinanceOperationTypeModel sourceMember, ResolutionContext context) => new();
     }
 }
