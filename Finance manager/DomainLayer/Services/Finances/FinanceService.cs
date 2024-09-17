@@ -180,8 +180,7 @@ public class FinanceService : BaseService, IFinanceService
     {
         ArgumentNullException.ThrowIfNull(financeOperation);
 
-        if (financeOperation.Id == 0)
-            throw new ArgumentException(nameof(financeOperation));
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(financeOperation.Id);
 
         var result = _mapper.Map<FinanceOperationModel>(
                         _financeOperationRepository.Update(
