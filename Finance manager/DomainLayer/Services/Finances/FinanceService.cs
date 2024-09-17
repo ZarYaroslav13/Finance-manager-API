@@ -127,13 +127,16 @@ public class FinanceService : BaseService, IFinanceService
 
         ArgumentOutOfRangeException.ThrowIfGreaterThan(startDate, endDate);
 
-        List<FinanceOperationModel> result = (await _financeOperationRepository
+        var dayAfterEndDate = endDate.AddDays(1);
+        var dayBeforeStartDate = startDate.AddDays(-1);
+
+        var result = (await _financeOperationRepository
                 .GetAllAsync(
                 includeProperties: nameof(FinanceOperation.Type),
                 filter: fo =>
                        fo.Type.WalletId == walletId
-                    && fo.Date <= endDate
-                    && fo.Date >= startDate))
+                    && fo.Date <= dayAfterEndDate
+                    && fo.Date >= dayBeforeStartDate))
                 .Select(_mapper.Map<FinanceOperationModel>)
                 .ToList();
 
