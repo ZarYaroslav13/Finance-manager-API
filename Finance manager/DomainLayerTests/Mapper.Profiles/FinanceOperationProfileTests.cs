@@ -65,7 +65,7 @@ public class FinanceOperationProfileTests
         dbFinanceOperation.Type = typeOfOperation;
 
         var mappedbFinanceOperation = _mapper
-            .Map<DataLayer.Models.FinanceOperation>(
+            .Map<FinanceOperation>(
                 _mapper
                     .Map<FinanceOperationModel>(dbFinanceOperation));
 

@@ -36,9 +36,4 @@ public class FinanceOperationProfile : Profile
         CreateMap<IncomeModel, FinanceOperation>();
         CreateMap<ExpenseModel, FinanceOperation>();
     }
-
-    public class FinanceOperationTypeFormatter : IValueConverter<FinanceOperationTypeModel, FinanceOperationType>
-    {
-        public FinanceOperationType Convert(FinanceOperationTypeModel sourceMember, ResolutionContext context) => new();
-    }
 }

@@ -59,7 +59,7 @@ public class FinanceOperationControllerTests
         int count = 5;
 
         var financeOperations = new List<FinanceOperationModel> { new IncomeModel(new()), new IncomeModel(new()) };
-        var financeOperationDTOs = new List<FinanceOperationDTO> { new IncomeDTO(new()), new IncomeDTO(new()) };
+        var financeOperationDTOs = new List<FinanceOperationDTO> { new IncomeDTO(), new IncomeDTO() };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfWalletAsync(_userId, walletId)).Returns(true);
         A.CallTo(() => _financeService.GetAllFinanceOperationOfWalletAsync(walletId, index, count)).Returns(Task.FromResult(financeOperations));
@@ -92,7 +92,7 @@ public class FinanceOperationControllerTests
         int typeId = 1;
 
         var financeOperations = new List<FinanceOperationModel> { new IncomeModel(new()), new IncomeModel(new()) };
-        var financeOperationDTOs = new List<FinanceOperationDTO> { new IncomeDTO(new()), new IncomeDTO(new()) };
+        var financeOperationDTOs = new List<FinanceOperationDTO> { new IncomeDTO(), new IncomeDTO() };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(_userId, typeId)).Returns(true);
         A.CallTo(() => _financeService.GetAllFinanceOperationOfTypeAsync(typeId)).Returns(Task.FromResult(financeOperations));
@@ -124,9 +124,9 @@ public class FinanceOperationControllerTests
     public async Task AddAsync_ShouldReturnOkWithNewFinanceOperation_WhenUserIsOwnerOfWallet()
     {
         var walletId = 1;
-        var dto = new IncomeDTO(new() { WalletId = walletId });
+        var dto = new IncomeDTO() { Type = new() { WalletId = walletId } };
         var financeOperationModel = new IncomeModel(new());
-        var expectedOperation = new IncomeDTO(new() { WalletId = walletId }) { Id = 1 };
+        var expectedOperation = new IncomeDTO() { Id = 1, Type = new() { WalletId = walletId } };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfWalletAsync(_userId, walletId)).Returns(true);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(dto)).Returns(financeOperationModel);
@@ -147,7 +147,7 @@ public class FinanceOperationControllerTests
     public void AddAsync_ShouldThrowUnauthorizedAccessException_WhenUserIsNotOwnerOfWallet()
     {
         var walletId = 1;
-        var dto = new IncomeDTO(new() { WalletId = walletId }) { Id = 1 };
+        var dto = new IncomeDTO() { Id = 1, Type = new() { WalletId = walletId } };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfWalletAsync(_userId, walletId)).Returns(false);
 
@@ -160,12 +160,13 @@ public class FinanceOperationControllerTests
     public async Task UpdateAsync_ShouldReturnOkWithUpdatedFinanceOperation_WhenUserIsOwnerOfOperationType()
     {
         var operationTypeId = 2;
-        var dto = new IncomeDTO(new() { Id = operationTypeId })
+        var dto = new IncomeDTO()
         {
-            Id = 1
+            Id = 1,
+            Type = new() { Id = operationTypeId }
         };
         var financeOperationModel = new IncomeModel(new());
-        var updatedOperation = new IncomeDTO(new() { Id = operationTypeId }) { Id = 1 };
+        var updatedOperation = new IncomeDTO() { Id = 1, Type = new() { Id = operationTypeId } };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(_userId, operationTypeId)).Returns(true);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(dto)).Returns(financeOperationModel);
@@ -186,9 +187,10 @@ public class FinanceOperationControllerTests
     public void UpdateAsync_ShouldThrowUnauthorizedAccessException_WhenUserIsNotOwnerOfOperationType()
     {
         var operationTypeId = 2;
-        var dto = new IncomeDTO(new() { Id = operationTypeId })
+        var dto = new IncomeDTO()
         {
-            Id = 1
+            Id = 1,
+            Type = new() { Id = operationTypeId }
         };
 
         A.CallTo(() => _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(_userId, operationTypeId)).Returns(false);

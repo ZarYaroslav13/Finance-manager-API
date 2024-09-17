@@ -166,6 +166,6 @@ public class RepositoryTests
     {
         int id = 0;
 
-         Assert.ThrowsExceptionAsync<ArgumentException>(() => _repository.GetByIdAsync(id));
+        Assert.ThrowsExceptionAsync<ArgumentException>(() => _repository.GetByIdAsync(id));
     }
 }

@@ -11,7 +11,7 @@ public class ExpenceDTOTests
     {
         var type = new FinanceOperationTypeDTO { EntryType = EntryType.Expense };
 
-        var expenseDTO = new ExpenseDTO(type);
+        var expenseDTO = new ExpenseDTO() { Type = type };
 
         Assert.AreEqual(type, expenseDTO.Type);
     }
@@ -21,7 +21,7 @@ public class ExpenceDTOTests
     {
         var type = new FinanceOperationTypeDTO { EntryType = EntryType.Income };
 
-        Assert.ThrowsException<ArgumentException>(() => new ExpenseDTO(type));
+        Assert.ThrowsException<ArgumentException>(() => new ExpenseDTO() { Type = type });
     }
 
     [TestMethod]
@@ -29,7 +29,7 @@ public class ExpenceDTOTests
     {
         var initialType = new FinanceOperationTypeDTO { EntryType = EntryType.Expense, Description = "old Type" };
         var newType = new FinanceOperationTypeDTO { EntryType = EntryType.Expense, Description = "new Type" };
-        var expenseDTO = new ExpenseDTO(initialType);
+        var expenseDTO = new ExpenseDTO() { Type = initialType };
 
         expenseDTO.ChangeFinanceOperationType(newType);
 
@@ -41,7 +41,7 @@ public class ExpenceDTOTests
     {
         var initialType = new FinanceOperationTypeDTO { EntryType = EntryType.Expense, Description = "old Type" };
         var newType = new FinanceOperationTypeDTO { EntryType = EntryType.Income, Description = "new Type" };
-        var expenseDTO = new ExpenseDTO(initialType);
+        var expenseDTO = new ExpenseDTO() { Type = initialType };
 
         Assert.ThrowsException<ArgumentException>(() => expenseDTO.ChangeFinanceOperationType(newType));
     }
@@ -49,8 +49,8 @@ public class ExpenceDTOTests
     [TestMethod]
     public void GetHashCode_SameValues_ReturnsSameHashCode()
     {
-        var expense1 = new ExpenseDTO(new() { EntryType = EntryType.Expense });
-        var expense2 = new ExpenseDTO(new() { EntryType = EntryType.Expense });
+        var expense1 = new ExpenseDTO() { Type = new() { EntryType = EntryType.Expense } };
+        var expense2 = new ExpenseDTO() { Type = new() { EntryType = EntryType.Expense } };
 
         var hash1 = expense1.GetHashCode();
         var hash2 = expense2.GetHashCode();

@@ -11,11 +11,13 @@ public class FinanceOperationDTO : Base.ModelDTO
     public DateTime Date { get; set; }
 
     [Required]
-    public FinanceOperationTypeDTO Type { get; set; }
+    public FinanceOperationTypeDTO Type { get { return _type; } set { ChangeFinanceOperationType(value); } }
+
+    private FinanceOperationTypeDTO _type;
 
     public virtual void ChangeFinanceOperationType(FinanceOperationTypeDTO type)
     {
-        Type = type ?? throw new ArgumentNullException(nameof(type));
+        _type = type ?? throw new ArgumentNullException(nameof(type));
     }
 
     public override bool Equals(object? obj)

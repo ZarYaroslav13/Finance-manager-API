@@ -21,12 +21,11 @@ public class FinanceOperation : Entity
 
         return Amount == financeOperation.Amount
                 && Date == financeOperation.Date
-                && TypeId == financeOperation.TypeId
-                && Type == financeOperation.Type;
+                && TypeId == financeOperation.TypeId;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(base.GetHashCode(), Amount, Date, TypeId, Type);
+        return HashCode.Combine(base.GetHashCode(), Amount, Date, TypeId);
     }
 }

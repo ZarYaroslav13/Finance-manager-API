@@ -25,7 +25,7 @@ public class FinanceOperationProfile : Profile
                 }
             });
 
-        CreateMap< FinanceOperationDTO, FinanceOperationModel>()
+        CreateMap<FinanceOperationDTO, FinanceOperationModel>()
             .ConvertUsing((financeOperationDTO, financeOperationModel, context) =>
             {
                 ArgumentNullException.ThrowIfNull(financeOperationDTO.Type, "Mapping<FinanceOperationDTO, FinanceOperationModel> value financeOperationDTO.Type cannot be null");

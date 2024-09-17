@@ -12,10 +12,10 @@ public static class FinanceReportDTOTestsDataProvider
     private static int _totalExpense = 19;
     public static List<FinanceOperationDTO> FinanceOperations = new()
     {
-        new IncomeDTO(new FinanceOperationTypeDTO() { EntryType = EntryType.Income}) { Amount = 23},
-        new IncomeDTO(new FinanceOperationTypeDTO() { EntryType = EntryType.Income}) { Amount = 31},
-        new ExpenseDTO(new FinanceOperationTypeDTO() { EntryType = EntryType.Expense}) { Amount = 12},
-        new ExpenseDTO(new FinanceOperationTypeDTO() { EntryType = EntryType.Expense }) { Amount = 7 }
+        new IncomeDTO() { Amount = 23, Type = new() { EntryType = EntryType.Income}},
+        new IncomeDTO() { Amount = 31, Type = new() { EntryType = EntryType.Income } },
+        new ExpenseDTO() { Amount = 12, Type = new() { EntryType = EntryType.Expense } },
+        new ExpenseDTO() { Amount = 7, Type = new() { EntryType = EntryType.Expense } }
     };
 
     public static IEnumerable<object[]> MethodEqualsResultTrueData { get; } = new List<object[]>

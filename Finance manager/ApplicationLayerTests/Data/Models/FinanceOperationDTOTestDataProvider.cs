@@ -31,66 +31,75 @@ public static class FinanceOperationDTOTestDataProvider
     {
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Amount = 1000,
                 Date =  DateTime.MinValue,
-
-            }
-        },
-        new object[]
-        {
-            new IncomeDTO(_randomIncomeType){
-                Id = 1,
-                Date =  DateTime.MinValue,
-
-            },
-            new IncomeDTO(_randomIncomeType){
-                Id = 1,
-                Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
+                Id = 1,
+                Date =  DateTime.MinValue,
+                Type = _randomIncomeType
+            },
+            new IncomeDTO(){
+                Id = 1,
+                Date =  DateTime.MinValue,
+                Type = _randomIncomeType
+
+            }
+        },
+        new object[]
+        {
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
+                Type = _randomIncomeType
 
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
+                Type = _randomIncomeType
 
             },
         }
@@ -100,78 +109,86 @@ public static class FinanceOperationDTOTestDataProvider
     {
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 2,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 2000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             },
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MaxValue,
+                Type = _randomIncomeType
 
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomIncomeType
 
             },
-            new ExpenseDTO(_randomExpenseType){
+            new ExpenseDTO(){
                 Id = 1,
                 Amount = 1000,
                 Date =  DateTime.MinValue,
+                Type = _randomExpenseType
             }
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
-
+                Type = _randomIncomeType
             },
             null
         },
         new object[]
         {
-            new IncomeDTO(_randomIncomeType){
+            new IncomeDTO(){
                 Id = 1,
                 Amount = 1000,
-
+                Type = _randomIncomeType
             },
             new WalletModel()
         }

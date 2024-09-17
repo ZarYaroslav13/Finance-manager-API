@@ -181,11 +181,12 @@ public class FinanceService : BaseService, IFinanceService
         ArgumentNullException.ThrowIfNull(financeOperation);
 
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(financeOperation.Id);
-
-        var result = _mapper.Map<FinanceOperationModel>(
-                        _financeOperationRepository.Update(
-                            _mapper.Map<FinanceOperation>(financeOperation)));
+        var dbResult = _financeOperationRepository.Update(
+                            _mapper.Map<FinanceOperation>(financeOperation));
         await _unitOfWork.SaveChangesAsync();
+
+        dbResult.Type = await _financeOperationTypeRepository.GetByIdAsync(dbResult.TypeId);
+        var result = _mapper.Map<FinanceOperationModel>(dbResult);
 
         return result;
     }

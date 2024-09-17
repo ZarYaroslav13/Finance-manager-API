@@ -144,7 +144,7 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
-    [DynamicData(nameof(FinanceServiceTestsDataProvider.IsAccountOwnerOfFinanceOperationTypeAsyncArgumentsAreLessOrEqualZeroThrowsArgumentOutOfRangeExceptionTestData), typeof(FinanceServiceTestsDataProvider))]
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.IdAreLessOrEqualZeroThrowsArgumentOutOfRangeExceptionTestData), typeof(FinanceServiceTestsDataProvider))]
     public void IsAccountOwnerOfFinanceOperationTypeAsync_ArgumentsAreLessOrEqualZero_ThrowsArgumentOutOfRangeException(int accountid, int typeId)
     {
         Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _service.IsAccountOwnerOfFinanceOperationTypeAsync(accountid, typeId));
@@ -357,6 +357,13 @@ public class FinanceServiceTests
 
         A.CallTo(() => _financeOperationsRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(FinanceServiceTestsDataProvider.IdAreLessOrEqualZeroThrowsArgumentOutOfRangeExceptionTestData), typeof(FinanceServiceTestsDataProvider))]
+    public void IsAccountOwnerOfFinanceOperationAsync_IdAreNegativeOrZero_ArgumentOutOfRangeException(int accountId, int operationId)
+    {
+        Assert.ThrowsExceptionAsync<ArgumentOutOfRangeException>(() => _service.IsAccountOwnerOfFinanceOperationAsync(accountId, operationId));
     }
 
     [TestMethod]

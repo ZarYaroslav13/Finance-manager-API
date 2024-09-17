@@ -18,7 +18,7 @@ public class WalletDTO : Base.ModelDTO
 
     public List<IncomeDTO> Incomes { get; set; } = default!;
 
-    
+
     public List<ExpenseDTO> Expenses { get; set; } = default!;
 
     public int AccountId { get; set; }

@@ -8,24 +8,22 @@ public static class FinanceOperationProfileTestDataProvider
     {
         new object[]
         {
-            new IncomeDTO(
-                new FinanceOperationTypeDTO()
+            new IncomeDTO()
+            {
+                Id = 3, Amount = 713, Date = DateTime.Now, Type = new FinanceOperationTypeDTO()
                 {
                     Id = 1, Name = "TypeName", Description = "Description", EntryType = DataLayer.Models.EntryType.Income, WalletId = 2, WalletName = "WalletName"
-                })
-            {
-                Id = 3, Amount = 713, Date = DateTime.Now
+                }
             }
         },
          new object[]
         {
-            new ExpenseDTO(
-                new FinanceOperationTypeDTO()
+            new ExpenseDTO()
+            {
+                Id = 3, Amount = 713, Date = DateTime.Now, Type = new FinanceOperationTypeDTO()
                 {
                     Id = 1, Name = "TypeName", Description = "Description", EntryType = DataLayer.Models.EntryType.Expense, WalletId = 2, WalletName = "WalletName"
-                })
-            {
-                Id = 3, Amount = 713, Date = DateTime.Now
+                }
             }
         }
     };

@@ -11,7 +11,7 @@ public class IncomeDTOTests
     {
         var type = new FinanceOperationTypeDTO { EntryType = EntryType.Income };
 
-        var incomeDTO = new IncomeDTO(type);
+        var incomeDTO = new IncomeDTO() { Type = type };
 
         Assert.AreEqual(type, incomeDTO.Type);
     }
@@ -21,7 +21,7 @@ public class IncomeDTOTests
     {
         var type = new FinanceOperationTypeDTO { EntryType = EntryType.Expense };
 
-        Assert.ThrowsException<ArgumentException>(() => new IncomeDTO(type));
+        Assert.ThrowsException<ArgumentException>(() => new IncomeDTO() { Type = type });
     }
 
     [TestMethod]
@@ -29,7 +29,7 @@ public class IncomeDTOTests
     {
         var initialType = new FinanceOperationTypeDTO { EntryType = EntryType.Income, Description = "old Type" };
         var newType = new FinanceOperationTypeDTO { EntryType = EntryType.Income, Description = "new Type" };
-        var incomeDTO = new IncomeDTO(initialType);
+        var incomeDTO = new IncomeDTO() { Type = initialType };
 
         incomeDTO.ChangeFinanceOperationType(newType);
 
@@ -41,7 +41,7 @@ public class IncomeDTOTests
     {
         var initialType = new FinanceOperationTypeDTO { EntryType = EntryType.Income, Description = "old Type" };
         var newType = new FinanceOperationTypeDTO { EntryType = EntryType.Expense, Description = "new Type" };
-        var incomeDTO = new IncomeDTO(initialType);
+        var incomeDTO = new IncomeDTO() { Type = initialType };
 
         Assert.ThrowsException<ArgumentException>(() => incomeDTO.ChangeFinanceOperationType(newType));
     }
@@ -49,8 +49,8 @@ public class IncomeDTOTests
     [TestMethod]
     public void GetHashCode_SameValues_ReturnsSameHashCode()
     {
-        var income1 = new IncomeDTO(new() { EntryType = EntryType.Income });
-        var income2 = new IncomeDTO(new() { EntryType = EntryType.Income });
+        var income1 = new IncomeDTO() { Type = new() { EntryType = EntryType.Income } };
+        var income2 = new IncomeDTO() { Type = new() { EntryType = EntryType.Income } };
 
         var hash1 = income1.GetHashCode();
         var hash2 = income2.GetHashCode();
