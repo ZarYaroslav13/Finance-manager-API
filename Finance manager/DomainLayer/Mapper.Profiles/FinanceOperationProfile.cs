@@ -11,7 +11,7 @@ public class FinanceOperationProfile : Profile
         CreateMap<FinanceOperation, FinanceOperationModel>()
             .ConvertUsing((dbFinanceOperation, domainFinanceOperation, context) =>
             {
-                ArgumentNullException.ThrowIfNull(dbFinanceOperation.Type);
+                ArgumentNullException.ThrowIfNull(dbFinanceOperation.Type, "Mapping<FinanceOperation, FinanceOperationModel> value dbFinanceOperation.Type cannot be null");
 
                 switch (dbFinanceOperation.Type.EntryType)
                 {

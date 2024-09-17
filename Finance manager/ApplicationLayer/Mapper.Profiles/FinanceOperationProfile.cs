@@ -12,7 +12,7 @@ public class FinanceOperationProfile : Profile
         CreateMap<FinanceOperationModel, FinanceOperationDTO>()
             .ConvertUsing((financeOperationModel, financeOperationDTO, context) =>
             {
-                ArgumentNullException.ThrowIfNull(financeOperationModel.Type);
+                ArgumentNullException.ThrowIfNull(financeOperationModel.Type, "Mapping<FinanceOperationModel, FinanceOperationDTO> value financeOperationDTO.Type cannot be null");
 
                 switch (financeOperationModel.Type.EntryType)
                 {
@@ -28,12 +28,11 @@ public class FinanceOperationProfile : Profile
         CreateMap< FinanceOperationDTO, FinanceOperationModel>()
             .ConvertUsing((financeOperationDTO, financeOperationModel, context) =>
             {
-                ArgumentNullException.ThrowIfNull(financeOperationDTO.Type);
+                ArgumentNullException.ThrowIfNull(financeOperationDTO.Type, "Mapping<FinanceOperationDTO, FinanceOperationModel> value financeOperationDTO.Type cannot be null");
 
                 switch (financeOperationDTO.Type.EntryType)
                 {
                     case EntryType.Income:
-                        var f = context.Mapper.Map<IncomeModel>(financeOperationDTO);
                         return context.Mapper.Map<IncomeModel>(financeOperationDTO);
                     case EntryType.Expense:
                         return context.Mapper.Map<ExpenseModel>(financeOperationDTO);

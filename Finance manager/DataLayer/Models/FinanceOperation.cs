@@ -10,7 +10,7 @@ public class FinanceOperation : Entity
 
     public int TypeId { get; set; }
 
-    public FinanceOperationType Type { get; set; } = default!;
+    public FinanceOperationType Type { get; set; }
 
     public override bool Equals(object? obj)
     {

@@ -167,9 +167,11 @@ public class FinanceService : BaseService, IFinanceService
                 .Any())
             throw new InvalidOperationException();
 
-        var result = _mapper.Map<FinanceOperationModel>(
-                        _financeOperationRepository.Insert(financeOperationForDb));
+        var dbResult = _financeOperationRepository.Insert(financeOperationForDb);
         await _unitOfWork.SaveChangesAsync();
+
+        dbResult.Type = await _financeOperationTypeRepository.GetByIdAsync(dbResult.TypeId);
+        var result = _mapper.Map<FinanceOperationModel>(dbResult);
 
         return result;
     }
