@@ -2,6 +2,7 @@
 using ApplicationLayer.Models;
 using AutoMapper;
 using DomainLayer.Models;
+using DomainLayer.Services.Admins;
 using DomainLayer.Services.Wallets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -103,7 +104,7 @@ public class WalletController : BaseController
         return Ok(wallet);
     }
 
-    [Authorize(Policy = _adminPolicy)]
+    [Authorize(Policy = AdminService.AdminPolicy)]
     [HttpGet("account/{accountId}/for-admins")]
     public async Task<IActionResult> GetWalletsOfAccountAsync(int accountId)
     {
@@ -118,7 +119,7 @@ public class WalletController : BaseController
         return Ok(wallets);
     }
 
-    [Authorize(Policy = _adminPolicy)]
+    [Authorize(Policy = AdminService.AdminPolicy)]
     [HttpDelete("{id}/for-admins")]
     public async Task<IActionResult> DeleteWalletOfAccountAsync(int id)
     {

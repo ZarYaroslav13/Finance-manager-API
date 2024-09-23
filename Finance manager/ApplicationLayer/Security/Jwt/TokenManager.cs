@@ -50,6 +50,7 @@ public class TokenManager : ITokenManager
         {
             new(nameof(AccountDTO.Id), account.Id.ToString()),
             new(ClaimsIdentity.DefaultNameClaimType, account.Email),
+            new(ClaimsIdentity.DefaultRoleClaimType, _accountService.GetNameAccountRole())
         };
 
         ClaimsIdentity identity = new(claims, "Token",
@@ -72,6 +73,7 @@ public class TokenManager : ITokenManager
         {
             new(nameof(AdminDTO.Id), account.Id.ToString()),
             new(ClaimsIdentity.DefaultNameClaimType, account.Email),
+            new(ClaimsIdentity.DefaultRoleClaimType, _adminService.GetNameAdminRole())
         };
 
         ClaimsIdentity identity = new(claims, "Token",

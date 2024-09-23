@@ -14,8 +14,6 @@ public abstract class BaseController : ControllerBase
     protected readonly ILogger<BaseController> _logger;
     protected readonly IMapper _mapper;
 
-    protected const string _adminPolicy = "OnlyForAdmins";
-
     public BaseController(IMapper mapper, ILogger<BaseController> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

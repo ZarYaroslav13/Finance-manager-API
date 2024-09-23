@@ -475,6 +475,14 @@ public class FillerBbData
             FirstName = "Admin",
             Email = "mr.admin.number1@gmail.com",
             Password= _passwordCoder.ComputeSHA256Hash("saferAdminParol124")
+        },
+        new()
+        {
+            Id = 2,
+            LastName = "Your second best",
+            FirstName = "Admin",
+            Email = "mr.admin.number2@gmail.com",
+            Password= _passwordCoder.ComputeSHA256Hash("saferPassword456"),
         }
     };
 }

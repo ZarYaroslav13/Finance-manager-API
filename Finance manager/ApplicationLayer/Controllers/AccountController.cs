@@ -3,6 +3,7 @@ using ApplicationLayer.Models;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
+using DomainLayer.Services.Admins;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,7 +51,7 @@ public class AccountController : BaseController
         return Ok();
     }
 
-    [Authorize(Policy = _adminPolicy)]
+    [Authorize(Policy = AdminService.AdminPolicy)]
     [HttpGet("for-admins")]
     public async Task<IActionResult> GetAllAsync(int skip, int take)
     {
@@ -65,7 +66,7 @@ public class AccountController : BaseController
         return Ok(accounts);
     }
 
-    [Authorize(Policy = _adminPolicy)]
+    [Authorize(Policy = AdminService.AdminPolicy)]
     [HttpPut("for-admins")]
     public async Task<IActionResult> AdminUpdateAccountAsync([FromBody] AccountDTO account)
     {
@@ -80,7 +81,7 @@ public class AccountController : BaseController
         return Ok(updatedAccount);
     }
 
-    [Authorize(Policy = _adminPolicy)]
+    [Authorize(Policy = AdminService.AdminPolicy)]
     [HttpDelete("{id}/for-admins")]
     public IActionResult DeleteById(int id)
     {

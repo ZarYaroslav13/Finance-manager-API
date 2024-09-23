@@ -24,6 +24,8 @@ public class AccountService : BaseService, IAccountService
         _repository = _unitOfWork.GetRepository<Account>();
     }
 
+    public string GetNameAccountRole() => "User";
+
     public async Task<List<AccountModel>> GetAccountsAsync(string adminEmail, int skip = 0, int take = 0)
     {
         if (!_adminService.IsItAdmin(adminEmail))

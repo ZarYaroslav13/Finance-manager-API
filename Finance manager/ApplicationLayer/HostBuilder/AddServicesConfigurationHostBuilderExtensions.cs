@@ -38,7 +38,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
 
         services.AddJwtAuthentication();
 
-        services.AddPoliticalAuthorization(configuration);
+        services.AddPoliticalAuthorization();
 
         services.AddControllers(options =>
             options.Conventions
@@ -87,17 +87,13 @@ public static class AddServicesConfigurationHostBuilderExtensions
         return services;
     }
 
-    private static IServiceCollection AddPoliticalAuthorization(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddPoliticalAuthorization(this IServiceCollection services)
     {
-        var serviceProvider = services.BuildServiceProvider();
-
-        var adminService = serviceProvider.GetRequiredService<IAdminService>();
-
         services.AddAuthorization(opt =>
         {
-            opt.AddPolicy("OnlyForAdmins", policy =>
+            opt.AddPolicy(AdminService.AdminPolicy, policy =>
             {
-                policy.RequireClaim(ClaimTypes.Name, adminService.GetAdmins().Select(a => a.Email));
+                policy.RequireClaim(ClaimTypes.Role, AdminService.NameAdminRole);
             });
         });
 
