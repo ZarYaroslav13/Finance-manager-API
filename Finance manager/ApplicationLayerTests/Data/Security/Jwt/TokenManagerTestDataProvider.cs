@@ -1,4 +1,5 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Security.Jwt;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
@@ -45,7 +46,8 @@ public static class TokenManagerTestDataProvider
             new ClaimsIdentity(new List<Claim>
             {
                 new(nameof(AccountDTO.Id), "1"),
-                new(ClaimsIdentity.DefaultNameClaimType, "Email@gmail.com")
+                new(ClaimsIdentity.DefaultNameClaimType, "Email@gmail.com"),
+                new(ClaimsIdentity.DefaultRoleClaimType, AccountService.NameAccountRole)
             }, "Token",
             ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType)
         }
@@ -62,7 +64,8 @@ public static class TokenManagerTestDataProvider
             new ClaimsIdentity(new List<Claim>
             {
                 new(nameof(AdminDTO.Id), "1"),
-                new(ClaimsIdentity.DefaultNameClaimType, "EmailAdmin@gmail.com")
+                new(ClaimsIdentity.DefaultNameClaimType, "EmailAdmin@gmail.com"),
+                new(ClaimsIdentity.DefaultRoleClaimType, AdminService.NameAdminRole)
             }, "Token",
             ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType)
         }

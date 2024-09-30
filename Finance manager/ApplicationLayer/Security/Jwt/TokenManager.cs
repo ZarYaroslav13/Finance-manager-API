@@ -46,6 +46,8 @@ public class TokenManager : ITokenManager
         if (account == null)
             return null;
 
+        var t = AccountService.NameAccountRole;
+        var t1 = _accountService.GetNameAccountRole();
         var claims = new List<Claim>()
         {
             new(nameof(AccountDTO.Id), account.Id.ToString()),

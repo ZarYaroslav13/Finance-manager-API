@@ -24,7 +24,9 @@ public class AccountService : BaseService, IAccountService
         _repository = _unitOfWork.GetRepository<Account>();
     }
 
-    public string GetNameAccountRole() => "User";
+    public const string NameAccountRole = "User";
+
+    public string GetNameAccountRole() => NameAccountRole;
 
     public async Task<List<AccountModel>> GetAccountsAsync(string adminEmail, int skip = 0, int take = 0)
     {

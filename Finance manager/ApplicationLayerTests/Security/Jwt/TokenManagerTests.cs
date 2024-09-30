@@ -86,6 +86,8 @@ public class TokenManagerTests
                     Password = acc.Password
                 };
             });
+        A.CallTo(() => _accountService.GetNameAccountRole())
+            .Returns(AccountService.NameAccountRole);
 
         var result = await _tokenManager.GetAccountIdentityAsync(account.Email, account.Password);
 
@@ -137,7 +139,9 @@ public class TokenManagerTests
                     Email = acc.Email,
                     Password = acc.Password
                 };
-            });
+            }); 
+        A.CallTo(() => _adminService.GetNameAdminRole())
+            .Returns(AdminService.NameAdminRole);
 
         var result = await _tokenManager.GetAdminIdentityAsync(admin.Email, admin.Password);
 
