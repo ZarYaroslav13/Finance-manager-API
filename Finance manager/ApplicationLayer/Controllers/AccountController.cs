@@ -51,8 +51,8 @@ public class AccountController : BaseController
         return Ok();
     }
 
-    [Authorize(Policy = AdminService.AdminPolicy)]
-    [HttpGet("for-admins")]
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpGet]
     public async Task<IActionResult> GetAllAsync(int skip, int take)
     {
         _logger.LogInformation("GetAllAsync called by admin with skip: {Skip}, take: {Take}", skip, take);
@@ -66,9 +66,9 @@ public class AccountController : BaseController
         return Ok(accounts);
     }
 
-    [Authorize(Policy = AdminService.AdminPolicy)]
-    [HttpPut("for-admins")]
-    public async Task<IActionResult> AdminUpdateAccountAsync([FromBody] AccountDTO account)
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> AdminUpdateAccountAsync(int id, [FromBody] AccountDTO account)
     {
         _logger.LogInformation("AdminUpdateAccountAsync called to update account with Id: {Id}", account.Id);
 
@@ -81,9 +81,9 @@ public class AccountController : BaseController
         return Ok(updatedAccount);
     }
 
-    [Authorize(Policy = AdminService.AdminPolicy)]
-    [HttpDelete("{id}/for-admins")]
-    public IActionResult DeleteById(int id)
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpDelete("{id}")]
+    public IActionResult DeleteUserById(int id)
     {
         _logger.LogInformation("DeleteById called by admin to remove account with Id: {Id}", id);
 

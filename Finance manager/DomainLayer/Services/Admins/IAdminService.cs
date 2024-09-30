@@ -6,7 +6,7 @@ public interface IAdminService
 {
     public string GetNameAdminRole();
 
-    public string GetAdminPolicy();
+    public string GetNameAdminPolicy();
 
     public List<AdminModel> GetAdmins();
 

@@ -114,7 +114,7 @@ public class AccountControllerTests
         A.CallTo(() => _service.UpdateAccountAsync(accountModel)).Returns(Task.FromResult(accountModel));
         A.CallTo(() => _mapper.Map<AccountDTO>(accountModel)).Returns(updatedAccountDto);
 
-        var result = await _controller.AdminUpdateAccountAsync(accountDto);
+        var result = await _controller.AdminUpdateAccountAsync(accountDto.Id, accountDto);
 
         var okResult = result as OkObjectResult;
         okResult.Should().NotBeNull();
@@ -125,7 +125,7 @@ public class AccountControllerTests
     [TestMethod]
     public void DeleteById_AdminRole_CallsServiceAndLogs()
     {
-        var result = _controller.DeleteById(1);
+        var result = _controller.DeleteUserById(1);
 
         result.Should().BeOfType<OkResult>();
 

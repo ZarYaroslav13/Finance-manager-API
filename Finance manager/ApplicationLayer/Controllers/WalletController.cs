@@ -104,8 +104,8 @@ public class WalletController : BaseController
         return Ok(wallet);
     }
 
-    [Authorize(Policy = AdminService.AdminPolicy)]
-    [HttpGet("account/{accountId}/for-admins")]
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpGet("accounts/{accountId}")]
     public async Task<IActionResult> GetWalletsOfAccountAsync(int accountId)
     {
         _logger.LogInformation("GetWalletsOfAccountAsync called by admin for account Id: {AccountId}", accountId);
@@ -119,8 +119,8 @@ public class WalletController : BaseController
         return Ok(wallets);
     }
 
-    [Authorize(Policy = AdminService.AdminPolicy)]
-    [HttpDelete("{id}/for-admins")]
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpDelete("{id}/advance-acces")]
     public async Task<IActionResult> DeleteWalletOfAccountAsync(int id)
     {
         _logger.LogInformation("DeleteWalletOfAccountAsync called by admin to delete wallet Id: {WalletId}", id);

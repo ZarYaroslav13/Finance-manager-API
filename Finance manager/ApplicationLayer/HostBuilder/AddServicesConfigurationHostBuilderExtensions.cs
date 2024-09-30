@@ -91,7 +91,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
     {
         services.AddAuthorization(opt =>
         {
-            opt.AddPolicy(AdminService.AdminPolicy, policy =>
+            opt.AddPolicy(AdminService.NameAdminPolicy, policy =>
             {
                 policy.RequireClaim(ClaimTypes.Role, AdminService.NameAdminRole);
             });
