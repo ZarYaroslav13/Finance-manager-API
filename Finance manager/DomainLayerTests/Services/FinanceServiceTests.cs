@@ -15,18 +15,18 @@ public class FinanceServiceTests
 {
     private readonly IFinanceService _service;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IRepository<FinanceOperationType> _financeOperationTypesRepository;
+    private readonly IRepository<FinanceOperationType> _financeOperationTypeRepository;
     private readonly IRepository<FinanceOperation> _financeOperationsRepository;
     private readonly IMapper _mapper;
 
     public FinanceServiceTests()
     {
-        _financeOperationTypesRepository = A.Fake<IRepository<FinanceOperationType>>();
+        _financeOperationTypeRepository = A.Fake<IRepository<FinanceOperationType>>();
         _financeOperationsRepository = A.Fake<IRepository<FinanceOperation>>();
         _unitOfWork = A.Fake<IUnitOfWork>();
         _mapper = A.Fake<IMapper>();
 
-        A.CallTo(() => _unitOfWork.GetRepository<FinanceOperationType>()).Returns(_financeOperationTypesRepository);
+        A.CallTo(() => _unitOfWork.GetRepository<FinanceOperationType>()).Returns(_financeOperationTypeRepository);
         A.CallTo(() => _unitOfWork.GetRepository<FinanceOperation>()).Returns(_financeOperationsRepository);
 
         _service = new FinanceService(_unitOfWork, _mapper);
@@ -43,7 +43,7 @@ public class FinanceServiceTests
     [DynamicData(nameof(FinanceServiceTestsDataProvider.GetAllFinanceOperationTypesOfWalletTestData), typeof(FinanceServiceTestsDataProvider))]
     public async Task GetAllFinanceOperationTypesOfWalletAsync_ReceivedExpectedNumberFinanceOperationTypes_FinanceOperationTypesList(List<FinanceOperationType> financeOperationTypes, int walletId)
     {
-        A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(
+        A.CallTo(() => _financeOperationTypeRepository.GetAllAsync(
             A<Func<IQueryable<FinanceOperationType>,
             IOrderedQueryable<FinanceOperationType>>>._,
             A<Expression<Func<FinanceOperationType, bool>>>.That.Matches(filter =>
@@ -56,7 +56,7 @@ public class FinanceServiceTests
         var result = await _service.GetAllFinanceOperationTypesOfWalletAsync(walletId);
 
 
-        A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(
+        A.CallTo(() => _financeOperationTypeRepository.GetAllAsync(
            A<Func<IQueryable<FinanceOperationType>,
            IOrderedQueryable<FinanceOperationType>>>._,
            A<Expression<Func<FinanceOperationType, bool>>>.That.Matches(filter =>
@@ -84,12 +84,12 @@ public class FinanceServiceTests
     public async Task AddFinanceOperationTypeAsync_ServiceInvokeMethodInsertByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
-        A.CallTo(() => _financeOperationTypesRepository.Insert(typeForRepository)).Returns(typeForRepository);
+        A.CallTo(() => _financeOperationTypeRepository.Insert(typeForRepository)).Returns(typeForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationTypeModel>(typeForRepository)).Returns(modelForAdding);
 
         var result = await _service.AddFinanceOperationTypeAsync(modelForAdding);
 
-        A.CallTo(() => _financeOperationTypesRepository.Insert(typeForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationTypeRepository.Insert(typeForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
@@ -108,12 +108,12 @@ public class FinanceServiceTests
     public async Task UpdateFinanceOperationTypeAsync_ServiceInvokeMethodUpdateByRepository_FinanceOperationTypeModel(FinanceOperationTypeModel modelForAdding, FinanceOperationType typeForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperationType>(modelForAdding)).Returns(typeForRepository);
-        A.CallTo(() => _financeOperationTypesRepository.Update(typeForRepository)).Returns(typeForRepository);
+        A.CallTo(() => _financeOperationTypeRepository.Update(typeForRepository)).Returns(typeForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationTypeModel>(typeForRepository)).Returns(modelForAdding);
 
         var result = await _service.UpdateFinanceOperationTypeAsync(modelForAdding);
 
-        A.CallTo(() => _financeOperationTypesRepository.Update(typeForRepository)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationTypeRepository.Update(typeForRepository)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
 
         Assert.AreEqual(modelForAdding, result);
@@ -139,7 +139,7 @@ public class FinanceServiceTests
 
         await _service.DeleteFinanceOperationTypeAsync(idFinanceOperationTypeForDelete);
 
-        A.CallTo(() => _financeOperationTypesRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _financeOperationTypeRepository.Delete(idFinanceOperationTypeForDelete)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _unitOfWork.SaveChangesAsync()).MustHaveHappenedOnceExactly();
     }
 
@@ -159,7 +159,7 @@ public class FinanceServiceTests
 
         A.CallTo(() => _unitOfWork.GetRepository<Wallet>())
            .Returns(walletRepository);
-        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(type.Id))
+        A.CallTo(() => _financeOperationTypeRepository.GetByIdAsync(type.Id))
             .Returns(type);
         A.CallTo(() => walletRepository.GetByIdAsync(wallet.Id))
             .Returns(wallet);
@@ -178,7 +178,7 @@ public class FinanceServiceTests
 
         A.CallTo(() => _unitOfWork.GetRepository<Wallet>())
            .Returns(walletRepository);
-        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(type.Id))
+        A.CallTo(() => _financeOperationTypeRepository.GetByIdAsync(type.Id))
             .Returns(type);
         A.CallTo(() => walletRepository.GetByIdAsync(wallet.Id))
             .Returns(wallet);
@@ -251,7 +251,7 @@ public class FinanceServiceTests
         DateTime startDate = DateTime.Now.AddDays(-4);
         DateTime endDate = DateTime.Now.AddDays(-1);
 
-        A.CallTo(() => _financeOperationTypesRepository.GetAllAsync(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
+        A.CallTo(() => _financeOperationTypeRepository.GetAllAsync(A<Func<IQueryable<FinanceOperationType>, IOrderedQueryable<FinanceOperationType>>>._,
                                             A<Expression<Func<FinanceOperationType, bool>>>._,
             A<int>._, A<int>._,
                                             A<string[]>._))
@@ -309,12 +309,22 @@ public class FinanceServiceTests
     }
 
     [TestMethod]
+    public void AddFinanceOperationAsync_IncorrectTypeId_ThrowsExeption()
+    {
+        var invalidtypeId = 1;
+        IncomeModel operation = new(new()) { Id = invalidtypeId };
+
+        Assert.ThrowsExceptionAsync<InvalidOperationException>(() => _service.AddFinanceOperationAsync(operation));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(FinanceServiceTestsDataProvider.AddFinanceOperationTestData), typeof(FinanceServiceTestsDataProvider))]
     public async Task AddFinanceOperationAsync_ServiceInvokeMethodInsertByRepository_FinanceOperationModel(FinanceOperationModel modelForAdding, FinanceOperation financeOperationForRepository)
     {
         A.CallTo(() => _mapper.Map<FinanceOperation>(modelForAdding)).Returns(financeOperationForRepository);
         A.CallTo(() => _financeOperationsRepository.Insert(financeOperationForRepository)).Returns(financeOperationForRepository);
         A.CallTo(() => _mapper.Map<FinanceOperationModel>(financeOperationForRepository)).Returns(modelForAdding);
+        A.CallTo(() => _financeOperationTypeRepository.GetByIdAsync(modelForAdding.Type.Id)).Returns(new FinanceOperationType());
 
         var result = await _service.AddFinanceOperationAsync(modelForAdding);
 
@@ -378,7 +388,7 @@ public class FinanceServiceTests
            .Returns(walletRepository);
         A.CallTo(() => _financeOperationsRepository.GetByIdAsync(operation.Id))
             .Returns(operation);
-        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(type.Id))
+        A.CallTo(() => _financeOperationTypeRepository.GetByIdAsync(type.Id))
             .Returns(type);
         A.CallTo(() => walletRepository.GetByIdAsync(wallet.Id))
             .Returns(wallet);
@@ -400,7 +410,7 @@ public class FinanceServiceTests
            .Returns(walletRepository);
         A.CallTo(() => _financeOperationsRepository.GetByIdAsync(operation.Id))
             .Returns(operation);
-        A.CallTo(() => _financeOperationTypesRepository.GetByIdAsync(operation.TypeId))
+        A.CallTo(() => _financeOperationTypeRepository.GetByIdAsync(operation.TypeId))
             .Returns(type);
         A.CallTo(() => walletRepository.GetByIdAsync(type.WalletId)).Returns(wallet);
 

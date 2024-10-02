@@ -1,5 +1,4 @@
 ﻿using ApplicationLayer.Models;
-using ApplicationLayer.Security.Jwt;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;

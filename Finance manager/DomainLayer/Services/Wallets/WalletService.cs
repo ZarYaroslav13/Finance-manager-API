@@ -33,12 +33,11 @@ public class WalletService : BaseService, IWalletService
         if (wallet.AccountId <= 0)
             throw new ArgumentOutOfRangeException(nameof(wallet));
 
-        var result = _mapper.Map<WalletModel>(
-                        _repository.Insert(
-                                _mapper.Map<Wallet>(wallet)));
+        var result = _repository.Insert(
+                                _mapper.Map<Wallet>(wallet));
         await _unitOfWork.SaveChangesAsync();
 
-        return result;
+        return _mapper.Map<WalletModel>(result);
     }
 
     public async Task<WalletModel> UpdateWalletAsync(WalletModel updatedWallet)

@@ -6,11 +6,11 @@ public class WalletModel : Base.Model
 
     public int Balance { get; set; }
 
-    public List<FinanceOperationTypeModel> FinanceOperationTypes { get; set; } = default!;
+    public List<FinanceOperationTypeModel> FinanceOperationTypes { get; set; } = new();
 
-    public List<IncomeModel> Incomes { get; set; } = default!;
+    public List<IncomeModel> Incomes { get; set; } = new();
 
-    public List<ExpenseModel> Expenses { get; set; } = default!;
+    public List<ExpenseModel> Expenses { get; set; } = new();
 
     public int AccountId { get; set; }
 

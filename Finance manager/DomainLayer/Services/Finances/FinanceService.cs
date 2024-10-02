@@ -44,12 +44,11 @@ public class FinanceService : BaseService, IFinanceService
         if (type.Id != 0)
             throw new ArgumentException(nameof(type));
 
-        var result = _mapper.Map<FinanceOperationTypeModel>(
-                         _financeOperationTypeRepository.Insert(
-                             _mapper.Map<FinanceOperationType>(type)));
+        var result = _financeOperationTypeRepository.Insert(
+                             _mapper.Map<FinanceOperationType>(type));
         await _unitOfWork.SaveChangesAsync();
 
-        return result;
+        return _mapper.Map<FinanceOperationTypeModel>(result);
     }
 
     public async Task<FinanceOperationTypeModel> UpdateFinanceOperationTypeAsync(FinanceOperationTypeModel type)
@@ -164,13 +163,11 @@ public class FinanceService : BaseService, IFinanceService
         if (financeOperation.Id != 0)
             throw new ArgumentException(nameof(financeOperation));
 
-        var financeOperationForDb = _mapper.Map<FinanceOperation>(financeOperation);
+        if (await IsNotExistFinanceOperationTypeWithIdAsync(financeOperation.Type.Id))
+            throw new InvalidOperationException("Finance operation type with this id don`t exist");
 
-        if ((await _financeOperationRepository.GetAllAsync(filter: fo => fo == financeOperationForDb))
-                .Any())
-            throw new InvalidOperationException();
-
-        var dbResult = _financeOperationRepository.Insert(financeOperationForDb);
+        var dbResult = _financeOperationRepository.Insert(
+                _mapper.Map<FinanceOperation>(financeOperation));
         await _unitOfWork.SaveChangesAsync();
 
         dbResult.Type = await _financeOperationTypeRepository.GetByIdAsync(dbResult.TypeId);
@@ -210,6 +207,13 @@ public class FinanceService : BaseService, IFinanceService
         var wallet = await _unitOfWork.GetRepository<Wallet>().GetByIdAsync(type.WalletId);
 
         return wallet.AccountId == accountid;
+    }
+
+    private async Task<bool> IsNotExistFinanceOperationTypeWithIdAsync(int id)
+    {
+        var type = await _financeOperationTypeRepository.GetByIdAsync(id);
+
+        return type == null;
     }
     #endregion
 }

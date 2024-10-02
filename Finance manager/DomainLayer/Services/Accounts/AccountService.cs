@@ -53,13 +53,10 @@ public class AccountService : BaseService, IAccountService
 
         account.Password = _passwordCoder.ComputeSHA256Hash(account.Password);
 
-        var result = _mapper
-            .Map<AccountModel>(
-                _repository
-                    .Insert(_mapper.Map<Account>(account)));
+        var result = _repository.Insert(_mapper.Map<Account>(account));
         await _unitOfWork.SaveChangesAsync();
 
-        return result;
+        return _mapper.Map<AccountModel>(result);
     }
 
     public async Task<AccountModel> UpdateAccountAsync(AccountModel updatedAccount)

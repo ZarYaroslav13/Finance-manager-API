@@ -14,12 +14,11 @@ public class WalletDTO : Base.ModelDTO
 
     public int Balance { get; set; } = 0;
 
-    public List<FinanceOperationTypeDTO> FinanceOperationTypes { get; set; } = default!;
+    public List<FinanceOperationTypeDTO> FinanceOperationTypes { get; set; } = new();
 
-    public List<IncomeDTO> Incomes { get; set; } = default!;
+    public List<IncomeDTO> Incomes { get; set; } = new();
 
-
-    public List<ExpenseDTO> Expenses { get; set; } = default!;
+    public List<ExpenseDTO> Expenses { get; set; } = new();
 
     public int AccountId { get; set; }
 

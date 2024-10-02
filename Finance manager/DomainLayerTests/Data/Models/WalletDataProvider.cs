@@ -72,18 +72,8 @@ public class WalletDataProvider
         },
         new object[]
         {
-            new WalletModel(){ Id = 1, Name = "eName", Balance = 100, AccountId = 1, Expenses = new(), FinanceOperationTypes = new(), Incomes = new()},
-            new WalletModel(){ Id = 1, Name = "eName", Balance = 100, AccountId = 1, FinanceOperationTypes = new(), Incomes = new()}
-        },
-        new object[]
-        {
             new WalletModel(){ Id = 1, Name = "fName", Balance = 100, AccountId = 1, Expenses = new(), FinanceOperationTypes = new(), Incomes = new()},
             new WalletModel(){ Id = 1, Name = "fName", Balance = 100, AccountId = 1, Expenses = new(), FinanceOperationTypes = new() { new FinanceOperationTypeModel()}, Incomes = new()}
-        },
-        new object[]
-        {
-            new WalletModel(){ Id = 1, Name = "iName", Balance = 100, AccountId = 1, Expenses = new(), FinanceOperationTypes = new(), Incomes = new()},
-            new WalletModel(){ Id = 1, Name = "iName", Balance = 100, AccountId = 1, Expenses = new(), FinanceOperationTypes = new()}
         },
         new object[]
         {

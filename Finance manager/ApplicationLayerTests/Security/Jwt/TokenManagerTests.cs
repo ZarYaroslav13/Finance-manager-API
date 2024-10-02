@@ -139,7 +139,7 @@ public class TokenManagerTests
                     Email = acc.Email,
                     Password = acc.Password
                 };
-            }); 
+            });
         A.CallTo(() => _adminService.GetNameAdminRole())
             .Returns(AdminService.NameAdminRole);
 
