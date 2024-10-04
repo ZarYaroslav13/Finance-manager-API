@@ -33,30 +33,17 @@ public class AccountController : BaseController
         return Ok(accounts);
     }
 
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpPut("{id}")]
-    public async Task<IActionResult> AdminUpdateAccountAsync([FromBody] AccountDTO account)
-    {
-        _logger.LogInformation("AdminUpdateAccountAsync called to update account with Id: {Id}", account.Id);
-
-        var updatedAccount = _mapper.Map<AccountDTO>(
-                await _accountService.UpdateAccountAsync(
-                    _mapper.Map<AccountModel>(account)));
-
-        _logger.LogInformation("Admin updated account with Id: {Id} successfully", updatedAccount.Id);
-
-        return Ok(updatedAccount);
-    }
-
     [HttpPut]
     public async Task<IActionResult> UpdateAsync([FromBody] AccountDTO account)
     {
-        int id = GetUserId();
-        _logger.LogInformation("UpdateAsync called to update account with Id: {Id}", id);
+        int userId = GetUserId();
+        string userRole = GetUserRole();
 
-        if (account.Id != id)
+        _logger.LogInformation("UpdateAsync called to update account with Id: {Id} by user with id: {UserId} and role {UserRole}", account.Id, userId, userRole);
+
+        if (userRole != AdminService.NameAdminRole && account.Id != userId)
         {
-            _logger.LogWarning($"Unauthorized access attempt to update account with Id: {account.Id}");
+            _logger.LogWarning($"Unauthorized access attempt to update account with Id: {account.Id} by user with id: {userId} and role {userRole}");
             throw new UnauthorizedAccessException($"Access denied");
         }
 
@@ -64,33 +51,28 @@ public class AccountController : BaseController
                 await _accountService.UpdateAccountAsync(
                     _mapper.Map<AccountModel>(account)));
 
-        _logger.LogInformation("Account with Id: {Id} updated successfully", updatedAccount.Id);
+        _logger.LogInformation("Account with id: {Id} updated successfully by user with id: {UserId} and role {UserRole}", updatedAccount.Id, userId, userRole);
 
         return Ok(updatedAccount);
     }
 
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
     [HttpDelete("{id}")]
     public IActionResult DeleteUserById(int id)
     {
+        int userId = GetUserId();
+        string userRole = GetUserRole();
+
         _logger.LogInformation("DeleteById called by admin to remove account with Id: {Id}", id);
+
+        if (userRole != AdminService.NameAdminRole && id != userId)
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update account with Id: {id} by user with id: {userId} and role {userRole}");
+            throw new UnauthorizedAccessException($"Access denied");
+        }
 
         _accountService.DeleteAccountWithId(id);
 
         _logger.LogInformation("Admin deleted account with Id: {Id} successfully", id);
-
-        return Ok();
-    }
-
-    [HttpDelete]
-    public IActionResult Delete()
-    {
-        int id = GetUserId();
-        _logger.LogInformation("Delete called to remove account with Id: {Id}", id);
-
-        _accountService.DeleteAccountWithId(id);
-
-        _logger.LogInformation("Account with Id: {Id} deleted successfully", id);
 
         return Ok();
     }

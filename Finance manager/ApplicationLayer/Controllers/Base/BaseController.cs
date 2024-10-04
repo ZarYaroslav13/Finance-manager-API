@@ -20,6 +20,16 @@ public abstract class BaseController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
+    protected string GetUserRole()
+    {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+        if (identity == null)
+            throw new InvalidOperationException(nameof(identity));
+
+        return identity.FindFirst(identity.RoleClaimType).Value;
+    }
+
     protected int GetUserId()
     {
         var identity = HttpContext.User.Identity as ClaimsIdentity;

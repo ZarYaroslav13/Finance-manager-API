@@ -3,6 +3,7 @@ using ApplicationLayer.Models;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
+using DomainLayer.Services.Admins;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +20,9 @@ public class AccountControllerTests
     private readonly IAccountService _service;
     private readonly IMapper _mapper;
     private readonly ILogger<AccountController> _logger;
-    private ClaimsPrincipal user;
+    private readonly ClaimsPrincipal _user;
+    private readonly ClaimsPrincipal _admin;
+    private bool _isUserAdmin = false;
 
     public AccountControllerTests()
     {
@@ -29,14 +32,22 @@ public class AccountControllerTests
 
         _controller = new(_service, _mapper, _logger);
 
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        _user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
             new Claim(nameof(AccountDTO.Id), "1"),
-            new Claim(ClaimTypes.Name, "user@example.com")
+            new Claim(ClaimTypes.Name, "user@example.com"),
+            new Claim(ClaimTypes.Role, AccountService.NameAccountRole)
+        }, "mock"));
+
+        _admin = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new Claim(nameof(AccountDTO.Id), "1"),
+            new Claim(ClaimTypes.Name, "user@example.com"),
+            new Claim(ClaimTypes.Role, AdminService.NameAdminRole)
         }, "mock"));
 
         var httpContext = A.Fake<HttpContext>();
-        A.CallTo(() => httpContext.User).Returns(user);
+        A.CallTo(() => httpContext.User).ReturnsLazily(() => _isUserAdmin == true ? _admin : _user);
         _controller.ControllerContext = new ControllerContext()
         {
             HttpContext = httpContext
@@ -106,7 +117,9 @@ public class AccountControllerTests
     [TestMethod]
     public async Task AdminUpdateAccountAsync_ValidAccount_ReturnsOkResult()
     {
-        var accountDto = new AccountDTO { Id = 1, Email = "admin@example.com" };
+        _isUserAdmin = true;
+
+        var accountDto = new AccountDTO { Id = 2, Email = "admin@example.com" };
         var accountModel = A.Fake<AccountModel>();
         var updatedAccountDto = A.Fake<AccountDTO>();
 
@@ -114,7 +127,7 @@ public class AccountControllerTests
         A.CallTo(() => _service.UpdateAccountAsync(accountModel)).Returns(Task.FromResult(accountModel));
         A.CallTo(() => _mapper.Map<AccountDTO>(accountModel)).Returns(updatedAccountDto);
 
-        var result = await _controller.AdminUpdateAccountAsync(accountDto.Id, accountDto);
+        var result = await _controller.UpdateAsync(accountDto);
 
         var okResult = result as OkObjectResult;
         okResult.Should().NotBeNull();
@@ -125,10 +138,14 @@ public class AccountControllerTests
     [TestMethod]
     public void DeleteById_AdminRole_CallsServiceAndLogs()
     {
-        var result = _controller.DeleteUserById(1);
+        _isUserAdmin = true;
+
+        int randomAccountId = 3;
+
+        var result = _controller.DeleteUserById(randomAccountId);
 
         result.Should().BeOfType<OkResult>();
 
-        A.CallTo(() => _service.DeleteAccountWithId(1)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _service.DeleteAccountWithId(randomAccountId)).MustHaveHappenedOnceExactly();
     }
 }

@@ -2,6 +2,8 @@
 using ApplicationLayer.Models;
 using AutoMapper;
 using DomainLayer.Models;
+using DomainLayer.Services.Accounts;
+using DomainLayer.Services.Admins;
 using DomainLayer.Services.Wallets;
 using FakeItEasy;
 using FluentAssertions;
@@ -19,9 +21,11 @@ public class WalletControllerTests
     private readonly IWalletService _service;
     private readonly IMapper _mapper;
     private readonly ILogger<WalletController> _logger;
-    private ClaimsPrincipal _user;
     private readonly int _userId = 1;
     private readonly string _email = "user@example.com";
+    private readonly ClaimsPrincipal _user;
+    private readonly ClaimsPrincipal _admin;
+    private bool _isUserAdmin = false;
 
     public WalletControllerTests()
     {
@@ -31,14 +35,24 @@ public class WalletControllerTests
 
         _controller = new(_service, _mapper, _logger);
 
-        _user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        _user = new ClaimsPrincipal(new ClaimsIdentity(new[]
         {
             new Claim(nameof(AccountDTO.Id), _userId.ToString()),
-            new Claim(ClaimTypes.Name, _email)
+            new Claim(ClaimTypes.Name, _email),
+            new Claim(ClaimTypes.Role, AccountService.NameAccountRole)
+
+        }, "mock"));
+
+        _admin = new ClaimsPrincipal(new ClaimsIdentity(new[]
+        {
+            new Claim(nameof(AccountDTO.Id), _userId.ToString()),
+            new Claim(ClaimTypes.Name, _email),
+            new Claim(ClaimTypes.Role, AdminService.NameAdminRole)
+
         }, "mock"));
 
         var httpContext = A.Fake<HttpContext>();
-        A.CallTo(() => httpContext.User).Returns(_user);
+        A.CallTo(() => httpContext.User).ReturnsLazily(() => _isUserAdmin == true ? _admin : _user);
         _controller.ControllerContext = new ControllerContext()
         {
             HttpContext = httpContext
@@ -60,7 +74,7 @@ public class WalletControllerTests
         A.CallTo(() => _service.GetAllWalletsOfAccountAsync(_userId)).Returns(walletModels);
         A.CallTo(() => _mapper.Map<WalletDTO>(A<WalletModel>._)).ReturnsNextFromSequence(walletDTOs.ToArray());
 
-        var result = await _controller.GetWallets();
+        var result = await _controller.GetWalletsAsync(_userId);
 
         var okResult = result as OkObjectResult;
         okResult.Should().NotBeNull();
@@ -168,14 +182,16 @@ public class WalletControllerTests
     [TestMethod]
     public async Task GetWalletsOfAccountAsync_ShouldReturnWallets_WhenCalledByAdmin()
     {
-        int accountId = 1;
+        _isUserAdmin = true;
+
+        int accountId = _userId + 1;
         var walletModels = new List<WalletModel> { new WalletModel(), new WalletModel() };
         var walletDTOs = new List<WalletDTO> { new WalletDTO(), new WalletDTO() };
 
         A.CallTo(() => _service.GetAllWalletsOfAccountAsync(accountId)).Returns(walletModels);
         A.CallTo(() => _mapper.Map<WalletDTO>(A<WalletModel>._)).ReturnsNextFromSequence(walletDTOs.ToArray());
 
-        var result = await _controller.GetWalletsOfAccountAsync(accountId);
+        var result = await _controller.GetWalletsAsync(accountId);
 
         var okResult = result as OkObjectResult;
         okResult.Should().NotBeNull();
@@ -186,9 +202,10 @@ public class WalletControllerTests
     [TestMethod]
     public async Task DeleteWalletOfAccountAsync_ShouldDeleteWallet_WhenCalledByAdmin()
     {
+        _isUserAdmin = true;
         int walletId = 1;
 
-        var result = await _controller.DeleteWalletOfAccountAsync(walletId);
+        var result = await _controller.DeleteAsync(walletId);
 
         A.CallTo(() => _service.DeleteWalletByIdAsync(walletId)).MustHaveHappenedOnceExactly();
         result.Should().BeOfType<OkResult>();

@@ -1,9 +1,11 @@
 ﻿using ApplicationLayer.Models;
+using ApplicationLayer.Security;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
 using FakeItEasy;
+using Microsoft.Extensions.Options;
 using System.Security.Claims;
 
 namespace ApplicationLayerTests.Data.Security.Jwt;
@@ -12,13 +14,20 @@ public static class TokenManagerTestDataProvider
 {
     public static IEnumerable<object[]> ConstructorArgumentsAreNullThrowsArgumentNullExceptionTestData { get; } = new List<object[]>
     {
-        new object[] { null, null, null},
-        new object[] { null, A.Fake<IAdminService>(), A.Fake<IMapper>()},
-        new object[] { A.Fake<IAccountService>(), null, A.Fake<IMapper>()},
-        new object[] { A.Fake<IAccountService>(), A.Fake<IAdminService>(), null},
-        new object[] { A.Fake<IAccountService>(), null, null},
-        new object[] { null, A.Fake<IAdminService>(), null},
-        new object[] { null, null, A.Fake<IMapper>()},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), null, null, null},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), null, A.Fake<IAdminService>(), A.Fake<IMapper>()},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), A.Fake<IAccountService>(), null, A.Fake<IMapper>()},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), A.Fake<IAccountService>(), A.Fake<IAdminService>(), null},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), A.Fake<IAccountService>(), null, null},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), null, A.Fake<IAdminService>(), null},
+        new object[] { A.Fake<IOptions<AuthOptions>>(), null, null, A.Fake<IMapper>()},
+        new object[] { null, null, null, null},
+        new object[] { null, null, A.Fake<IAdminService>(), A.Fake<IMapper>()},
+        new object[] { null, A.Fake<IAccountService>(), null, A.Fake<IMapper>()},
+        new object[] { null, A.Fake<IAccountService>(), A.Fake<IAdminService>(), null},
+        new object[] { null, A.Fake<IAccountService>(), null, null},
+        new object[] { null, null, A.Fake<IAdminService>(), null},
+        new object[] { null, null, null, A.Fake<IMapper>()},
     };
 
     public static IEnumerable<object[]> GetIdentityAsyncNullOrEmptyEmailOrPasswordThrowsArgumentNullExceptionTestData { get; } = new List<object[]>

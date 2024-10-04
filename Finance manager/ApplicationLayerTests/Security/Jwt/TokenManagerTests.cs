@@ -7,6 +7,7 @@ using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
 using FakeItEasy;
+using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -19,20 +20,27 @@ public class TokenManagerTests
     private readonly IAdminService _adminService;
     private readonly IMapper _mapper;
     private readonly ITokenManager _tokenManager;
+    private readonly IOptions<AuthOptions> _diAuthOptions;
+    private readonly AuthOptions _authOptions;
 
     public TokenManagerTests()
     {
         _accountService = A.Fake<IAccountService>();
         _adminService = A.Fake<IAdminService>();
         _mapper = A.Fake<IMapper>();
-        _tokenManager = new TokenManager(_accountService, _adminService, _mapper);
+        _diAuthOptions = A.Fake<IOptions<AuthOptions>>();
+        _authOptions = A.Fake<AuthOptions>();
+
+        A.CallTo(() => _diAuthOptions.Value).Returns(_authOptions);
+
+        _tokenManager = new TokenManager(_accountService, _adminService, _mapper, _diAuthOptions);
     }
 
     [TestMethod]
     [DynamicData(nameof(TokenManagerTestDataProvider.ConstructorArgumentsAreNullThrowsArgumentNullExceptionTestData), typeof(TokenManagerTestDataProvider))]
-    public void Constructor_ArgumentsAreNull_ThrowsArgumentNullException(IAccountService accountService, IAdminService adminService, IMapper mapper)
+    public void Constructor_ArgumentsAreNull_ThrowsArgumentNullException(IOptions<AuthOptions> options, IAccountService accountService, IAdminService adminService, IMapper mapper)
     {
-        Assert.ThrowsException<ArgumentNullException>(() => new TokenManager(accountService, adminService, mapper));
+        Assert.ThrowsException<ArgumentNullException>(() => new TokenManager(accountService, adminService, mapper, options));
     }
 
     [TestMethod]
@@ -62,8 +70,8 @@ public class TokenManagerTests
         Assert.IsNotNull(token);
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(token);
-        Assert.AreEqual(AuthOptions.ISSUER, jwtToken.Issuer);
-        Assert.AreEqual(AuthOptions.AUDIENCE, jwtToken.Audiences.FirstOrDefault());
+        Assert.AreEqual(_authOptions.ISSUER, jwtToken.Issuer);
+        Assert.AreEqual(_authOptions.AUDIENCE, jwtToken.Audiences.FirstOrDefault());
     }
 
     [TestMethod]

@@ -1,7 +1,6 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
 using AutoMapper;
-using DataLayer.Models;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using Microsoft.AspNetCore.Mvc;

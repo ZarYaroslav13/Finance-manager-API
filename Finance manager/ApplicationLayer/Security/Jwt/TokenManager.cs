@@ -21,6 +21,8 @@ public class TokenManager : ITokenManager
         _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
         _adminService = adminService ?? throw new ArgumentNullException(nameof(adminService));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+
+        ArgumentNullException.ThrowIfNull(authOptions);
         _authOptions = authOptions.Value ?? throw new ArgumentNullException(nameof(authOptions.Value));
     }
 

@@ -4,7 +4,6 @@ using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Admins;
 using DomainLayer.Services.Wallets;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationLayer.Controllers;
@@ -18,37 +17,33 @@ public class WalletController : BaseController
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetWallets()
+    [HttpGet("~/finance-manager/accounts/{accountId:int}/wallets")]
+    public async Task<IActionResult> GetWalletsAsync(int accountId)
     {
         int userId = GetUserId();
-        _logger.LogInformation("GetWallets called for user Id: {UserId}", userId);
+        string userRole = GetUserRole();
 
-        var wallets = (await _service.GetAllWalletsOfAccountAsync(userId))
-                .Select(_mapper.Map<WalletDTO>)
-                .ToList();
+        _logger.LogInformation("GetWalletsOfAccountAsync called by user with id: {UserId} and role: {UserRole}, for account Id: {AccountId}",
+            userId, userRole, accountId);
 
-        _logger.LogInformation("{Count} wallets retrieved for user Id: {UserId}", wallets.Count, userId);
-
-        return Ok(wallets);
-    }
-
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpGet("accounts/{accountId}")]
-    public async Task<IActionResult> GetWalletsOfAccountAsync(int accountId)
-    {
-        _logger.LogInformation("GetWalletsOfAccountAsync called by admin for account Id: {AccountId}", accountId);
+        if (userRole != AdminService.NameAdminRole && userId != accountId)
+        {
+            _logger.LogInformation("Access to get wallets information of account with {AccountId} is denied for  user with id: {UserId} and role: {UserRole}",
+                accountId, userId, userRole);
+            throw new UnauthorizedAccessException("Access denied");
+        }
 
         var wallets = (await _service.GetAllWalletsOfAccountAsync(accountId))
                 .Select(_mapper.Map<WalletDTO>)
                 .ToList();
 
-        _logger.LogInformation("{Count} wallets retrieved for account Id: {AccountId} by admin", wallets.Count, accountId);
+        _logger.LogInformation("{Count} wallets retrieved for account Id: {AccountId} by user with id: {UserId} and role: {UserRole}",
+            wallets.Count, accountId, userId, userRole);
 
         return Ok(wallets);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         _logger.LogInformation("GetByIdAsync called to retrieve wallet Id: {WalletId}", id);
@@ -109,30 +104,19 @@ public class WalletController : BaseController
     public async Task<IActionResult> DeleteAsync(int id)
     {
         int userId = GetUserId();
-        _logger.LogInformation("DeleteAsync called to remove wallet Id: {WalletId} for user Id: {UserId}", id, userId);
+        string userRole = GetUserRole();
 
-        if (!(await _service.IsAccountOwnerWalletAsync(userId, id)))
+        _logger.LogInformation("DeleteAsync called to remove wallet Id: {WalletId} for user Id: {UserId} and role: {UserRole}", id, userId, userRole);
+
+        if (userRole != AdminService.NameAdminRole && !await _service.IsAccountOwnerWalletAsync(userId, id))
         {
-            _logger.LogWarning($"Unauthorized access attempt to delete wallet Id: {id} by user Id: {userId}");
+            _logger.LogWarning($"Unauthorized access attempt to delete wallet Id: {id} by user Id: {userId} and role: {userRole}");
             throw new UnauthorizedAccessException($"Access to this wallet is denied");
         }
 
         await _service.DeleteWalletByIdAsync(id);
 
-        _logger.LogInformation("Wallet Id: {WalletId} deleted successfully for user Id: {UserId}", id, userId);
-
-        return Ok();
-    }
-
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpDelete("{id}/advance-access")]
-    public async Task<IActionResult> DeleteWalletOfAccountAsync(int id)
-    {
-        _logger.LogInformation("DeleteWalletOfAccountAsync called by admin to delete wallet Id: {WalletId}", id);
-
-        await _service.DeleteWalletByIdAsync(id);
-
-        _logger.LogInformation("Admin deleted wallet Id: {WalletId} successfully", id);
+        _logger.LogInformation("Wallet Id: {WalletId} deleted successfully for user Id: {UserId} and role: {UserRole}", id, userId, userRole);
 
         return Ok();
     }
