@@ -57,7 +57,8 @@ public class WalletController : BaseController
 
         if (!(await _service.IsAccountOwnerWalletAsync(userId, id)))
         {
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet with Id: {id} by user Id: {userId}");
+            _logger.LogWarning($"Unauthorized access attempt to get wallet with Id: {id} by user Id: {userId}");
+            throw new UnauthorizedAccessException($"Access to this wallet is denied");
         }
 
         var wallet = _mapper.Map<WalletDTO>(
@@ -90,7 +91,10 @@ public class WalletController : BaseController
         _logger.LogInformation("UpdateAsync called to update wallet Id: {WalletId} for user Id: {UserId}", wallet.Id, userId);
 
         if (wallet.AccountId != userId)
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {wallet.Id} for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update wallet with Id: {wallet.Id} for user Id: {userId}");
+            throw new UnauthorizedAccessException($"Access to this wallet is denied");
+        }
 
         var updatedWallet = _mapper.Map<WalletDTO>(
                 await _service.UpdateWalletAsync(
@@ -109,7 +113,8 @@ public class WalletController : BaseController
 
         if (!(await _service.IsAccountOwnerWalletAsync(userId, id)))
         {
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to delete wallet Id: {id} by user Id: {userId}");
+            _logger.LogWarning($"Unauthorized access attempt to delete wallet Id: {id} by user Id: {userId}");
+            throw new UnauthorizedAccessException($"Access to this wallet is denied");
         }
 
         await _service.DeleteWalletByIdAsync(id);

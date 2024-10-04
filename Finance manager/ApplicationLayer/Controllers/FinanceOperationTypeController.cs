@@ -1,6 +1,7 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
 using AutoMapper;
+using DataLayer.Models;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,10 @@ public class FinanceOperationTypeController : BaseController
         _logger.LogInformation("GetAllAsync called to retrieve finance operation types for wallet Id: {WalletId}", walletId);
 
         if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, walletId))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {walletId} for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update wallet with Id: {walletId} for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var operationTypes = (await _financeService.GetAllFinanceOperationTypesOfWalletAsync(walletId))
             .Select(_mapper.Map<FinanceOperationTypeDTO>)
@@ -42,7 +46,10 @@ public class FinanceOperationTypeController : BaseController
         _logger.LogInformation("AddAsync called to add a new finance operation type with name: {Name}", dto.Name);
 
         if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, dto.WalletId))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update wallet with Id: {dto.WalletId} for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update wallet with Id: {dto.WalletId} for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var newOperationType = _mapper.Map<FinanceOperationTypeDTO>(
                 await _financeService.AddFinanceOperationTypeAsync(
@@ -60,7 +67,10 @@ public class FinanceOperationTypeController : BaseController
         _logger.LogInformation("UpdateAsync called to update finance operation type with Id: {Id}", dto.Id);
 
         if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, dto.Id))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update finance operation type with Id: {dto.Id} for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update finance operation type with Id: {dto.Id} for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this finance operation type is denied");
+        }
 
         var updatedOperationType = _mapper.Map<FinanceOperationTypeDTO>(
                 await _financeService.UpdateFinanceOperationTypeAsync(
@@ -74,10 +84,14 @@ public class FinanceOperationTypeController : BaseController
     [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)
     {
+        int userId = GetUserId();
         _logger.LogInformation("DeleteAsync called to remove finance operation type with Id: {Id}", id);
 
-        if (!(await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(GetUserId(), id)))
-            throw new UnauthorizedAccessException();
+        if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(GetUserId(), id))
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update finance operation type with Id: {id} for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this finance operation type is denied");
+        }
 
         await _financeService.DeleteFinanceOperationTypeAsync(id);
 

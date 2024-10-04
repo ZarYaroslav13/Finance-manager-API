@@ -24,8 +24,11 @@ public class FinanceReportController : BaseController
         int userId = GetUserId();
         _logger.LogInformation("CreateReportAsync (daily) called by user with Id: {UserId} to create finance report for wallet Id: {WalletId} on date: {Date}", userId, walletId, date);
 
-        if (!(await _walletService.IsAccountOwnerWalletAsync(userId, walletId)))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet information with Id: {walletId} for user Id: {userId}");
+        if (!await _walletService.IsAccountOwnerWalletAsync(userId, walletId))
+        {
+            _logger.LogWarning($"Unauthorized access attempt to get wallet information with Id: {walletId} for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var wallet = await _walletService.FindWalletAsync(walletId);
 
@@ -44,7 +47,10 @@ public class FinanceReportController : BaseController
         _logger.LogInformation("CreateReportAsync (period) called to create finance report for wallet Id: {WalletId} from {StartDate} to {EndDate}", walletId, startDate, endDate);
 
         if (!(await _walletService.IsAccountOwnerWalletAsync(userId, walletId)))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet information with Id: {walletId} for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to get wallet information with Id: {walletId} for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var wallet = await _walletService.FindWalletAsync(walletId);
 

@@ -56,7 +56,8 @@ public class AccountController : BaseController
 
         if (account.Id != id)
         {
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update account with Id: {account.Id}");
+            _logger.LogWarning($"Unauthorized access attempt to update account with Id: {account.Id}");
+            throw new UnauthorizedAccessException($"Access denied");
         }
 
         var updatedAccount = _mapper.Map<AccountDTO>(

@@ -1,9 +1,11 @@
 ﻿using ApplicationLayer.Controllers.Base;
 using ApplicationLayer.Models;
 using AutoMapper;
+using DataLayer.Models;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ApplicationLayer.Controllers;
 
@@ -23,7 +25,10 @@ public class FinanceOperationController : BaseController
         _logger.LogInformation("GetAllOfWalletAsync called to retrieve finance operations for wallet Id: {WalletId}, starting at index: {Index}, with count: {Count}", walletId, index, count);
 
         if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, walletId))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet with Id: {walletId} information for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to get wallet with Id: {walletId} information for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var operations = (await _financeService.GetAllFinanceOperationOfWalletAsync(walletId, index, count))
             .Select(_mapper.Map<FinanceOperationDTO>)
@@ -41,7 +46,10 @@ public class FinanceOperationController : BaseController
         _logger.LogInformation("GetAllOfTypeAsync called to retrieve finance operations of type Id: {TypeId}", typeId);
 
         if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, typeId))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to get finance operation type with Id: {typeId} information for user Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to get finance operation type with Id: {typeId} information for user Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var operations = (await _financeService.GetAllFinanceOperationOfTypeAsync(typeId))
             .Select(_mapper.Map<FinanceOperationDTO>)
@@ -59,7 +67,10 @@ public class FinanceOperationController : BaseController
         _logger.LogInformation("AddAsync called to add a new finance operation with type: {@Description}", dto.Type);
 
         if (!await _financeService.IsAccountOwnerOfWalletAsync(userId, dto.Type.WalletId))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to add finance operation  to wallet with Id: {dto.Type.WalletId} by user with Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to add finance operation  to wallet with Id: {dto.Type.WalletId} by user with Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var newOperation = _mapper.Map<FinanceOperationDTO>(
                 await _financeService.AddFinanceOperationAsync(
@@ -77,7 +88,10 @@ public class FinanceOperationController : BaseController
         _logger.LogInformation("UpdateAsync called to update finance operation with Id: {Id}", dto.Id);
 
         if (!await _financeService.IsAccountOwnerOfFinanceOperationTypeAsync(userId, dto.Type.Id))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to update finance operation of type with Id: {dto.Type.Id} by user with Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to update finance operation of type with Id: {dto.Type.Id} by user with Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         var updatedOperation = _mapper.Map<FinanceOperationDTO>(
                 await _financeService.UpdateFinanceOperationAsync(
@@ -95,7 +109,10 @@ public class FinanceOperationController : BaseController
         _logger.LogInformation("DeleteAsync called to remove finance operation with Id: {Id}", id);
 
         if (!await _financeService.IsAccountOwnerOfFinanceOperationAsync(userId, id))
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to delete finance operation with Id: {id} by user with Id: {userId}");
+        {
+            _logger.LogWarning($"Unauthorized access attempt to delete finance operation with Id: {id} by user with Id: {userId}");
+            throw new UnauthorizedAccessException("Access to this wallet is denied");
+        }
 
         await _financeService.DeleteFinanceOperationAsync(id);
 
