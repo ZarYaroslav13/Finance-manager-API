@@ -70,7 +70,7 @@ public class FinanceOperationController : BaseController
         return Ok(newOperation);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] FinanceOperationDTO dto)
     {
         var userId = GetUserId();
@@ -88,7 +88,7 @@ public class FinanceOperationController : BaseController
         return Ok(updatedOperation);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var userId = GetUserId();

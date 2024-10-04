@@ -2,6 +2,7 @@
 using AutoMapper;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,12 +14,14 @@ public class TokenManager : ITokenManager
     private readonly IAccountService _accountService;
     private readonly IAdminService _adminService;
     private readonly IMapper _mapper;
+    private readonly AuthOptions _authOptions;
 
-    public TokenManager(IAccountService accountService, IAdminService adminService, IMapper mapper)
+    public TokenManager(IAccountService accountService, IAdminService adminService, IMapper mapper, IOptions<AuthOptions> authOptions)
     {
         _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
         _adminService = adminService ?? throw new ArgumentNullException(nameof(adminService));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _authOptions = authOptions.Value ?? throw new ArgumentNullException(nameof(authOptions.Value));
     }
 
     public string CreateToken(ClaimsIdentity identity)
@@ -26,12 +29,12 @@ public class TokenManager : ITokenManager
         var now = DateTime.UtcNow;
 
         var jwt = new JwtSecurityToken(
-                issuer: AuthOptions.ISSUER,
-                audience: AuthOptions.AUDIENCE,
+                issuer: _authOptions.ISSUER,
+                audience: _authOptions.AUDIENCE,
                 notBefore: now,
                 claims: identity.Claims,
-                expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME_IN_MINETS)),
-                signingCredentials: new(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+                expires: now.Add(TimeSpan.FromMinutes(_authOptions.LIFETIME_IN_MINETS)),
+                signingCredentials: new(_authOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
         return new JwtSecurityTokenHandler().WriteToken(jwt);
     }

@@ -71,7 +71,7 @@ public class FinanceOperationTypeController : BaseController
         return Ok(updatedOperationType);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         _logger.LogInformation("DeleteAsync called to remove finance operation type with Id: {Id}", id);

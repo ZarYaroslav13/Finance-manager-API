@@ -18,6 +18,36 @@ public class AccountController : BaseController
         _accountService = service ?? throw new ArgumentNullException(nameof(service));
     }
 
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync(int skip, int take)
+    {
+        _logger.LogInformation("GetAllAsync called by admin with skip: {Skip}, take: {Take}", skip, take);
+
+        var accounts = (await _accountService.GetAccountsAsync(GetUserEmail(), skip, take))
+                .Select(_mapper.Map<AccountDTO>)
+                .ToList();
+
+        _logger.LogInformation("{Count} accounts retrieved successfully", accounts.Count);
+
+        return Ok(accounts);
+    }
+
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> AdminUpdateAccountAsync([FromBody] AccountDTO account)
+    {
+        _logger.LogInformation("AdminUpdateAccountAsync called to update account with Id: {Id}", account.Id);
+
+        var updatedAccount = _mapper.Map<AccountDTO>(
+                await _accountService.UpdateAccountAsync(
+                    _mapper.Map<AccountModel>(account)));
+
+        _logger.LogInformation("Admin updated account with Id: {Id} successfully", updatedAccount.Id);
+
+        return Ok(updatedAccount);
+    }
+
     [HttpPut]
     public async Task<IActionResult> UpdateAsync([FromBody] AccountDTO account)
     {
@@ -38,49 +68,6 @@ public class AccountController : BaseController
         return Ok(updatedAccount);
     }
 
-    [HttpDelete]
-    public IActionResult Delete()
-    {
-        int id = GetUserId();
-        _logger.LogInformation("Delete called to remove account with Id: {Id}", id);
-
-        _accountService.DeleteAccountWithId(id);
-
-        _logger.LogInformation("Account with Id: {Id} deleted successfully", id);
-
-        return Ok();
-    }
-
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpGet]
-    public async Task<IActionResult> GetAllAsync(int skip, int take)
-    {
-        _logger.LogInformation("GetAllAsync called by admin with skip: {Skip}, take: {Take}", skip, take);
-
-        var accounts = (await _accountService.GetAccountsAsync(GetUserEmail(), skip, take))
-                .Select(_mapper.Map<AccountDTO>)
-                .ToList();
-
-        _logger.LogInformation("{Count} accounts retrieved successfully", accounts.Count);
-
-        return Ok(accounts);
-    }
-
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpPut("{id}")]
-    public async Task<IActionResult> AdminUpdateAccountAsync(int id, [FromBody] AccountDTO account)
-    {
-        _logger.LogInformation("AdminUpdateAccountAsync called to update account with Id: {Id}", account.Id);
-
-        var updatedAccount = _mapper.Map<AccountDTO>(
-                await _accountService.UpdateAccountAsync(
-                    _mapper.Map<AccountModel>(account)));
-
-        _logger.LogInformation("Admin updated account with Id: {Id} successfully", updatedAccount.Id);
-
-        return Ok(updatedAccount);
-    }
-
     [Authorize(Policy = AdminService.NameAdminPolicy)]
     [HttpDelete("{id}")]
     public IActionResult DeleteUserById(int id)
@@ -90,6 +77,19 @@ public class AccountController : BaseController
         _accountService.DeleteAccountWithId(id);
 
         _logger.LogInformation("Admin deleted account with Id: {Id} successfully", id);
+
+        return Ok();
+    }
+
+    [HttpDelete]
+    public IActionResult Delete()
+    {
+        int id = GetUserId();
+        _logger.LogInformation("Delete called to remove account with Id: {Id}", id);
+
+        _accountService.DeleteAccountWithId(id);
+
+        _logger.LogInformation("Account with Id: {Id} deleted successfully", id);
 
         return Ok();
     }

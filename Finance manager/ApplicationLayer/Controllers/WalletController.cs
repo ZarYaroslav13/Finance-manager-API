@@ -33,6 +33,41 @@ public class WalletController : BaseController
         return Ok(wallets);
     }
 
+    [Authorize(Policy = AdminService.NameAdminPolicy)]
+    [HttpGet("accounts/{accountId}")]
+    public async Task<IActionResult> GetWalletsOfAccountAsync(int accountId)
+    {
+        _logger.LogInformation("GetWalletsOfAccountAsync called by admin for account Id: {AccountId}", accountId);
+
+        var wallets = (await _service.GetAllWalletsOfAccountAsync(accountId))
+                .Select(_mapper.Map<WalletDTO>)
+                .ToList();
+
+        _logger.LogInformation("{Count} wallets retrieved for account Id: {AccountId} by admin", wallets.Count, accountId);
+
+        return Ok(wallets);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        _logger.LogInformation("GetByIdAsync called to retrieve wallet Id: {WalletId}", id);
+
+        int userId = GetUserId();
+
+        if (!(await _service.IsAccountOwnerWalletAsync(userId, id)))
+        {
+            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet with Id: {id} by user Id: {userId}");
+        }
+
+        var wallet = _mapper.Map<WalletDTO>(
+                await _service.FindWalletAsync(id));
+
+        _logger.LogInformation("Wallet Id: {WalletId} retrieved successfully", id);
+
+        return Ok(wallet);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] WalletDTO wallet)
     {
@@ -66,7 +101,7 @@ public class WalletController : BaseController
         return Ok(updatedWallet);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         int userId = GetUserId();
@@ -84,43 +119,8 @@ public class WalletController : BaseController
         return Ok();
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
-    {
-        _logger.LogInformation("GetByIdAsync called to retrieve wallet Id: {WalletId}", id);
-
-        int userId = GetUserId();
-
-        if (!(await _service.IsAccountOwnerWalletAsync(userId, id)))
-        {
-            throw new UnauthorizedAccessException($"Unauthorized access attempt to get wallet with Id: {id} by user Id: {userId}");
-        }
-
-        var wallet = _mapper.Map<WalletDTO>(
-                await _service.FindWalletAsync(id));
-
-        _logger.LogInformation("Wallet Id: {WalletId} retrieved successfully", id);
-
-        return Ok(wallet);
-    }
-
     [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpGet("accounts/{accountId}")]
-    public async Task<IActionResult> GetWalletsOfAccountAsync(int accountId)
-    {
-        _logger.LogInformation("GetWalletsOfAccountAsync called by admin for account Id: {AccountId}", accountId);
-
-        var wallets = (await _service.GetAllWalletsOfAccountAsync(accountId))
-                .Select(_mapper.Map<WalletDTO>)
-                .ToList();
-
-        _logger.LogInformation("{Count} wallets retrieved for account Id: {AccountId} by admin", wallets.Count, accountId);
-
-        return Ok(wallets);
-    }
-
-    [Authorize(Policy = AdminService.NameAdminPolicy)]
-    [HttpDelete("{id}/advance-acces")]
+    [HttpDelete("{id}/advance-access")]
     public async Task<IActionResult> DeleteWalletOfAccountAsync(int id)
     {
         _logger.LogInformation("DeleteWalletOfAccountAsync called by admin to delete wallet Id: {WalletId}", id);

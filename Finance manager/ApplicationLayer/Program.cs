@@ -45,6 +45,7 @@ builder.Services.AddSwaggerGen(option =>
 
 
 var app = builder.Build();
+
 using var scope = app.Services.CreateScope();
 
 // Configure the HTTP request pipeline.

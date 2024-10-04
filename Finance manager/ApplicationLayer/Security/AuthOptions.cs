@@ -5,11 +5,14 @@ namespace ApplicationLayer.Security;
 
 public class AuthOptions
 {
-    public const string ISSUER = "https://localhost:7099";
-    public const string AUDIENCE = "https://localhost:7099";
-    const string KEY = "mysupersecret_secretkey!123";
-    public const int LIFETIME_IN_MINETS = 60;
-    public static SymmetricSecurityKey GetSymmetricSecurityKey()
+    public const string Auth = "Auth";
+
+    public string ISSUER { get; set; } = "https://localhost:7099";
+    public string AUDIENCE { get; set; } = "https://localhost:7099";
+    public string KEY { get; set; } = "mysupersecret_secretkey!123";
+    public int LIFETIME_IN_MINETS { get; set; } = 60;
+
+    public SymmetricSecurityKey GetSymmetricSecurityKey()
     {
         return new SymmetricSecurityKey(Encoding.UTF32.GetBytes(KEY));
     }

@@ -23,6 +23,8 @@ public static class AddServicesConfigurationHostBuilderExtensions
         var services = builder.Services;
         var configuration = builder.Configuration as IConfiguration;
 
+        builder.AddOptions();
+
         services.AddSingleton<IPasswordCoder, PasswordCoder>();
 
         services.AddDbConnection(configuration);
@@ -36,7 +38,7 @@ public static class AddServicesConfigurationHostBuilderExtensions
         services.AddScoped<IFinanceService, FinanceService>();
         services.AddScoped<ITokenManager, TokenManager>();
 
-        services.AddJwtAuthentication();
+        services.AddJwtAuthentication(configuration);
 
         services.AddPoliticalAuthorization();
 
@@ -63,8 +65,10 @@ public static class AddServicesConfigurationHostBuilderExtensions
         return services;
     }
 
-    private static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
+    private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+        AuthOptions authOptions = configuration.GetSection(AuthOptions.Auth).Get<AuthOptions>();
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -77,10 +81,10 @@ public static class AddServicesConfigurationHostBuilderExtensions
                             ValidateLifetime = true,
                             ValidateIssuerSigningKey = true,
 
-                            ValidIssuer = AuthOptions.ISSUER,
-                            ValidAudience = AuthOptions.AUDIENCE,
+                            ValidIssuer = authOptions.ISSUER,
+                            ValidAudience = authOptions.AUDIENCE,
 
-                            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
                         };
                     });
 
@@ -98,5 +102,13 @@ public static class AddServicesConfigurationHostBuilderExtensions
         });
 
         return services;
+    }
+
+    private static IHostApplicationBuilder AddOptions(this IHostApplicationBuilder builder)
+    {
+        builder.Services.Configure<AuthOptions>(
+            builder.Configuration.GetSection(AuthOptions.Auth));
+
+        return builder;
     }
 }
