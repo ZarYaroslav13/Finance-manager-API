@@ -1,0 +1,971 @@
+{
+	"info": {
+		"_postman_id": "dba75fdd-c62c-48d0-896b-1b34471074cb",
+		"name": "Finance Manager API",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37752684"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Log in",
+					"item": [
+						{
+							"name": "Login admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"pm.environment.set('tokenOfAdminUser', response.access_token);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{api-url}}/sign-in/for-admins?email=mr.admin.number1@gmail.com&password=saferAdminParol124",
+									"host": [
+										"{{api-url}}"
+									],
+									"path": [
+										"sign-in",
+										"for-admins"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "mr.admin.number1@gmail.com"
+										},
+										{
+											"key": "password",
+											"value": "saferAdminParol124"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login common user",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+											"});",
+											"",
+											"const response = pm.response.json();",
+											"",
+											"pm.environment.set('tokenOfCommonUser', response.access_token);",
+											"pm.environment.set('userId', response.user_id);",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{api-url}}/sign-in?email={{user-email}}&password={{user-password}}",
+									"host": [
+										"{{api-url}}"
+									],
+									"path": [
+										"sign-in"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "{{user-email}}"
+										},
+										{
+											"key": "password",
+											"value": "{{user-password}}"
+										}
+									]
+								},
+								"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 0,\r\n  \"lastName\": \"john\",\r\n  \"firstName\": \"doe\",\r\n  \"email\": \"{{user-email}}\",\r\n  \"password\": \"{{user-password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-url}}/login",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wallets",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Get wallets of user",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"if(response.length === 0)\r",
+											"{\r",
+											"    pm.environment.set('walletId', \"Don`t exist yet\");\r",
+											"}\r",
+											"else\r",
+											"pm.environment.set('walletId', response[0].id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfAdminUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{wallet-url}}/account/{{userId}}/for-admins",
+									"host": [
+										"{{wallet-url}}"
+									],
+									"path": [
+										"account",
+										"{{userId}}",
+										"for-admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete wallet of user",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{tokenOfAdminUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{wallet-url}}/{{walletId}}/for-admins",
+									"host": [
+										"{{wallet-url}}"
+									],
+									"path": [
+										"{{walletId}}",
+										"for-admins"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get wallets",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"\r",
+											"if(response.length === 0)\r",
+											"{\r",
+											"    pm.environment.set('walletId', \"Don`t exist yet\");\r",
+											"}\r",
+											"else\r",
+											"pm.environment.set('walletId', response[0].id);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{wallet-url}}",
+									"host": [
+										"{{wallet-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create wallet",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"my wallet\",\r\n  \"balance\": 11200,\r\n  \"financeOperationTypes\": [\r\n    \r\n  ],\r\n  \"incomes\": [\r\n    \r\n  ],\r\n  \"expenses\": [\r\n    \r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{wallet-url}}",
+									"host": [
+										"{{wallet-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update wallet",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": {{walletId}},\r\n  \"name\": \"WalletNewName\",\r\n  \"balance\":12000,\r\n  \"financeOperationTypes\": [\r\n  ],\r\n  \"incomes\": [\r\n    \r\n  ],\r\n  \"expenses\": [\r\n    \r\n  ],\r\n  \"accountId\": {{userId}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{wallet-url}}",
+									"host": [
+										"{{wallet-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete wallet",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{wallet-url}}/{{walletId}}",
+									"host": [
+										"{{wallet-url}}"
+									],
+									"path": [
+										"{{walletId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get wallet",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{wallet-url}}/{{walletId}}",
+									"host": [
+										"{{wallet-url}}"
+									],
+									"path": [
+										"{{walletId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Get all accounts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{tokenOfAdminUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{account-url}}/for-admins",
+									"host": [
+										"{{account-url}}"
+									],
+									"path": [
+										"for-admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update account",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfAdminUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"lastName\": \"Davis1\",\r\n        \"firstName\": \"Emily\",\r\n        \"email\": \"{{user-email}}\",\r\n        \"password\": \"{{user-password}}\",\r\n        \"id\": {{userId}}\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{account-url}}/for-admins",
+									"host": [
+										"{{account-url}}"
+									],
+									"path": [
+										"for-admins"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete account",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfAdminUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{account-url}}/{{userId}}/for-admins",
+									"host": [
+										"{{account-url}}"
+									],
+									"path": [
+										"{{userId}}",
+										"for-admins"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Update account",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": {{userId}},\r\n  \"lastName\": \"string\",\r\n  \"firstName\": \"string\",\r\n  \"email\": \"new {{user-email}}\",\r\n  \"password\": \"{{user-password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{account-url}}",
+									"host": [
+										"{{account-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{account-url}}",
+									"host": [
+										"{{account-url}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "FinanceReports",
+			"item": [
+				{
+					"name": "Create daily report",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{tokenOfCommonUser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{finance-report-url}}/daily?walletId={{walletId}}&date={{endDateOfFinanceReport}}",
+							"host": [
+								"{{finance-report-url}}"
+							],
+							"path": [
+								"daily"
+							],
+							"query": [
+								{
+									"key": "walletId",
+									"value": "{{walletId}}"
+								},
+								{
+									"key": "date",
+									"value": "{{endDateOfFinanceReport}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create period report",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{tokenOfCommonUser}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{finance-report-url}}/period?walletId={{walletId}}&startDate={{startDateOfFinanceReport}}&endDate={{endDateOfFinanceReport}}",
+							"host": [
+								"{{finance-report-url}}"
+							],
+							"path": [
+								"period"
+							],
+							"query": [
+								{
+									"key": "walletId",
+									"value": "{{walletId}}"
+								},
+								{
+									"key": "startDate",
+									"value": "{{startDateOfFinanceReport}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{endDateOfFinanceReport}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FinanceOperationType",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get types of wallet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"if(response.length === 0)\r",
+											"{\r",
+											"    pm.environment.set('typeId', \"Don`t exist yet\");\r",
+											"    pm.environment.set('type', 'Don`t exist yet');\r",
+											"}\r",
+											"else\r",
+											"{\r",
+											"    pm.environment.set('typeId', response[0].id);\r",
+											"    pm.environment.set('type', JSON.stringify(response[0]));\r",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{finance-operation-type-url}}/wallet/{{walletId}}",
+									"host": [
+										"{{finance-operation-type-url}}"
+									],
+									"path": [
+										"wallet",
+										"{{walletId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add type",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"My type\",\r\n  \"description\": \"type\",\r\n  \"entryType\": 1,\r\n  \"walletId\": {{walletId}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{finance-operation-type-url}}",
+									"host": [
+										"{{finance-operation-type-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update type",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": {{typeId}},\r\n  \"name\": \"My new name\",\r\n  \"description\": \"modifited type\",\r\n  \"entryType\": 0,\r\n  \"walletId\": {{walletId}},\r\n  \"walletName\": \"string\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{finance-operation-type-url}}",
+									"host": [
+										"{{finance-operation-type-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete type",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{finance-operation-type-url}}/{{typeId}}",
+									"host": [
+										"{{finance-operation-type-url}}"
+									],
+									"path": [
+										"{{typeId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "FinanceOperation",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get operations of wallet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"if(response.length === 0)\r",
+											"{\r",
+											"    pm.environment.set('operationId', \"Don`t exist yet\");\r",
+											"}\r",
+											"else\r",
+											"pm.environment.set('operationId', response[0].id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{finance-operation-url}}/wallet/{{walletId}}?index=0&count=0",
+									"host": [
+										"{{finance-operation-url}}"
+									],
+									"path": [
+										"wallet",
+										"{{walletId}}"
+									],
+									"query": [
+										{
+											"key": "index",
+											"value": "0"
+										},
+										{
+											"key": "count",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get operations of type",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+											"});\r",
+											"\r",
+											"const response = pm.response.json();\r",
+											"if(response.length === 0)\r",
+											"{\r",
+											"    pm.environment.set('operationId', \"Don`t exist yet\");\r",
+											"}\r",
+											"else\r",
+											"pm.environment.set('operationId', response[0].id);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{finance-operation-url}}/type/{{typeId}}",
+									"host": [
+										"{{finance-operation-url}}"
+									],
+									"path": [
+										"type",
+										"{{typeId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create operation",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": 0,\r\n  \"amount\": 2000,\r\n  \"date\": \"2024-09-15T21:32:28.094Z\",\r\n  \"type\": {{type}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{finance-operation-url}}",
+									"host": [
+										"{{finance-operation-url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update operation",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": {{operationId}},\r\n  \"amount\": 2147483647,\r\n  \"date\": \"2024-09-15T21:35:16.728Z\",\r\n  \"type\": {{type}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{finance-operation-url}}/{{operationId}}",
+									"host": [
+										"{{finance-operation-url}}"
+									],
+									"path": [
+										"{{operationId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete operation",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{tokenOfCommonUser}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{finance-operation-url}}/{{operationId}}",
+									"host": [
+										"{{finance-operation-url}}"
+									],
+									"path": [
+										"{{operationId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
