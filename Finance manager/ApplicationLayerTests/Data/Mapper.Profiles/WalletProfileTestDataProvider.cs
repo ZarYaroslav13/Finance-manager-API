@@ -1,4 +1,4 @@
-﻿using DataLayer.Models;
+﻿using Infrastructure.Models;
 using DomainLayer.Models;
 
 namespace ApplicationLayerTests.Data.Mapper.Profiles;

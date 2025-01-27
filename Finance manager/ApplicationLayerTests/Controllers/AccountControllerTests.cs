@@ -92,7 +92,7 @@ public class AccountControllerTests
     [TestMethod]
     public void Delete_ValidUserId_CallsServiceAndLogs()
     {
-        _controller.Delete();
+        _controller.DeleteUserById(1);
 
         A.CallTo(() => _service.DeleteAccountWithId(1)).MustHaveHappenedOnceExactly();
     }

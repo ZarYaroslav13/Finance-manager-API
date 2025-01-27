@@ -1,6 +1,6 @@
-﻿using DataLayer.Models.Base;
+﻿using Infrastructure.Models.Base;
 
-namespace DataLayer.Models;
+namespace Infrastructure.Models;
 
 public class Account : Human
 {

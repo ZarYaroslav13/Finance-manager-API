@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Models;
+﻿namespace Infrastructure.Models;
 
 public class FinanceOperationType : Base.Entity
 {

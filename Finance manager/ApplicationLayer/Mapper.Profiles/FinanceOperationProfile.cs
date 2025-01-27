@@ -1,6 +1,6 @@
 ﻿using ApplicationLayer.Models;
 using AutoMapper;
-using DataLayer.Models;
+using Infrastructure.Models;
 using DomainLayer.Models;
 
 namespace ApplicationLayer.Mapper.Profiles;

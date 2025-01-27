@@ -1,6 +1,6 @@
-﻿using DataLayer;
-using DataLayer.Models;
-using DataLayer.Repository;
+﻿using Infrastructure;
+using Infrastructure.Models;
+using Infrastructure.Repository;
 using DataLayerTests.Data;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore;

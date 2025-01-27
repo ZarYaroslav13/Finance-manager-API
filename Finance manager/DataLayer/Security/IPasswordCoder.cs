@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Security;
+﻿namespace Infrastructure.Security;
 
 public interface IPasswordCoder
 {

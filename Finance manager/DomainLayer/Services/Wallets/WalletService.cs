@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using DataLayer.Models;
-using DataLayer.Repository;
-using DataLayer.UnitOfWork;
+using Infrastructure.Models;
+using Infrastructure.Repository;
+using Infrastructure.UnitOfWork;
 using DomainLayer.Models;
 
 namespace DomainLayer.Services.Wallets;

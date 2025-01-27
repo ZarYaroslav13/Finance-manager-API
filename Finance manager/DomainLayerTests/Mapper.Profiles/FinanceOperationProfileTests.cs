@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataLayer.Models;
+using Infrastructure.Models;
 using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;

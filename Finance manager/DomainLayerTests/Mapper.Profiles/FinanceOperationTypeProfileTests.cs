@@ -35,7 +35,7 @@ public class FinanceOperationTypeProfileTests
         var dbFinanceOperationType = DbEntitiesTestDataProvider.FinanceOperationTypes.FirstOrDefault();
 
         var mappedbFinanceOperationType = _mapper
-            .Map<DataLayer.Models.FinanceOperationType>(
+            .Map<Infrastructure.Models.FinanceOperationType>(
                 _mapper
                     .Map<FinanceOperationTypeModel>(dbFinanceOperationType));
 

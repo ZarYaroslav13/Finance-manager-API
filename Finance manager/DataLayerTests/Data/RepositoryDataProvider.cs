@@ -1,4 +1,4 @@
-﻿using DataLayer.Models;
+﻿using Infrastructure.Models;
 
 namespace DataLayerTests.Data;
 

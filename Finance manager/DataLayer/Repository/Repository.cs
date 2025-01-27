@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace DataLayer.Repository;
+namespace Infrastructure.Repository;
 
 public class Repository<T> : IRepository<T> where T : Models.Base.Entity
 {

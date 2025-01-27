@@ -1,7 +1,7 @@
-﻿using DataLayer.Models.Base;
+﻿using Infrastructure.Models.Base;
 using System.Linq.Expressions;
 
-namespace DataLayer.Repository;
+namespace Infrastructure.Repository;
 
 public interface IRepository<T> where T : Entity
 {

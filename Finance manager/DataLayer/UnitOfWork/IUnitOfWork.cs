@@ -1,6 +1,6 @@
-﻿using DataLayer.Repository;
+﻿using Infrastructure.Repository;
 
-namespace DataLayer.UnitOfWork;
+namespace Infrastructure.UnitOfWork;
 
 public interface IUnitOfWork
 {

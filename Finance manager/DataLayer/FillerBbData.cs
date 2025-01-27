@@ -1,7 +1,7 @@
-﻿using DataLayer.Models;
-using DataLayer.Security;
+﻿using Infrastructure.Models;
+using Infrastructure.Security;
 
-namespace DataLayer;
+namespace Infrastructure;
 
 public class FillerBbData
 {

@@ -1,4 +1,4 @@
-﻿using DataLayer.Models;
+﻿using Infrastructure.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ApplicationLayer.Models;

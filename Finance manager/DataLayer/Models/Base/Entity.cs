@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace DataLayer.Models.Base;
+namespace Infrastructure.Models.Base;
 
 public abstract class Entity
 {

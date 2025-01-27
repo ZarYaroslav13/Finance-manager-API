@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataLayer.UnitOfWork;
+using Infrastructure.UnitOfWork;
 
 namespace DomainLayer.Services;
 

@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace DataLayer.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class ChangedTransaction : Migration

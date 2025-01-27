@@ -1,7 +1,7 @@
-﻿using DataLayer.Models.Base;
-using DataLayer.Repository;
+﻿using Infrastructure.Models.Base;
+using Infrastructure.Repository;
 
-namespace DataLayer.UnitOfWork;
+namespace Infrastructure.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {

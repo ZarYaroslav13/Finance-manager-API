@@ -1,5 +1,5 @@
 ﻿using ApplicationLayer.Models;
-using DataLayer.Models;
+using Infrastructure.Models;
 
 namespace ApplicationLayerTests.Models;
 

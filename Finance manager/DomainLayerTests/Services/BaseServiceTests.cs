@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using DataLayer.Models;
-using DataLayer.Security;
-using DataLayer.UnitOfWork;
+using Infrastructure.Models;
+using Infrastructure.Security;
+using Infrastructure.UnitOfWork;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
 using FakeItEasy;

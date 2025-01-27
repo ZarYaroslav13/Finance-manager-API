@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataLayer;
+using Infrastructure;
 using DomainLayer.Mapper.Profiles;
 using DomainLayer.Models;
 using DomainLayerTests.Data;
@@ -50,7 +50,7 @@ public class WalletProfileTests
             .ToList();
 
         var mappedDbWallet = _mapper
-            .Map<DataLayer.Models.Wallet>(
+            .Map<Infrastructure.Models.Wallet>(
                 _mapper
                     .Map<WalletModel>(dbWallet));
 

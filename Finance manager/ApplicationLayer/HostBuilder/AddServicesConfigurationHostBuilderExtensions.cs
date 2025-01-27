@@ -1,9 +1,9 @@
 ﻿using ApplicationLayer.Routing;
 using ApplicationLayer.Security;
 using ApplicationLayer.Security.Jwt;
-using DataLayer;
-using DataLayer.Security;
-using DataLayer.UnitOfWork;
+using Infrastructure;
+using Infrastructure.Security;
+using Infrastructure.UnitOfWork;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
 using DomainLayer.Services.Finances;

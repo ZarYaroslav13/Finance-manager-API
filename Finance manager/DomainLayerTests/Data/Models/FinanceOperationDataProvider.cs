@@ -9,7 +9,7 @@ public class FinanceOperationDataProvider
                 {
                     Id = 3,
                     Description = "Description",
-                    EntryType = DataLayer.Models.EntryType.Income,
+                    EntryType = Infrastructure.Models.EntryType.Income,
                     Name = "Name",
                     WalletId = 1,
                     WalletName = "WalletName"
@@ -20,7 +20,7 @@ public class FinanceOperationDataProvider
                 {
                     Id = 4,
                     Description = "Description",
-                    EntryType = DataLayer.Models.EntryType.Expense,
+                    EntryType = Infrastructure.Models.EntryType.Expense,
                     Name = "Name",
                     WalletId = 1,
                     WalletName = "WalletName"

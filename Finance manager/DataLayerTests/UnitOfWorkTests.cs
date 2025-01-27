@@ -1,6 +1,6 @@
-using DataLayer;
-using DataLayer.Models;
-using DataLayer.UnitOfWork;
+using Infrastructure;
+using Infrastructure.Models;
+using Infrastructure.UnitOfWork;
 using DataLayerTests.Data;
 using Microsoft.EntityFrameworkCore;
 

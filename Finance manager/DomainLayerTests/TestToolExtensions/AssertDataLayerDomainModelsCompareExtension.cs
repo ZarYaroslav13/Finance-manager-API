@@ -1,5 +1,5 @@
-﻿using DataLayer.Models;
-using DataLayer.Models.Base;
+﻿using Infrastructure.Models;
+using Infrastructure.Models.Base;
 using DomainLayer.Models;
 using DomainLayer.Models.Base;
 
@@ -100,12 +100,12 @@ public static class AssertDataLayerDomainModelsCompareExtension
 
     private static bool AreEqual(FinanceOperation dbFinanceOperation, IncomeModel income)
     {
-        return AreEqual(dbFinanceOperation, (FinanceOperationModel)income) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Income;
+        return AreEqual(dbFinanceOperation, (FinanceOperationModel)income) && dbFinanceOperation.Type.EntryType == Infrastructure.Models.EntryType.Income;
     }
 
     private static bool AreEqual(FinanceOperation dbFinanceOperation, ExpenseModel Expense)
     {
-        return AreEqual(dbFinanceOperation, (FinanceOperationModel)Expense) && dbFinanceOperation.Type.EntryType == DataLayer.Models.EntryType.Expense;
+        return AreEqual(dbFinanceOperation, (FinanceOperationModel)Expense) && dbFinanceOperation.Type.EntryType == Infrastructure.Models.EntryType.Expense;
     }
 
     private static bool AreEqualAccountWallets(Account dbAccount, AccountModel domainAccount)
