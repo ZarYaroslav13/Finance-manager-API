@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FinanceManager.ServiceDefaults\FinanceManager.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\FinanceManager.Web\FinanceManager.Web.csproj" />
   </ItemGroup>
 
 </Project>
