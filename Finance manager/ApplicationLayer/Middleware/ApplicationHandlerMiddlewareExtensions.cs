@@ -1,4 +1,4 @@
-﻿namespace ApplicationLayer.Middleware;
+﻿namespace Server.Middleware;
 
 public static class ApplicationHandlerMiddlewareExtensions
 {

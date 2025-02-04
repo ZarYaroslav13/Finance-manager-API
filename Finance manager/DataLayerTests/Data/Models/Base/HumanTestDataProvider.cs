@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Models.Base;
 
-namespace DataLayerTests.Data.Models.Base;
+namespace InfractructureTests.Data.Models.Base;
 
 public static class HumanTestDataProvider
 {

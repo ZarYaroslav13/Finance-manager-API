@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Models;
 
-namespace DataLayerTests.Data;
+namespace InfractructureTests.Data;
 
 public static class RepositoryDataProvider
 {

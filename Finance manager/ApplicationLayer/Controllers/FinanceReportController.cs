@@ -1,11 +1,11 @@
-﻿using ApplicationLayer.Controllers.Base;
-using ApplicationLayer.Models;
+﻿using Server.Controllers.Base;
+using Server.Models;
 using AutoMapper;
 using DomainLayer.Services.Finances;
 using DomainLayer.Services.Wallets;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApplicationLayer.Controllers;
+namespace Server.Controllers;
 
 public class FinanceReportController : BaseController
 {

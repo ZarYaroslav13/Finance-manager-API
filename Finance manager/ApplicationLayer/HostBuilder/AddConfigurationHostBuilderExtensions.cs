@@ -1,4 +1,4 @@
-﻿namespace ApplicationLayer.HostBuilder;
+﻿namespace Server.HostBuilder;
 
 public static class AddConfigurationHostBuilderExtensions
 {

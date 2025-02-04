@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 using AutoMapper;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace ApplicationLayer.Security.Jwt;
+namespace Server.Security.Jwt;
 
 public class TokenManager : ITokenManager
 {

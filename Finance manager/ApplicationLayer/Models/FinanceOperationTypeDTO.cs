@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ApplicationLayer.Models;
+namespace Server.Models;
 
 public class FinanceOperationTypeDTO : Base.ModelDTO
 {

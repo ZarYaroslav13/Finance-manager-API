@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ApplicationLayer.Models;
+namespace Server.Models;
 
 public class WalletDTO : Base.ModelDTO
 {

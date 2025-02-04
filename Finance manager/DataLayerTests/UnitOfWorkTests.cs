@@ -1,10 +1,10 @@
 using Infrastructure;
 using Infrastructure.Models;
 using Infrastructure.UnitOfWork;
-using DataLayerTests.Data;
+using InfractructureTests.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLayerTests;
+namespace InfractructureTests;
 
 [TestClass]
 public class UnitOfWorkTests

@@ -1,6 +1,6 @@
-﻿using ApplicationLayer.Controllers;
-using ApplicationLayer.Models;
-using ApplicationLayer.Security.Jwt;
+﻿using Server.Controllers;
+using Server.Models;
+using Server.Security.Jwt;
 using ApplicationLayerTests.Data.Controllers;
 using AutoMapper;
 using DomainLayer.Models;

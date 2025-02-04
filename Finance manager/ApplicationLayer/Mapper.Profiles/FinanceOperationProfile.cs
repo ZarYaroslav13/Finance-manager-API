@@ -1,9 +1,9 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 using AutoMapper;
 using Infrastructure.Models;
 using DomainLayer.Models;
 
-namespace ApplicationLayer.Mapper.Profiles;
+namespace Server.Mapper.Profiles;
 
 public class FinanceOperationProfile : Profile
 {

@@ -1,6 +1,6 @@
-﻿using ApplicationLayer.Models.Base;
+﻿using Server.Models.Base;
 
-namespace ApplicationLayer.Models;
+namespace Server.Models;
 
 public class AdminDTO : HumanDTO
 {

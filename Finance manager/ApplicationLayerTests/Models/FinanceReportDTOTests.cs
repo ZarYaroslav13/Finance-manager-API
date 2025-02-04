@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 using ApplicationLayerTests.Data.Models;
 using DomainLayer.Models;
 using FakeItEasy;

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ApplicationLayer.Models.Base;
+namespace Server.Models.Base;
 
 public class HumanDTO : ModelDTO
 {

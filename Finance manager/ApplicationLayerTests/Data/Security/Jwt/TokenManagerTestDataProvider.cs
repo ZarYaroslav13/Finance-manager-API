@@ -1,5 +1,5 @@
-﻿using ApplicationLayer.Models;
-using ApplicationLayer.Security;
+﻿using Server.Models;
+using Server.Security;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;

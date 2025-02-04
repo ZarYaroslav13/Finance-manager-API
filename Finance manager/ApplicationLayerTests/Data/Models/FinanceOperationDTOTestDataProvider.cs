@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 using DomainLayer.Models;
 
 namespace ApplicationLayerTests.Data.Models;

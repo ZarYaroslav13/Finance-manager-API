@@ -1,5 +1,5 @@
-using ApplicationLayer.HostBuilder;
-using ApplicationLayer.Middleware;
+using Server.HostBuilder;
+using Server.Middleware;
 using Microsoft.OpenApi.Models;
 using Serilog;
 

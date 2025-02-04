@@ -1,12 +1,12 @@
 ﻿using Infrastructure;
 using Infrastructure.Models;
 using Infrastructure.Repository;
-using DataLayerTests.Data;
+using InfractructureTests.Data;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace DataLayerTests;
+namespace InfractructureTests;
 
 [TestClass]
 public class RepositoryTests

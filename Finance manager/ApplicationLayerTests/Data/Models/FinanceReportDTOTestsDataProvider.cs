@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 using Infrastructure.Models;
 using DomainLayer.Models;
 

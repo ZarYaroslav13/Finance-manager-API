@@ -1,5 +1,5 @@
-﻿using ApplicationLayer.Controllers;
-using ApplicationLayer.Models;
+﻿using Server.Controllers;
+using Server.Models;
 using ApplicationLayerTests.Data.Controllers;
 using AutoMapper;
 using DomainLayer.Models;

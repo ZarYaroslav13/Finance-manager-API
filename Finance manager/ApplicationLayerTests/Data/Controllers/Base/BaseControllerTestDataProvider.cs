@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Controllers;
+﻿using Server.Controllers;
 using AutoMapper;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;

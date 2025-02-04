@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace ApplicationLayer.Security.Jwt;
+namespace Server.Security.Jwt;
 
 public interface ITokenManager
 {

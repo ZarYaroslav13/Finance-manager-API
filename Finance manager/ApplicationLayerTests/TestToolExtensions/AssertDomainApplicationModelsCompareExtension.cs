@@ -1,5 +1,5 @@
-﻿using ApplicationLayer.Models;
-using ApplicationLayer.Models.Base;
+﻿using Server.Models;
+using Server.Models.Base;
 using DomainLayer.Models;
 using DomainLayer.Models.Base;
 

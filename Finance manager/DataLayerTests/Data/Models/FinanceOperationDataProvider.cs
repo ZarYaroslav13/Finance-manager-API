@@ -1,7 +1,7 @@
 ﻿using Infrastructure;
 using Infrastructure.Models;
 
-namespace DataLayerTests.Data.Models;
+namespace InfractructureTests.Data.Models;
 
 public class FinanceOperationDataProvider
 {

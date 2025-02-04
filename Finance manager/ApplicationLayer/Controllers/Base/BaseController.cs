@@ -1,10 +1,10 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace ApplicationLayer.Controllers.Base;
+namespace Server.Controllers.Base;
 
 [Authorize]
 [Route("finance-manager/[controller]s")]

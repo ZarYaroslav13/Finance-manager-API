@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Models;
+﻿using Server.Models;
 
 namespace ApplicationLayerTests.Data.Mapper.Profiles;
 

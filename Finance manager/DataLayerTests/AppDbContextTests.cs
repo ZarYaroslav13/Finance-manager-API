@@ -1,8 +1,8 @@
 ﻿using Infrastructure;
-using DataLayerTests.Data;
+using InfractructureTests.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataLayerTests;
+namespace InfractructureTests;
 
 [TestClass]
 public class AppDbContextTests

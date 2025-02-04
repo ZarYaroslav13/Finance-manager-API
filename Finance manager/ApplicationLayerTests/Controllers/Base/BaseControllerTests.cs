@@ -1,4 +1,4 @@
-﻿using ApplicationLayer.Controllers;
+﻿using Server.Controllers;
 using ApplicationLayerTests.Data.Controllers.Base;
 using AutoMapper;
 using DomainLayer.Services.Accounts;

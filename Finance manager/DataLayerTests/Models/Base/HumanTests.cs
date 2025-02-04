@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Models.Base;
-using DataLayerTests.Data.Models.Base;
+using InfractructureTests.Data.Models.Base;
 
-namespace DataLayerTests.Models.Base;
+namespace InfractructureTests.Models.Base;
 
 [TestClass]
 public class HumanTests

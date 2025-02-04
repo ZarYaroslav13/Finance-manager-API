@@ -1,4 +1,4 @@
-﻿namespace ApplicationLayer.Models.Base;
+﻿namespace Server.Models.Base;
 
 public class ModelDTO
 {

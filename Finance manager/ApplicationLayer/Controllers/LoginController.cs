@@ -1,6 +1,6 @@
-﻿using ApplicationLayer.Controllers.Base;
-using ApplicationLayer.Models;
-using ApplicationLayer.Security.Jwt;
+﻿using Server.Controllers.Base;
+using Server.Models;
+using Server.Security.Jwt;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
@@ -8,7 +8,7 @@ using DomainLayer.Services.Admins;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApplicationLayer.Controllers;
+namespace Server.Controllers;
 
 [AllowAnonymous]
 [Route("finance-manager/authorization")]

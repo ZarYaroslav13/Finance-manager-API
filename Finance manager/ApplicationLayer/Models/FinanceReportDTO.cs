@@ -1,6 +1,6 @@
 ﻿using DomainLayer.Models;
 
-namespace ApplicationLayer.Models;
+namespace Server.Models;
 
 public class FinanceReportDTO : Base.ModelDTO
 {

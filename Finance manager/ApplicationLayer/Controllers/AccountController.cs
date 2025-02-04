@@ -1,5 +1,5 @@
-﻿using ApplicationLayer.Controllers.Base;
-using ApplicationLayer.Models;
+﻿using Server.Controllers.Base;
+using Server.Models;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
@@ -7,7 +7,7 @@ using DomainLayer.Services.Admins;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ApplicationLayer.Controllers;
+namespace Server.Controllers;
 
 public class AccountController : BaseController
 {

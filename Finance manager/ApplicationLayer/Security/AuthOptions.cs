@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace ApplicationLayer.Security;
+namespace Server.Security;
 
 public class AuthOptions
 {

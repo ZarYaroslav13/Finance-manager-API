@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Models;
 
-namespace ApplicationLayer.Models;
+namespace Server.Models;
 
 public class IncomeDTO : FinanceOperationDTO
 {

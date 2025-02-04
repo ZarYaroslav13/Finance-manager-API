@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Models;
 using Infrastructure.Security;
 
-namespace DataLayerTests.Data;
+namespace InfractructureTests.Data;
 
 public static class EntitiesTestDataProvider
 {

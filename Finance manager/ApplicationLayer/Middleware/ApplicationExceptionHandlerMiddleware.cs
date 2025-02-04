@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 
-namespace ApplicationLayer.Middleware;
+namespace Server.Middleware;
 
 public class ApplicationExceptionHandlerMiddleware
 {

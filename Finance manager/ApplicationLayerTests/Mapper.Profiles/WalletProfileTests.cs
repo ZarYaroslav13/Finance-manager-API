@@ -1,5 +1,5 @@
-﻿using ApplicationLayer.Mapper.Profiles;
-using ApplicationLayer.Models;
+﻿using Server.Mapper.Profiles;
+using Server.Models;
 using ApplicationLayerTests.Data.Mapper.Profiles;
 using ApplicationLayerTests.TestToolExtensions;
 using AutoMapper;

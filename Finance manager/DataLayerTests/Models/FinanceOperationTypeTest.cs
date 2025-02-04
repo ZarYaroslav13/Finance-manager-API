@@ -1,7 +1,7 @@
 ﻿using Infrastructure.Models;
-using DataLayerTests.Data.Models;
+using InfractructureTests.Data.Models;
 
-namespace DataLayerTests.Models;
+namespace InfractructureTests.Models;
 
 [TestClass]
 public class FinanceOperationTypeTest

@@ -1,6 +1,6 @@
-﻿using ApplicationLayer.Routing;
-using ApplicationLayer.Security;
-using ApplicationLayer.Security.Jwt;
+﻿using Server.Routing;
+using Server.Security;
+using Server.Security.Jwt;
 using Infrastructure;
 using Infrastructure.Security;
 using Infrastructure.UnitOfWork;
@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 
-namespace ApplicationLayer.HostBuilder;
+namespace Server.HostBuilder;
 
 public static class AddServicesConfigurationHostBuilderExtensions
 {
