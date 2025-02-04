@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace FinanceManager.Web.Security;
+namespace FinanceManager.ApiService.Security;
 
 public class AuthOptions
 {

@@ -1,6 +1,6 @@
 ﻿using FinanceManager.Web.Controllers.Base;
 using FinanceManager.Web.Models;
-using FinanceManager.Web.Security.Jwt;
+using FinanceManager.ApiService.Security.Jwt;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
