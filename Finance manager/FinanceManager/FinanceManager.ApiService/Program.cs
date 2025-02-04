@@ -1,4 +1,4 @@
-using Microsoft.OpenApi.Models;
+using FinanceManager.ServiceDefaults.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +31,11 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 });
 
+
 app.MapDefaultEndpoints();
 
+
+app.MapControllers();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
