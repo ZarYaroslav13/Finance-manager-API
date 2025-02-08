@@ -1,4 +1,4 @@
-﻿using FinanceManager.Web.Models;
+﻿using FinanceManager.ApiService.Models;
 using AutoMapper;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;

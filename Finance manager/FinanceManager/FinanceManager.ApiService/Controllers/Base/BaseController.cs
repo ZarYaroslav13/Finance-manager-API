@@ -1,10 +1,10 @@
-﻿using FinanceManager.Web.Models;
+﻿using FinanceManager.ApiService.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace FinanceManager.Web.Controllers.Base;
+namespace FinanceManager.ApiService.Controllers.Base;
 
 [Authorize]
 [Route("finance-manager/[controller]s")]

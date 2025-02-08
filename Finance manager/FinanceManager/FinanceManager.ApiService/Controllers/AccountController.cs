@@ -1,5 +1,5 @@
-﻿using FinanceManager.Web.Controllers.Base;
-using FinanceManager.Web.Models;
+﻿using FinanceManager.ApiService.Controllers.Base;
+using FinanceManager.ApiService.Models;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;
@@ -7,7 +7,7 @@ using DomainLayer.Services.Admins;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinanceManager.Web.Controllers;
+namespace FinanceManager.ApiService.Controllers;
 
 public class AccountController : BaseController
 {

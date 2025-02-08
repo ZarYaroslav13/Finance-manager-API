@@ -1,11 +1,11 @@
-﻿using FinanceManager.Web.Controllers.Base;
-using FinanceManager.Web.Models;
+﻿using FinanceManager.ApiService.Controllers.Base;
+using FinanceManager.ApiService.Models;
 using AutoMapper;
 using DomainLayer.Services.Finances;
 using DomainLayer.Services.Wallets;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinanceManager.Web.Controllers;
+namespace FinanceManager.ApiService.Controllers;
 
 public class FinanceReportController : BaseController
 {

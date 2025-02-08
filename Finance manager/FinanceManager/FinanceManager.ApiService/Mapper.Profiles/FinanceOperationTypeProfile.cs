@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DomainLayer.Models;
-using FinanceManager.Web.Models;
+using FinanceManager.ApiService.Models;
 
 namespace FinanceManager.Mapper.Profiles;
 
