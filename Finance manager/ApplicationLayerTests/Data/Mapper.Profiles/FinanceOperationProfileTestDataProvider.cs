@@ -1,4 +1,4 @@
-﻿using Server.Models;
+﻿using FinanceManager.ApiService.Models;
 
 namespace ApplicationLayerTests.Data.Mapper.Profiles;
 

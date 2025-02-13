@@ -1,4 +1,4 @@
-﻿using Server.Models.Base;
+﻿using FinanceManager.ApiService.Models.Base;
 
 namespace ApplicationLayerTests.Data.Models;
 

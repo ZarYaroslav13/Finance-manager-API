@@ -1,5 +1,5 @@
-﻿using Server.Models;
-using Server.Security;
+﻿using FinanceManager.ApiService.Models;
+using FinanceManager.ApiService.Security;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Accounts;

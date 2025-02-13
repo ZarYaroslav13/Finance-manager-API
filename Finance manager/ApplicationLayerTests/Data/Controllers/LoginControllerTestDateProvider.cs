@@ -1,4 +1,4 @@
-﻿using Server.Security.Jwt;
+﻿using FinanceManager.ApiService.Security.Jwt;
 using DomainLayer.Services.Accounts;
 using DomainLayer.Services.Admins;
 using FakeItEasy;

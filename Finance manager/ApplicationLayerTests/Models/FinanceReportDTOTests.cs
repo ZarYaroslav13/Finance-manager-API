@@ -1,4 +1,4 @@
-﻿using Server.Models;
+﻿using FinanceManager.ApiService.Models;
 using ApplicationLayerTests.Data.Models;
 using DomainLayer.Models;
 using FakeItEasy;

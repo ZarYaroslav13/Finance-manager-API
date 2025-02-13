@@ -1,4 +1,4 @@
-﻿using Server.Controllers;
+﻿using FinanceManager.ApiService.Controllers;
 using AutoMapper;
 using FakeItEasy;
 using Microsoft.Extensions.Logging;
