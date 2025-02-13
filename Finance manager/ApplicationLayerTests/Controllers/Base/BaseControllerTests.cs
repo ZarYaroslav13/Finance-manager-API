@@ -1,4 +1,4 @@
-﻿using Server.Controllers;
+﻿using FinanceManager.ApiService.Controllers;
 using ApplicationLayerTests.Data.Controllers.Base;
 using AutoMapper;
 using DomainLayer.Services.Accounts;

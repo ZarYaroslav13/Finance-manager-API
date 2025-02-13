@@ -1,5 +1,5 @@
-﻿using Server.Mapper.Profiles;
-using Server.Models;
+﻿using FinanceManager.ApiService.Mapper.Profiles;
+using FinanceManager.ApiService.Models;
 using ApplicationLayerTests.Data.Mapper.Profiles;
 using ApplicationLayerTests.TestToolExtensions;
 using AutoMapper;

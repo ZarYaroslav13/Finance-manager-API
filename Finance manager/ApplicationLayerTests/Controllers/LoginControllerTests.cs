@@ -1,6 +1,6 @@
-﻿using Server.Controllers;
-using Server.Models;
-using Server.Security.Jwt;
+﻿using FinanceManager.ApiService.Controllers;
+using FinanceManager.ApiService.Models;
+using FinanceManager.ApiService.Security.Jwt;
 using ApplicationLayerTests.Data.Controllers;
 using AutoMapper;
 using DomainLayer.Models;

@@ -1,5 +1,5 @@
-﻿using Server.Controllers;
-using Server.Models;
+﻿using FinanceManager.ApiService.Controllers;
+using FinanceManager.ApiService.Models;
 using AutoMapper;
 using DomainLayer.Models;
 using DomainLayer.Services.Finances;

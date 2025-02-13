@@ -1,4 +1,4 @@
-﻿using Server.Models;
+﻿using FinanceManager.ApiService.Models;
 using Infrastructure.Models;
 using DomainLayer.Models;
 

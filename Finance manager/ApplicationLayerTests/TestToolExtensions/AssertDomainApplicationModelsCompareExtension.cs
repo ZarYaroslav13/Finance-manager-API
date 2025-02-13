@@ -1,5 +1,5 @@
-﻿using Server.Models;
-using Server.Models.Base;
+﻿using FinanceManager.ApiService.Models;
+using FinanceManager.ApiService.Models.Base;
 using DomainLayer.Models;
 using DomainLayer.Models.Base;
 

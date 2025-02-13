@@ -3,7 +3,7 @@ using DomainLayer.Models;
 using FinanceManager.ApiService.Models;
 using Infrastructure.Models;
 
-namespace FinanceManager.Mapper.Profiles;
+namespace FinanceManager.ApiService.Mapper.Profiles;
 
 public class FinanceOperationProfile : Profile
 {

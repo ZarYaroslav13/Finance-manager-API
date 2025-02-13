@@ -2,7 +2,7 @@
 using DomainLayer.Models;
 using FinanceManager.ApiService.Models;
 
-namespace FinanceManager.Mapper.Profiles;
+namespace FinanceManager.ApiService.Mapper.Profiles;
 
 public class AccountProfile : Profile
 {
