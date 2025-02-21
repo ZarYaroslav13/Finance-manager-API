@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FinanceManager.Domain.Mapper.Profiles.AccountProfile" Collapsed="true">
+    <Position X="25.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mapper.Profiles\AccountProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Mapper.Profiles.FinanceOperationProfile" Collapsed="true">
+    <Position X="27" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mapper.Profiles\FinanceOperationProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Mapper.Profiles.FinanceOperationTypeProfile" Collapsed="true">
+    <Position X="28.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mapper.Profiles\FinanceOperationTypeProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Mapper.Profiles.WalletProfile" Collapsed="true">
+    <Position X="27" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mapper.Profiles\WalletProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.Base.Model" Collapsed="true">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAiA=</HashCode>
+      <FileName>Models\Base\Model.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.AccountModel" Collapsed="true">
+    <Position X="11.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAgAAAAABAAAAAAIACAAAAAAAAAAg=</HashCode>
+      <FileName>Models\AccountModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.ExpenseModel" Collapsed="true">
+    <Position X="16" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ExpenseModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.FinanceOperationModel" Collapsed="true">
+    <Position X="14.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAIAACAAAAAAIABAQAAAAAAAAA=</HashCode>
+      <FileName>Models\FinanceOperationModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.FinanceOperationTypeModel" Collapsed="true">
+    <Position X="20.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAgAAAAgAAAAAQAAAAAAIAAAAAgAAAAAAA=</HashCode>
+      <FileName>Models\FinanceOperationTypeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.FinanceReportModel" Collapsed="true">
+    <Position X="22.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAECCIAAAAAAgAAAAAAAAAAAAIAAAIAgAAAAAAI=</HashCode>
+      <FileName>Models\FinanceReportModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.IncomeModel" Collapsed="true">
+    <Position X="13.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\IncomeModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Models.WalletModel" Collapsed="true">
+    <Position X="18.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgggAAAQAIAAAQIAAAQAAAAAAAAA=</HashCode>
+      <FileName>Models\WalletModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.Services.Accounts.AccountService" Collapsed="true">
+    <Position X="13.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAAAAAAAAAAAAIQAQAAAAAAAAAAEQAAAAAAAA=</HashCode>
+      <FileName>Services\Accounts\AccountService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FinanceManager.Domain.Services.Finances.FinanceService" Collapsed="true">
+    <Position X="11.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIAgACAAAAAAAIAAAAgAAAAAAAAQAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Services\Finances\FinanceService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FinanceManager.Domain.Services.Wallets.WalletService" Collapsed="true">
+    <Position X="15.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAQAAAAACAAAAAAAAgAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Services\Wallets\WalletService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FinanceManager.Domain.Services.EntityService&lt;T_Domain, T_DB&gt;" Collapsed="true">
+    <Position X="13.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\EntityService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FinanceManager.Domain.FinanceReportCreator" Collapsed="true">
+    <Position X="25.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FinanceReportCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="FinanceManager.Domain.Models.Period" Collapsed="true">
+    <Position X="25.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAgAAAAAIAAAAAAAEAAAiA=</HashCode>
+      <FileName>Models\Period.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="FinanceManager.Domain.Services.Accounts.IAccountService" Collapsed="true">
+    <Position X="25.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAEQAAAAAAAA=</HashCode>
+      <FileName>Services\Accounts\IAccountService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FinanceManager.Domain.Services.Finances.IFinanceService" Collapsed="true">
+    <Position X="27" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAgACAAAAAAAIAAAAgAAAAAAAAQAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Services\Finances\IFinanceService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FinanceManager.Domain.Services.Wallets.IWalletService" Collapsed="true">
+    <Position X="28.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAQAAAAACAAAAAAAAgAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Services\Wallets\IWalletService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
