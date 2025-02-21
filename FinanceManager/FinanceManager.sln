@@ -28,6 +28,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceManager.Domain", "Fi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceManager.Application", "FinanceManager.Application\FinanceManager.Application.csproj", "{003CC570-176A-472E-8F99-6F0E2AB2D54B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinanceManager.Infrastructure.Tests", "..\Tests\FinanceManager.Infrastructure.Tests\FinanceManager.Infrastructure.Tests.csproj", "{BD6ED337-5750-496A-9EC7-7F96753BE835}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{769686D0-A5C3-4F50-B3BA-4710B8EF4BC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +66,10 @@ Global
 		{003CC570-176A-472E-8F99-6F0E2AB2D54B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003CC570-176A-472E-8F99-6F0E2AB2D54B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003CC570-176A-472E-8F99-6F0E2AB2D54B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD6ED337-5750-496A-9EC7-7F96753BE835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6ED337-5750-496A-9EC7-7F96753BE835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6ED337-5750-496A-9EC7-7F96753BE835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6ED337-5750-496A-9EC7-7F96753BE835}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,7 @@ Global
 		{EDDF4502-7109-470B-8897-F69C7D333F88} = {A901D532-6F5F-43EC-9591-1CE416650E45}
 		{A17553A8-ED42-4809-88E9-B48C0B067514} = {36FEA781-A32B-40B6-9562-33FC2F0D4203}
 		{003CC570-176A-472E-8F99-6F0E2AB2D54B} = {36FEA781-A32B-40B6-9562-33FC2F0D4203}
+		{BD6ED337-5750-496A-9EC7-7F96753BE835} = {769686D0-A5C3-4F50-B3BA-4710B8EF4BC5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F952CA0-D83E-4D8A-9A9B-D83D45D230F7}
